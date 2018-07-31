@@ -70,6 +70,78 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux/nginx-user-模块详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/nginx-user-模块详解/" class="article-date">
+  <time datetime="2018-05-19T22:51:54.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/nginx-user-模块详解/">nginx user 模块详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>nginx 运行后可以指定用户，比如说一个静态网页服务器的文件目录的不同的用户有不同的访问权限，使用 nginx 指定用户就可以有权限对此目录读写。</p>
+<p>我其实很好奇怎么直接指定用户的，而且运行nginx的时候也没有需要输入密码之类旳。</p>
+<p>在网上查找资料后有以下发现：</p>
+<p>Nginx 主进程（master process）会以 root 权限运行，之后主进程会读取 <code>/etc/nginx/nginx.conf</code> 文件中的 user 模块的配置，nginx 会使用这个指定的用户启动工作进程（ worker process）。</p>
+<p>那为什么主进程需要使用 root？因为只有 root 可以监听小于1024的端口号，通常 webserver 使用 80/443 端口，这也就是为什么需要 root 来运行了。如果要更改非root用户来运行，需要更改下面的文件用户和用户组，当然你也就不能使用 &lt;1024 的端口了。 </p>
+<ul>
+<li>error_log</li>
+<li>access_log</li>
+<li>pid</li>
+<li>client_body_temp_path</li>
+<li>fastcgi_temp_path</li>
+<li>proxy_temp_path</li>
+<li>scgi_temp_path</li>
+<li>uwsgi_temp_path</li>
+</ul>
+<p>好了，具体进程运行如下图所示。</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/33918362-d26099e0-dfed-11e7-9c84-9d9567b2f658.png" alt="image"></p>
+<p>这里可以看到 nginx 只有一个主进程和多个工作进程，主进程主要读取和评估配置文件正确性，以及管理工作进程。工作进程是真正的网络请求处理的进程。</p>
+<p>如果主进程使用root运行，那么nginx 将会调用 setuid()/setgid() 去设置 user/group。如果 group 没有特别指定，那么 nginx 会使用 user 相同的名称设置 group。默认为 <code>nobody nogroup</code> 或者安装nginx的时候在  <code>./configure</code> 指定的  <code>--user=USER</code> 和 <code>--group=GROUP</code></p>
+<p><img src="https://user-images.githubusercontent.com/24730006/34400643-7f56ac3e-ebce-11e7-8f7a-d5aea792bfbf.png" alt="image"></p>
+<p><a href="http://nginx.org/en/docs/ngx_core_module.html#user" target="_blank" rel="noopener">配置语法</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: user user [group];</span><br><span class="line">defualt: user nobody nobody;</span><br><span class="line">Context: main</span><br></pre></td></tr></table></figure>
+<p>如果使用了 php 的话，那么同时还需要编辑 <a href="http://php.net/manual/en/install.fpm.configuration.php" target="_blank" rel="noopener">php-fpm.conf</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">; Set permissions for unix socket, if one is used. In Linux, read/write</span><br><span class="line">; permissions must be set in order to allow connections from a web server. Many</span><br><span class="line">; BSD-derived systems allow connections regardless of permissions.</span><br><span class="line">; Default Values: user and group are set as the running user</span><br><span class="line">;                 mode is set to 0660</span><br><span class="line">listen.owner = xxx</span><br><span class="line">listen.group = xxx</span><br><span class="line">;liseten.mode = 0660</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<ol>
+<li><a href="https://stackoverflow.com/questions/42329261/running-nginx-as-non-root-user" target="_blank" rel="noopener">Running Nginx as non root user
+</a></li>
+<li><a href="https://serverfault.com/questions/433265/how-do-i-change-the-nginx-user" target="_blank" rel="noopener">How do I change the NGINX user?</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/nginx-user-模块详解/" data-id="cjk9j9xg0000j0420olm9cfw8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-tool/VSCode-代码风格自动校验和格式化清单" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" class="article-date">
@@ -112,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9j7afv0021wh20t70jgd17" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9j9xgx00220420mpsz575g" class="article-share-link">Share</a>
       
       
     </footer>
@@ -168,7 +240,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9j7afm001iwh20jwcbbui2" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9j9xgk001k0420aappjdid" class="article-share-link">Share</a>
       
       
     </footer>
@@ -230,7 +302,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9j7aey000cwh20l1zglpnr" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9j9xfw000f0420x2uczxc8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ubuntu/">ubuntu</a></li></ul>
@@ -506,77 +578,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/bash-键盘高级操作技巧/" data-id="cjk9j7af0000fwh20gxdk3kdk" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/bash-键盘高级操作技巧/" data-id="cjk9j9xfy000h0420imd2its1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/bash/">bash</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-tool/VSCode-一些技巧和快捷键" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/" class="article-date">
-  <time datetime="2018-05-19T22:38:32.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/tool/">tool</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/">VSCode一些技巧和快捷键</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>VSCode 一些技巧和快捷键</p>
-<h3 id="如何让-VSCode-打开文件始终在新标签页打开？"><a href="#如何让-VSCode-打开文件始终在新标签页打开？" class="headerlink" title="如何让 VSCode 打开文件始终在新标签页打开？"></a>如何让 VSCode 打开文件始终在新标签页打开？</h3><p>VSCode 有一个默认设定，单击一个右侧侧边栏的文件是预览模式，如果不输入任何任何文本就始终保持预览模式。</p>
-<p>预览模式是的打开一个新文件，然后再打开一个新文件，第二个就会占用第一个窗口。详细信息可以查看：<a href="https://code.visualstudio.com/docs/getstarted/userinterface#_preview-mode" target="_blank" rel="noopener">https://code.visualstudio.com/docs/getstarted/userinterface#_preview-mode</a></p>
-<p>文件处于预览模式有个标识，就是标题栏的文件名称是斜体的，</p>
-<p>如何关闭？在设置文件里设置 <code>workbench.editor.enablePreview</code> 为 false 即可，这是全局设置的，每次都是打开新 tab。</p>
-<p>不过还有个简单的方式，那就是<strong>双击新文件</strong>就是不以预览模式打开。如果已经打开，那么<strong>双击标题栏的文件名称</strong>也可以。</p>
-<p>VSCode 已经成为我日常开发必备的编辑器。昨天有写一直困扰我的 #162 新文件打开占用前文件窗口的问题（feature），下文说明个人常用的快捷键。</p>
-<p>官方文档中有<a href="https://code.visualstudio.com/docs/getstarted/tips-and-tricks" target="_blank" rel="noopener">一篇</a>专门说明了这些技巧，比较友好的时候是，文档页面会根据系统类型来显示快捷键。</p>
-<p>下面是一些我常用的，Windows 下的 Ctrl 大多时候相当于 Mac 下 Cmd，以下以 Windows 说明。</p>
-<h3 id="分栏和开闭侧边栏"><a href="#分栏和开闭侧边栏" class="headerlink" title="分栏和开闭侧边栏"></a>分栏和开闭侧边栏</h3><p>一个视口最多分成3个，使用 <code>Ctrl+\</code>，如果我们要切换不同的工作分栏，可以使用 <code>Ctrl+1, Ctrl+2, Ctrl+3</code> 即对应第一、二、三个分栏。</p>
-<p><img src="https://user-images.githubusercontent.com/24730006/37562068-a368bb26-2a99-11e8-9744-9fbf90ba35c3.png" alt="image"></p>
-<p>上图可以看到左侧有个文件列表的侧边栏，如果关闭的话，使用快捷键 <code>Ctrl+b</code>。</p>
-<p>不同分栏有不同的窗口，那么我们可以使用 <code>Ctrl+tab</code> 进行切换，如下图所示。</p>
-<p><img src="https://user-images.githubusercontent.com/24730006/37562213-c10288f2-2a9d-11e8-90b9-a5301d27dea0.png" alt="image"></p>
-<p>还有个前进后退导航的快捷键，比如使用 ctrl+click 进行点击查看函数定义的时候就直接跳转到其定义，返回的时候直接使用 Alt+left  或者 Alt+right 即可，Mac 下是 <code>Opt+-</code> 和 <code>Opt+Shift+-</code>。</p>
-<h3 id="快捷查找"><a href="#快捷查找" class="headerlink" title="快捷查找"></a>快捷查找</h3><p>这里的快捷查找不是 <code>Ctrl+f</code> 的查找功能，这里的快捷查找要比它方便的多。</p>
-<p>有这样一个场景，比如说打开 index.js 后想打开 model.js 那么不需要在侧边栏找，只需要使用 <code>Ctrl+p</code> 需要 model.ljs 这个文件名，然后选择即可。</p>
-<p>值得注意的是，我们还可以使用一些更具体的命令来查找。比如说 <code>:n</code> 转到第 n 行，<code>@</code> 查找相关函数，<code>&gt;</code> 快捷设置。其它的操作符具体如下。</p>
-<p><img src="https://user-images.githubusercontent.com/24730006/37562119-c176e60a-2a9a-11e8-8a72-664912416b28.png" alt="image"></p>
-<h3 id="变量重命名"><a href="#变量重命名" class="headerlink" title="变量重命名"></a>变量重命名</h3><p>初始化变量后，如果想更改名称的话是个头疼的事情，需要把使用这个变量的地方统统修改一遍。不过在 VSCode 里面我们直接使用 <code>F2</code> 即可重命名即可。</p>
-<h3 id="移动和复制代码行"><a href="#移动和复制代码行" class="headerlink" title="移动和复制代码行"></a>移动和复制代码行</h3><p>移动代码行</p>
-<p>Windows 下 <code>Alt+Up</code> 或者 <code>Alt+Down</code>，在Mac 下就是  <code>Opt+↑</code> 和 <code>Opt+↓</code></p>
-<p><img src="https://user-images.githubusercontent.com/24730006/37562232-804b101c-2a9e-11e8-97f5-6b72339e2dc7.png" alt="image"></p>
-<p>复制代码行</p>
-<p>到行前：Ctrl+Alt+Up，到行后：Ctrl+Alt+Down</p>
-<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p> 多光标选择：在 Windows 下使用 <code>Alt+Click</code> 空白处，Mac 下就是 <code>Opt+Click</code>。撤销上一个选择就是 <code>Ctrl+U</code><br>多行选择：Ctrl+Shfit+上下左右<br>选择当前行：<code>Ctrl+i</code><br>预览Markdown：<code>Ctrl+Shift+v</code><br>折叠代码块：<code>Ctrl+Shift+[</code> 以及 <code>Ctrl+Shift+]</code><br>跳转到开始和结尾：Windows 下是 Ctrl+Home 和 Ctrl+End ，Mac 下就是 <code>Cmd+↑</code> 和 <code>Cmd+↓</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/" data-id="cjk9j7afs001uwh2096g7vn8j" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -641,6 +647,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
           </li>
         
@@ -654,10 +664,6 @@
         
           <li>
             <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
           </li>
         
       </ul>

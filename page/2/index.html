@@ -70,6 +70,155 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux/AngularJS-Git-提交信息规范" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" class="article-date">
+  <time datetime="2018-06-01T09:13:02.000Z" itemprop="datePublished">2018-06-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><ul>
+<li>允许通过脚本自动生成变更日志</li>
+<li>允许通过命令过滤某些提交信息（例如不重要的格式变动信息）</li>
+<li>提供更多的历史记录信息</li>
+</ul>
+<h2 id="快速生成变更日志"><a href="#快速生成变更日志" class="headerlink" title="快速生成变更日志"></a>快速生成变更日志</h2><p>我们在变更日志中使用这三个部分：新特性、问题修复（bug fix）、不兼容变更（breaking change）。  </p>
+<p>这些列表可以在发布更新的时候通过脚本生成，并链接到相关的提交记录。  </p>
+<p>当然你可以在发布之前编辑变更日志，不过这种方式能帮助我们生成整体架构。</p>
+<p><strong>列出所有从上一次发布的提交信息的第一行</strong>：<br><code>&gt;&gt; git log &lt;last tag&gt; HEAD --pretty=format:%s</code></p>
+<p><strong>列出本次发布的新功能</strong>：<br><code>&gt;&gt; git log &lt;last release&gt; HEAD --grep feature</code></p>
+<h2 id="过滤不重要的提交信息"><a href="#过滤不重要的提交信息" class="headerlink" title="过滤不重要的提交信息"></a>过滤不重要的提交信息</h2><p>这些不重要的信息指的是格式上改变（增加或删除多余的行以及缩进），缺少分号、注释。所以当你在找一些变更的时候可以忽略这些。</p>
+<p>你可以使用这个命令：<br><code>&gt;&gt; git bisect skip $(git rev-list --grep irrelevant &lt;good place&gt; HEAD)</code></p>
+<h2 id="提供更多的历史信息"><a href="#提供更多的历史信息" class="headerlink" title="提供更多的历史信息"></a>提供更多的历史信息</h2><p>看看这些提交信息，一部分来自最近 Angular 的提交，这样的提交信息会增加一种环境信息。</p>
+<ul>
+<li>Fix small typo in docs widget (tutorial instructions)</li>
+<li>Fix test for scenario.Application - should remove old iframe</li>
+<li>docs - various doc fixes</li>
+<li>docs - stripping extra new lines</li>
+<li>Replaced double line break with single when text is fetched from Google</li>
+<li>Added support for properties in documentation</li>
+</ul>
+<p>下面这些信息试图详细描述哪里发生了变化，但没有任何规则…</p>
+<ul>
+<li>fix comment stripping</li>
+<li>fixing broken links</li>
+<li>Bit of refactoring</li>
+<li>Check whether links do exist and throw exception</li>
+<li>Fix sitemap include (to work on case sensitive linux)</li>
+</ul>
+<p>看到这些你能猜出这里面到底有些变化吗？它们都缺少了“特定位置规范”（place specification）…所以使用下面这些词语：docs,docs-parser,compiler,scenario-runner,…</p>
+<p>我知道你能通过查看哪些文件变更来找寻这些信息，但是效率不高。通过使用这些规范来查看 git 的历史提交信息能看到我们所有描述的改动地方。</p>
+<h1 id="格式化提交信息"><a href="#格式化提交信息" class="headerlink" title="格式化提交信息"></a>格式化提交信息</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</span><br><span class="line">&lt;空一行&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;空一行&gt;</span><br><span class="line">&lt;footer&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Revert"><a href="#Revert" class="headerlink" title="Revert"></a>Revert</h2><p>如果你使用<code>revert</code>命令，信息头必须以<code>revert:</code>开始，接着在主体信息（body）中必须声明：<code>This reverts commit &lt;hash&gt;.</code>,这里的hash是被 revert 的 commit hash。</p>
+<h2 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h2><p>信息头（Message Header）是一行简洁的变更描述，包括 <code>&lt;type&gt;</code>， 可选 <code>&lt;scope&gt;</code> 以及一个 <code>&lt;subject&gt;</code></p>
+<h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><p>可以使用下面的类型：</p>
+<ul>
+<li>feat​ (新功能)</li>
+<li>fix​ (问题修复)</li>
+<li>docs​ (文档)</li>
+<li>style​ (格式)</li>
+<li>refactor（重构）</li>
+<li>test​ (增加测试)</li>
+<li>chore​ (一些变动)</li>
+</ul>
+<h3 id="scope"><a href="#scope" class="headerlink" title="scope"></a>scope</h3><p>Scope 可以是任何一个具体的变更信息的位置，比如说 $location​,$browser​, $compile​, $rootScope​, ngHref​, ngClick​, ngView​,等等。</p>
+<p>你可以使用 * 来描述不太合适的 scope.</p>
+<h3 id="subject"><a href="#subject" class="headerlink" title="subject"></a>subject</h3><p>这里只要很简洁的描述就可以，不要超过50字。</p>
+<ul>
+<li>使用第一人称现在时</li>
+<li>第一个字母小写</li>
+<li>结尾不加句号</li>
+</ul>
+<h2 id="Body"><a href="#Body" class="headerlink" title="Body"></a>Body</h2><ul>
+<li>使用第一人称现在时</li>
+<li>包括变动的原因和与之前的对比</li>
+</ul>
+<ol>
+<li><a href="http://365git.tumblr.com/post/3308646748/writing-git-commit-messages" target="_blank" rel="noopener">http://365git.tumblr.com/post/3308646748/writing-git-commit-messages</a></li>
+<li><a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" target="_blank" rel="noopener">http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html</a></li>
+</ol>
+<h2 id="Footer"><a href="#Footer" class="headerlink" title="Footer"></a>Footer</h2><h3 id="不兼容改动"><a href="#不兼容改动" class="headerlink" title="不兼容改动"></a>不兼容改动</h3><p>所有不兼容变更需要放在 footer 上，并且以 <code>BREAKING CHANGE</code>开始，后面是对变更的描述以及理由和迁移方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">BREAKING CHANGE: isolate scope bindings definition has changed and</span><br><span class="line">    the inject option for the directive controller injection was removed.</span><br><span class="line">    To migrate the code follow the example below:</span><br><span class="line"></span><br><span class="line">    Before:</span><br><span class="line"></span><br><span class="line">    scope: &#123;</span><br><span class="line">        myAttr: &apos;attribute&apos;,</span><br><span class="line">        myBind: &apos;bind&apos;,</span><br><span class="line">        myExpression: &apos;expression&apos;,</span><br><span class="line">        myEval: &apos;evaluate&apos;,</span><br><span class="line">        myAccessor: &apos;accessor&apos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    After:</span><br><span class="line"></span><br><span class="line">    scope: &#123;</span><br><span class="line">        myAttr: &apos;@&apos;,</span><br><span class="line">        myBind: &apos;@&apos;,</span><br><span class="line">        myExpression: &apos;&amp;&apos;,</span><br><span class="line">        // myEval - usually not useful, but in cases where the expression is assignable, you can</span><br><span class="line">        use &apos;=&apos;</span><br><span class="line">        myAccessor: &apos;=&apos; // in directive&apos;s template change myAccessor() to myAccessor</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    The removed `inject` wasn&apos;t generaly useful for directives so there should be no code</span><br><span class="line">    using it.</span><br></pre></td></tr></table></figure>
+<h3 id="关联issues"><a href="#关联issues" class="headerlink" title="关联issues"></a>关联issues</h3><p>关闭 issues 必须在 footer 区域的分开的一行，以“Closes”关键词开头：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Close #234</span><br></pre></td></tr></table></figure>
+<p>当然也可以关闭多个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Close #123, #245, #992</span><br></pre></td></tr></table></figure>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><hr>
+<p>feat($browser): onUrlChange event (popstate/hashchange/polling)<br>Added new event to $browser:</p>
+<ul>
+<li>forward popstate event if available</li>
+<li>forward hashchange event if popstate not available</li>
+<li>do polling when neither popstate nor hashchange available<br>Breaks $browser.onHashChange, which was removed (use onUrlChange instead)</li>
+</ul>
+<hr>
+<p>fix($compile): couple of unit tests for IE9</p>
+<p>Older IEs serialize html uppercased, but IE9 does not…<br>Would be better to expect case insensitive, unfortunately jasmine does<br>not allow to user regexps for throw expectations.</p>
+<p>Closes #392<br>Breaks foo.bar api, foo.baz should be used instead</p>
+<hr>
+<p>feat(directive): ng:disabled, ng:checked, ng:multiple, ng:readonly, ng:selected</p>
+<p>New directives for proper binding these attributes in older browsers (IE).<br>Added coresponding description, live examples and e2e tests.</p>
+<p>Closes #351</p>
+<hr>
+<p>docs(guide): updated fixed docs from Google Docs</p>
+<p>Couple of typos fixed:</p>
+<ul>
+<li>indentation</li>
+<li>batchLogbatchLog -&gt; batchLog</li>
+<li>start periodic checking</li>
+<li>missing brace</li>
+</ul>
+<hr>
+<p>feat($compile): simplify isolate scope bindings</p>
+<p>Changed the isolate scope binding options to:</p>
+<ul>
+<li>@attr - attribute binding (including interpolation)</li>
+<li>=model - by-directional model binding</li>
+<li>&amp;expr - expression execution binding</li>
+</ul>
+<p>This change simplifies the terminology as well as<br>number of choices available to the developer. It<br>also supports local name aliasing from the parent.</p>
+<p>BREAKING CHANGE:​ isolate scope bindings definition has changed and<br>the inject option for the directive controller injection was removed.<br>To migrate the code follow the example below:<br>Before:</p>
+<p>scope: {<br>    myAttr: ‘attribute’,<br>    myBind: ‘bind’,<br>    myExpression: ‘expression’,<br>    myEval: ‘evaluate’,<br>    myAccessor: ‘accessor’<br>}</p>
+<p>After:</p>
+<p>scope: {<br>    myAttr: ‘@’,<br>    myBind: ‘@’,<br>    myExpression: ‘&amp;’,<br>    // myEval - usually not useful, but in cases where the expression is assignable, you can use ‘=’<br>    myAccessor: ‘=’ // in directive’s template change myAccessor() to myAccessor<br>}</p>
+<p>The removed <code>inject</code> wasn’t generaly useful for directives so there should be no code using it.</p>
+<p>Refs:</p>
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html" target="_blank" rel="noopener">阮一峰：Commit message 和 Change log 编写指南</a></li>
+<li><a href="https://docs.google.com/document/export?format=pdf&amp;id=1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y&amp;token=AC4w5VgLbPxZqQd4dFdhThmCmj6QNRkjrw%3A1498265895216" target="_blank" rel="noopener">AngularJS Git Message Conventions</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" data-id="cjk9j9xfo00070420wnjwylks" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/说说-XSRF-防范" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/" class="article-date">
@@ -132,7 +281,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/23/nodejs/说说-XSRF-防范/" data-id="cjk9j7afu001xwh207apiuru3" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/23/nodejs/说说-XSRF-防范/" data-id="cjk9j9xgq001w0420v7u1ph6x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -188,7 +337,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" data-id="cjk9j7afo001lwh20abqdt9hh" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" data-id="cjk9j9xgl001n04202rsomnsj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -246,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/21/linux/使用-Docker-安装-gitlab/" data-id="cjk9j7af8000owh203tsv3umm" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/21/linux/使用-Docker-安装-gitlab/" data-id="cjk9j9xg5000q0420u6td2jlg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Docker/">Docker</a></li></ul>
@@ -330,77 +479,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" data-id="cjk9j7af9000swh20coovpv49" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" data-id="cjk9j9xg7000x0420ihk00rq0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Docker/">Docker</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nodejs/函数节流与函数防抖" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/nodejs/函数节流与函数防抖/" class="article-date">
-  <time datetime="2018-05-19T22:57:59.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/nodejs/函数节流与函数防抖/">函数节流与函数防抖</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是函数节流与函数防抖"><a href="#什么是函数节流与函数防抖" class="headerlink" title="什么是函数节流与函数防抖"></a>什么是函数节流与函数防抖</h2><p>举个栗子，我们知道目前的一种说法是当 1 秒内连续播放 24 张以上的图片时，在人眼的视觉中就会形成一个连贯的动画，所以在电影的播放（以前是，现在不知道）中基本是以每秒 24 张的速度播放的，为什么不 100 张或更多是因为 24 张就可以满足人类视觉需求的时候，100 张就会显得很浪费资源。再举个栗子，假设电梯一次只能载一人的话，10 个人要上楼的话电梯就得走 10 次，是一种浪费资源的行为；而实际生活正显然不是这样的，当电梯里有人准备上楼的时候如果外面又有人按电梯的话，电梯会再次打开直到满载位置，从电梯的角度来说，这时一种节约资源的行为（相对于一次只能载一个人）。</p>
-<ul>
-<li>函数节流: 指定时间间隔内只会执行一次任务；</li>
-<li>函数防抖: 任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。</li>
-</ul>
-<blockquote>
-<p>函数节流的核心是，让一个函数不要执行得太频繁，减少一些过快的调用来节流。函数去抖就是对于一定时间段的连续的函数调用，只让其执行一次。</p>
-</blockquote>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="函数节流"><a href="#函数节流" class="headerlink" title="函数节流"></a>函数节流</h3><p>函数节流应用的实际场景，多数在监听页面元素滚动事件的时候会用到。因为滚动事件，是一个高频触发的事件。以下是监听页面元素滚动的示例代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn, wait</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> previous = <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> timer = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> context = <span class="keyword">this</span></span><br><span class="line">        <span class="keyword">var</span> args = <span class="built_in">arguments</span></span><br><span class="line">        <span class="keyword">if</span> (!previous) &#123;</span><br><span class="line">            previous = <span class="built_in">Date</span>.now()</span><br><span class="line">            fn.apply(context, args)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (previous + wait &gt;= <span class="built_in">Date</span>.now()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">                <span class="comment">// console.log(timer)</span></span><br><span class="line">                clearTimeout(timer)</span><br><span class="line">                timer = <span class="literal">null</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// console.log(timer)</span></span><br><span class="line">            timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// console.log(timer)</span></span><br><span class="line">                previous = <span class="built_in">Date</span>.now()</span><br><span class="line">                fn.apply(context, args)</span><br><span class="line">            &#125;, wait)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            previous = <span class="built_in">Date</span>.now()</span><br><span class="line">            fn.apply(context, args)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="throttle-应用场景"><a href="#throttle-应用场景" class="headerlink" title="throttle 应用场景"></a>throttle 应用场景</h3><p>函数节流有哪些应用场景？哪些时候我们需要间隔一定时间触发回调来控制函数调用频率？</p>
-<ul>
-<li>DOM 元素的拖拽功能实现（mousemove）</li>
-<li>射击游戏的 mousedown/keydown 事件（单位时间只能发射一颗子弹）</li>
-<li>计算鼠标移动的距离（mousemove）</li>
-<li>Canvas 模拟画板功能（mousemove）</li>
-<li>搜索联想（keyup）</li>
-<li>监听滚动事件判断是否到页面底部自动加载更多：给 scroll 加了 debounce 后，只有用户停止滚动后，才会判断是否到了页面底部；如果是 throttle 的话，只要页面滚动就会间隔一段时间判断一次</li>
-</ul>
-<h3 id="函数防抖"><a href="#函数防抖" class="headerlink" title="函数防抖"></a>函数防抖</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, wait</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> context = <span class="keyword">this</span></span><br><span class="line">        <span class="keyword">var</span> args = <span class="built_in">arguments</span></span><br><span class="line">        <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">            clearTimeout(timer);</span><br><span class="line">            timer = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            fn.apply(context, args)</span><br><span class="line">        &#125;, wait)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="debounce-应用场景"><a href="#debounce-应用场景" class="headerlink" title="debounce 应用场景"></a>debounce 应用场景</h3><p>函数去抖有哪些应用场景？哪些时候对于连续的事件响应我们只需要执行一次回调？</p>
-<ul>
-<li>每次 resize/scroll 触发统计事件</li>
-<li>文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）</li>
-</ul>
-<p>ref: <a href="http://justclear.gitlab.io/throttle-and-debounce/" target="_blank" rel="noopener">http://justclear.gitlab.io/throttle-and-debounce/</a><br>ref: <a href="https://segmentfault.com/a/1190000008768202" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008768202</a><br>ref: <a href="https://github.com/hanzichi/underscore-analysis/issues/20" target="_blank" rel="noopener">https://github.com/hanzichi/underscore-analysis/issues/20</a><br>ref: <a href="http://www.cnblogs.com/fsjohnhuang/p/4147810.html" target="_blank" rel="noopener">http://www.cnblogs.com/fsjohnhuang/p/4147810.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/函数节流与函数防抖/" data-id="cjk9j7afi001dwh2078tqveer" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -465,6 +548,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
           </li>
         
@@ -478,10 +565,6 @@
         
           <li>
             <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
           </li>
         
       </ul>

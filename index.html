@@ -70,6 +70,46 @@
       <div class="outer">
         <section id="main">
   
+    <article id="blockchain-blockchain/比特币中交易延展性问题" class="article article-type-blockchain" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/" class="article-date">
+  <time datetime="2018-07-31T18:01:45.000Z" itemprop="datePublished">2018-07-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="交易延展性-Transaction-Malleability"><a href="#交易延展性-Transaction-Malleability" class="headerlink" title="交易延展性 (Transaction Malleability)"></a>交易延展性 (Transaction Malleability)</h2><p>当交易被签名时，签名并没有覆盖交易中所有的数据 (比如位于 txin 中的 scriptSig，由于 scriptSig 中包含公钥和签名数据，不可能对自身自签名)，而交易中所有的数据又会被用来生成交易的哈希值来作为该交易的唯一标示。如此，尽管不常见的，比特币网络中的一个节点能够改变你发送的交易 (通过改变 txin 中的签名)，导致该交易的哈希值发生变化。注意，攻击者仅仅能够改变该哈希值，交易中的 txout 是无法进行改变的，因此比特币最终也许会转入你原本打算的地址中。然而，这确实意味着，例如，在任何情况下，接收一系列未确认交易的链是不安全的，因为未确认交易的哈希值可能会发生变化，而随后的交易中的 txin 会依赖于先前交易的哈希值。即使交易得到了一个确认，也是不安全的，因为区块链可能会被重新调整。此外，客户端必须一直扫描收到的交易，假定一个 txout 是存在的，因为先前创建该笔交易的客户端可能是不安全的 (可能会发两笔同样 txout 的交易)。</p>
+<h2 id="签名延展性-Signature-Malleability"><a href="#签名延展性-Signature-Malleability" class="headerlink" title="签名延展性 (Signature Malleability)"></a>签名延展性 (Signature Malleability)</h2><p>延展性的第一种形式就是签名本身。每一个签名恰好有一个 DER-encoded ASN.1 octet representation，但是 OpenSSL 并没有强制，只要一笔签名没有极度的改变，它就是可接受的。此外，对于每一个 ECDSA signature(r,s)，这个 signature(r,-s(mod N)) 是相同消息的一个有效签名。<br>在 363742 区块高度处，BIP66 软分叉强制区块链中所有新交易遵循 DER-encoded ASN.1 标准。仍然需要进一步的努力来关闭 DER 签名其它可能的延展性问题。<br>签名仍然是可以被拥有相应私钥的人改变的。</p>
+<h2 id="解锁脚本延展性-scriptSig-Malleability"><a href="#解锁脚本延展性-scriptSig-Malleability" class="headerlink" title="解锁脚本延展性 (scriptSig Malleability)"></a>解锁脚本延展性 (scriptSig Malleability)</h2><p>比特币中使用的签名算法没有签署 scriptSig 中的任何数据。因为对整个 scriptSig 签名是不可能的，scriptSig 包含签名本身。这意味着，附件的数据能被添加到 scriptSig 中，额外的数据会先于所需的签名和公钥压入栈中。类似的 OP_DROP 能被添加，使得最终栈的状态与 scriptPubKey 执行之前的状态相同。<br>阻止 scriptSig 延展性正在被考虑当中。目前，如果交易 txin 的 scriptSig 中若包含除了签名与公钥之外其它数据，则该交易被认为是不标准的，不会被节点转发。最终，这个规则会强制在 scriptPubKey 执行完之后，栈中只剩下一个元素。然而，要做到这样，需要比特币随后的扩展。</p>
+<p>隔离验证 (segregated witness) 通过将 scriptSig 从交易的 txin 中分离出来，放入到一个新添加的 witness 字段中，来解决相关延展性问题，由于签名数据从交易中分离出来，使得交易结构尺寸变小，可以使得区块能容纳更多的交易，侧面达到了轻微扩容的目的，有关隔离验证的知识，可查看 BIP 141-145。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/比特币中交易延展性问题/" data-id="cjk9j9xfm000404203zynq2z7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/node-js-中的-process-env-遇到的坑" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/" class="article-date">
@@ -110,7 +150,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/" data-id="cjk9j7afg0017wh20u91v01n7" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/" data-id="cjk9j9xgf00190420ezzqwiu7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -151,7 +191,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" data-id="cjk9j7aer0003wh20cfpcksw6" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" data-id="cjk9j9xfk00030420das7pklz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -196,7 +236,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/ITerm2-技巧/" data-id="cjk9j7adf0000wh20fgnrlmv9" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/ITerm2-技巧/" data-id="cjk9j9xed00000420cxpadspq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -241,156 +281,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/" data-id="cjk9j7afp001owh20einncpm9" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/AngularJS-Git-提交信息规范" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" class="article-date">
-  <time datetime="2018-06-01T09:13:02.000Z" itemprop="datePublished">2018-06-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><ul>
-<li>允许通过脚本自动生成变更日志</li>
-<li>允许通过命令过滤某些提交信息（例如不重要的格式变动信息）</li>
-<li>提供更多的历史记录信息</li>
-</ul>
-<h2 id="快速生成变更日志"><a href="#快速生成变更日志" class="headerlink" title="快速生成变更日志"></a>快速生成变更日志</h2><p>我们在变更日志中使用这三个部分：新特性、问题修复（bug fix）、不兼容变更（breaking change）。  </p>
-<p>这些列表可以在发布更新的时候通过脚本生成，并链接到相关的提交记录。  </p>
-<p>当然你可以在发布之前编辑变更日志，不过这种方式能帮助我们生成整体架构。</p>
-<p><strong>列出所有从上一次发布的提交信息的第一行</strong>：<br><code>&gt;&gt; git log &lt;last tag&gt; HEAD --pretty=format:%s</code></p>
-<p><strong>列出本次发布的新功能</strong>：<br><code>&gt;&gt; git log &lt;last release&gt; HEAD --grep feature</code></p>
-<h2 id="过滤不重要的提交信息"><a href="#过滤不重要的提交信息" class="headerlink" title="过滤不重要的提交信息"></a>过滤不重要的提交信息</h2><p>这些不重要的信息指的是格式上改变（增加或删除多余的行以及缩进），缺少分号、注释。所以当你在找一些变更的时候可以忽略这些。</p>
-<p>你可以使用这个命令：<br><code>&gt;&gt; git bisect skip $(git rev-list --grep irrelevant &lt;good place&gt; HEAD)</code></p>
-<h2 id="提供更多的历史信息"><a href="#提供更多的历史信息" class="headerlink" title="提供更多的历史信息"></a>提供更多的历史信息</h2><p>看看这些提交信息，一部分来自最近 Angular 的提交，这样的提交信息会增加一种环境信息。</p>
-<ul>
-<li>Fix small typo in docs widget (tutorial instructions)</li>
-<li>Fix test for scenario.Application - should remove old iframe</li>
-<li>docs - various doc fixes</li>
-<li>docs - stripping extra new lines</li>
-<li>Replaced double line break with single when text is fetched from Google</li>
-<li>Added support for properties in documentation</li>
-</ul>
-<p>下面这些信息试图详细描述哪里发生了变化，但没有任何规则…</p>
-<ul>
-<li>fix comment stripping</li>
-<li>fixing broken links</li>
-<li>Bit of refactoring</li>
-<li>Check whether links do exist and throw exception</li>
-<li>Fix sitemap include (to work on case sensitive linux)</li>
-</ul>
-<p>看到这些你能猜出这里面到底有些变化吗？它们都缺少了“特定位置规范”（place specification）…所以使用下面这些词语：docs,docs-parser,compiler,scenario-runner,…</p>
-<p>我知道你能通过查看哪些文件变更来找寻这些信息，但是效率不高。通过使用这些规范来查看 git 的历史提交信息能看到我们所有描述的改动地方。</p>
-<h1 id="格式化提交信息"><a href="#格式化提交信息" class="headerlink" title="格式化提交信息"></a>格式化提交信息</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</span><br><span class="line">&lt;空一行&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;空一行&gt;</span><br><span class="line">&lt;footer&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="Revert"><a href="#Revert" class="headerlink" title="Revert"></a>Revert</h2><p>如果你使用<code>revert</code>命令，信息头必须以<code>revert:</code>开始，接着在主体信息（body）中必须声明：<code>This reverts commit &lt;hash&gt;.</code>,这里的hash是被 revert 的 commit hash。</p>
-<h2 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h2><p>信息头（Message Header）是一行简洁的变更描述，包括 <code>&lt;type&gt;</code>， 可选 <code>&lt;scope&gt;</code> 以及一个 <code>&lt;subject&gt;</code></p>
-<h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><p>可以使用下面的类型：</p>
-<ul>
-<li>feat​ (新功能)</li>
-<li>fix​ (问题修复)</li>
-<li>docs​ (文档)</li>
-<li>style​ (格式)</li>
-<li>refactor（重构）</li>
-<li>test​ (增加测试)</li>
-<li>chore​ (一些变动)</li>
-</ul>
-<h3 id="scope"><a href="#scope" class="headerlink" title="scope"></a>scope</h3><p>Scope 可以是任何一个具体的变更信息的位置，比如说 $location​,$browser​, $compile​, $rootScope​, ngHref​, ngClick​, ngView​,等等。</p>
-<p>你可以使用 * 来描述不太合适的 scope.</p>
-<h3 id="subject"><a href="#subject" class="headerlink" title="subject"></a>subject</h3><p>这里只要很简洁的描述就可以，不要超过50字。</p>
-<ul>
-<li>使用第一人称现在时</li>
-<li>第一个字母小写</li>
-<li>结尾不加句号</li>
-</ul>
-<h2 id="Body"><a href="#Body" class="headerlink" title="Body"></a>Body</h2><ul>
-<li>使用第一人称现在时</li>
-<li>包括变动的原因和与之前的对比</li>
-</ul>
-<ol>
-<li><a href="http://365git.tumblr.com/post/3308646748/writing-git-commit-messages" target="_blank" rel="noopener">http://365git.tumblr.com/post/3308646748/writing-git-commit-messages</a></li>
-<li><a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" target="_blank" rel="noopener">http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html</a></li>
-</ol>
-<h2 id="Footer"><a href="#Footer" class="headerlink" title="Footer"></a>Footer</h2><h3 id="不兼容改动"><a href="#不兼容改动" class="headerlink" title="不兼容改动"></a>不兼容改动</h3><p>所有不兼容变更需要放在 footer 上，并且以 <code>BREAKING CHANGE</code>开始，后面是对变更的描述以及理由和迁移方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">BREAKING CHANGE: isolate scope bindings definition has changed and</span><br><span class="line">    the inject option for the directive controller injection was removed.</span><br><span class="line">    To migrate the code follow the example below:</span><br><span class="line"></span><br><span class="line">    Before:</span><br><span class="line"></span><br><span class="line">    scope: &#123;</span><br><span class="line">        myAttr: &apos;attribute&apos;,</span><br><span class="line">        myBind: &apos;bind&apos;,</span><br><span class="line">        myExpression: &apos;expression&apos;,</span><br><span class="line">        myEval: &apos;evaluate&apos;,</span><br><span class="line">        myAccessor: &apos;accessor&apos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    After:</span><br><span class="line"></span><br><span class="line">    scope: &#123;</span><br><span class="line">        myAttr: &apos;@&apos;,</span><br><span class="line">        myBind: &apos;@&apos;,</span><br><span class="line">        myExpression: &apos;&amp;&apos;,</span><br><span class="line">        // myEval - usually not useful, but in cases where the expression is assignable, you can</span><br><span class="line">        use &apos;=&apos;</span><br><span class="line">        myAccessor: &apos;=&apos; // in directive&apos;s template change myAccessor() to myAccessor</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    The removed `inject` wasn&apos;t generaly useful for directives so there should be no code</span><br><span class="line">    using it.</span><br></pre></td></tr></table></figure>
-<h3 id="关联issues"><a href="#关联issues" class="headerlink" title="关联issues"></a>关联issues</h3><p>关闭 issues 必须在 footer 区域的分开的一行，以“Closes”关键词开头：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Close #234</span><br></pre></td></tr></table></figure>
-<p>当然也可以关闭多个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Close #123, #245, #992</span><br></pre></td></tr></table></figure>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><hr>
-<p>feat($browser): onUrlChange event (popstate/hashchange/polling)<br>Added new event to $browser:</p>
-<ul>
-<li>forward popstate event if available</li>
-<li>forward hashchange event if popstate not available</li>
-<li>do polling when neither popstate nor hashchange available<br>Breaks $browser.onHashChange, which was removed (use onUrlChange instead)</li>
-</ul>
-<hr>
-<p>fix($compile): couple of unit tests for IE9</p>
-<p>Older IEs serialize html uppercased, but IE9 does not…<br>Would be better to expect case insensitive, unfortunately jasmine does<br>not allow to user regexps for throw expectations.</p>
-<p>Closes #392<br>Breaks foo.bar api, foo.baz should be used instead</p>
-<hr>
-<p>feat(directive): ng:disabled, ng:checked, ng:multiple, ng:readonly, ng:selected</p>
-<p>New directives for proper binding these attributes in older browsers (IE).<br>Added coresponding description, live examples and e2e tests.</p>
-<p>Closes #351</p>
-<hr>
-<p>docs(guide): updated fixed docs from Google Docs</p>
-<p>Couple of typos fixed:</p>
-<ul>
-<li>indentation</li>
-<li>batchLogbatchLog -&gt; batchLog</li>
-<li>start periodic checking</li>
-<li>missing brace</li>
-</ul>
-<hr>
-<p>feat($compile): simplify isolate scope bindings</p>
-<p>Changed the isolate scope binding options to:</p>
-<ul>
-<li>@attr - attribute binding (including interpolation)</li>
-<li>=model - by-directional model binding</li>
-<li>&amp;expr - expression execution binding</li>
-</ul>
-<p>This change simplifies the terminology as well as<br>number of choices available to the developer. It<br>also supports local name aliasing from the parent.</p>
-<p>BREAKING CHANGE:​ isolate scope bindings definition has changed and<br>the inject option for the directive controller injection was removed.<br>To migrate the code follow the example below:<br>Before:</p>
-<p>scope: {<br>    myAttr: ‘attribute’,<br>    myBind: ‘bind’,<br>    myExpression: ‘expression’,<br>    myEval: ‘evaluate’,<br>    myAccessor: ‘accessor’<br>}</p>
-<p>After:</p>
-<p>scope: {<br>    myAttr: ‘@’,<br>    myBind: ‘@’,<br>    myExpression: ‘&amp;’,<br>    // myEval - usually not useful, but in cases where the expression is assignable, you can use ‘=’<br>    myAccessor: ‘=’ // in directive’s template change myAccessor() to myAccessor<br>}</p>
-<p>The removed <code>inject</code> wasn’t generaly useful for directives so there should be no code using it.</p>
-<p>Refs:</p>
-<ul>
-<li><a href="http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html" target="_blank" rel="noopener">阮一峰：Commit message 和 Change log 编写指南</a></li>
-<li><a href="https://docs.google.com/document/export?format=pdf&amp;id=1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y&amp;token=AC4w5VgLbPxZqQd4dFdhThmCmj6QNRkjrw%3A1498265895216" target="_blank" rel="noopener">AngularJS Git Message Conventions</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" data-id="cjk9j7aeu0007wh20nh3e1ox6" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/" data-id="cjk9j9xgm001q0420w5wahsku" class="article-share-link">Share</a>
       
       
     </footer>
@@ -457,6 +348,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
           </li>
         
@@ -470,10 +365,6 @@
         
           <li>
             <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
           </li>
         
       </ul>

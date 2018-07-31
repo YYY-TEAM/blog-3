@@ -70,6 +70,72 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs/函数节流与函数防抖" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/nodejs/函数节流与函数防抖/" class="article-date">
+  <time datetime="2018-05-19T22:57:59.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/nodejs/函数节流与函数防抖/">函数节流与函数防抖</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是函数节流与函数防抖"><a href="#什么是函数节流与函数防抖" class="headerlink" title="什么是函数节流与函数防抖"></a>什么是函数节流与函数防抖</h2><p>举个栗子，我们知道目前的一种说法是当 1 秒内连续播放 24 张以上的图片时，在人眼的视觉中就会形成一个连贯的动画，所以在电影的播放（以前是，现在不知道）中基本是以每秒 24 张的速度播放的，为什么不 100 张或更多是因为 24 张就可以满足人类视觉需求的时候，100 张就会显得很浪费资源。再举个栗子，假设电梯一次只能载一人的话，10 个人要上楼的话电梯就得走 10 次，是一种浪费资源的行为；而实际生活正显然不是这样的，当电梯里有人准备上楼的时候如果外面又有人按电梯的话，电梯会再次打开直到满载位置，从电梯的角度来说，这时一种节约资源的行为（相对于一次只能载一个人）。</p>
+<ul>
+<li>函数节流: 指定时间间隔内只会执行一次任务；</li>
+<li>函数防抖: 任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。</li>
+</ul>
+<blockquote>
+<p>函数节流的核心是，让一个函数不要执行得太频繁，减少一些过快的调用来节流。函数去抖就是对于一定时间段的连续的函数调用，只让其执行一次。</p>
+</blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="函数节流"><a href="#函数节流" class="headerlink" title="函数节流"></a>函数节流</h3><p>函数节流应用的实际场景，多数在监听页面元素滚动事件的时候会用到。因为滚动事件，是一个高频触发的事件。以下是监听页面元素滚动的示例代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn, wait</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> previous = <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> timer = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> context = <span class="keyword">this</span></span><br><span class="line">        <span class="keyword">var</span> args = <span class="built_in">arguments</span></span><br><span class="line">        <span class="keyword">if</span> (!previous) &#123;</span><br><span class="line">            previous = <span class="built_in">Date</span>.now()</span><br><span class="line">            fn.apply(context, args)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (previous + wait &gt;= <span class="built_in">Date</span>.now()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">                <span class="comment">// console.log(timer)</span></span><br><span class="line">                clearTimeout(timer)</span><br><span class="line">                timer = <span class="literal">null</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// console.log(timer)</span></span><br><span class="line">            timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// console.log(timer)</span></span><br><span class="line">                previous = <span class="built_in">Date</span>.now()</span><br><span class="line">                fn.apply(context, args)</span><br><span class="line">            &#125;, wait)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            previous = <span class="built_in">Date</span>.now()</span><br><span class="line">            fn.apply(context, args)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="throttle-应用场景"><a href="#throttle-应用场景" class="headerlink" title="throttle 应用场景"></a>throttle 应用场景</h3><p>函数节流有哪些应用场景？哪些时候我们需要间隔一定时间触发回调来控制函数调用频率？</p>
+<ul>
+<li>DOM 元素的拖拽功能实现（mousemove）</li>
+<li>射击游戏的 mousedown/keydown 事件（单位时间只能发射一颗子弹）</li>
+<li>计算鼠标移动的距离（mousemove）</li>
+<li>Canvas 模拟画板功能（mousemove）</li>
+<li>搜索联想（keyup）</li>
+<li>监听滚动事件判断是否到页面底部自动加载更多：给 scroll 加了 debounce 后，只有用户停止滚动后，才会判断是否到了页面底部；如果是 throttle 的话，只要页面滚动就会间隔一段时间判断一次</li>
+</ul>
+<h3 id="函数防抖"><a href="#函数防抖" class="headerlink" title="函数防抖"></a>函数防抖</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, wait</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> context = <span class="keyword">this</span></span><br><span class="line">        <span class="keyword">var</span> args = <span class="built_in">arguments</span></span><br><span class="line">        <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">            clearTimeout(timer);</span><br><span class="line">            timer = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            fn.apply(context, args)</span><br><span class="line">        &#125;, wait)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="debounce-应用场景"><a href="#debounce-应用场景" class="headerlink" title="debounce 应用场景"></a>debounce 应用场景</h3><p>函数去抖有哪些应用场景？哪些时候对于连续的事件响应我们只需要执行一次回调？</p>
+<ul>
+<li>每次 resize/scroll 触发统计事件</li>
+<li>文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）</li>
+</ul>
+<p>ref: <a href="http://justclear.gitlab.io/throttle-and-debounce/" target="_blank" rel="noopener">http://justclear.gitlab.io/throttle-and-debounce/</a><br>ref: <a href="https://segmentfault.com/a/1190000008768202" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008768202</a><br>ref: <a href="https://github.com/hanzichi/underscore-analysis/issues/20" target="_blank" rel="noopener">https://github.com/hanzichi/underscore-analysis/issues/20</a><br>ref: <a href="http://www.cnblogs.com/fsjohnhuang/p/4147810.html" target="_blank" rel="noopener">http://www.cnblogs.com/fsjohnhuang/p/4147810.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/函数节流与函数防抖/" data-id="cjk9j9xgh001f0420vodrafij" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/ES5中数组函数对空位的处理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/" class="article-date">
@@ -118,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/" data-id="cjk9j7afc000ywh20plle3kga" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/" data-id="cjk9j9xga00100420qm6ys96u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -165,7 +231,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在git中新建一个空白分支/" data-id="cjk9j7afa000vwh20c3b24ssa" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在git中新建一个空白分支/" data-id="cjk9j9xg6000u0420wa3f8abb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/git/">git</a></li></ul>
@@ -244,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" data-id="cjk9j7aev0008wh20ptacecyh" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" data-id="cjk9j9xfq000a0420ipcjkeiw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
@@ -351,82 +417,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9j7aew000awh20e07j40u2" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9j9xfs000b0420yulmod5f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/sed/">sed</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/nginx-user-模块详解" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/linux/nginx-user-模块详解/" class="article-date">
-  <time datetime="2018-05-19T22:51:54.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/linux/nginx-user-模块详解/">nginx user 模块详解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>nginx 运行后可以指定用户，比如说一个静态网页服务器的文件目录的不同的用户有不同的访问权限，使用 nginx 指定用户就可以有权限对此目录读写。</p>
-<p>我其实很好奇怎么直接指定用户的，而且运行nginx的时候也没有需要输入密码之类旳。</p>
-<p>在网上查找资料后有以下发现：</p>
-<p>Nginx 主进程（master process）会以 root 权限运行，之后主进程会读取 <code>/etc/nginx/nginx.conf</code> 文件中的 user 模块的配置，nginx 会使用这个指定的用户启动工作进程（ worker process）。</p>
-<p>那为什么主进程需要使用 root？因为只有 root 可以监听小于1024的端口号，通常 webserver 使用 80/443 端口，这也就是为什么需要 root 来运行了。如果要更改非root用户来运行，需要更改下面的文件用户和用户组，当然你也就不能使用 &lt;1024 的端口了。 </p>
-<ul>
-<li>error_log</li>
-<li>access_log</li>
-<li>pid</li>
-<li>client_body_temp_path</li>
-<li>fastcgi_temp_path</li>
-<li>proxy_temp_path</li>
-<li>scgi_temp_path</li>
-<li>uwsgi_temp_path</li>
-</ul>
-<p>好了，具体进程运行如下图所示。</p>
-<p><img src="https://user-images.githubusercontent.com/24730006/33918362-d26099e0-dfed-11e7-9c84-9d9567b2f658.png" alt="image"></p>
-<p>这里可以看到 nginx 只有一个主进程和多个工作进程，主进程主要读取和评估配置文件正确性，以及管理工作进程。工作进程是真正的网络请求处理的进程。</p>
-<p>如果主进程使用root运行，那么nginx 将会调用 setuid()/setgid() 去设置 user/group。如果 group 没有特别指定，那么 nginx 会使用 user 相同的名称设置 group。默认为 <code>nobody nogroup</code> 或者安装nginx的时候在  <code>./configure</code> 指定的  <code>--user=USER</code> 和 <code>--group=GROUP</code></p>
-<p><img src="https://user-images.githubusercontent.com/24730006/34400643-7f56ac3e-ebce-11e7-8f7a-d5aea792bfbf.png" alt="image"></p>
-<p><a href="http://nginx.org/en/docs/ngx_core_module.html#user" target="_blank" rel="noopener">配置语法</a>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: user user [group];</span><br><span class="line">defualt: user nobody nobody;</span><br><span class="line">Context: main</span><br></pre></td></tr></table></figure>
-<p>如果使用了 php 的话，那么同时还需要编辑 <a href="http://php.net/manual/en/install.fpm.configuration.php" target="_blank" rel="noopener">php-fpm.conf</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">; Set permissions for unix socket, if one is used. In Linux, read/write</span><br><span class="line">; permissions must be set in order to allow connections from a web server. Many</span><br><span class="line">; BSD-derived systems allow connections regardless of permissions.</span><br><span class="line">; Default Values: user and group are set as the running user</span><br><span class="line">;                 mode is set to 0660</span><br><span class="line">listen.owner = xxx</span><br><span class="line">listen.group = xxx</span><br><span class="line">;liseten.mode = 0660</span><br></pre></td></tr></table></figure>
-<p>参考：</p>
-<ol>
-<li><a href="https://stackoverflow.com/questions/42329261/running-nginx-as-non-root-user" target="_blank" rel="noopener">Running Nginx as non root user
-</a></li>
-<li><a href="https://serverfault.com/questions/433265/how-do-i-change-the-nginx-user" target="_blank" rel="noopener">How do I change the NGINX user?</a></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/nginx-user-模块详解/" data-id="cjk9j7af1000hwh20oxxg0emh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
 
     </footer>
   </div>
@@ -492,6 +486,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
           </li>
         
@@ -505,10 +503,6 @@
         
           <li>
             <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
           </li>
         
       </ul>
