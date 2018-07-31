@@ -70,6 +70,64 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs/用-JS-和-Go-来实现中英文简单排版" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/" class="article-date">
+  <time datetime="2018-05-19T22:33:13.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/">用 JS 和 Go 来实现中英文简单排版</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>业界最为标准的中英文排版格式，中文和英文之间加空格，中文和数字之间加空格。现在微信（安卓 6.6.2 测试版）已经支持。</p>
+<p><img width="421" alt="2018-01-27 6 45 38" src="https://user-images.githubusercontent.com/24730006/35471319-d05c82ac-0393-11e8-8c54-7b621d2ce4d8.png"></p>
+<p>原理其实这个很简单，就是匹配相连接的中文和英文（包括数字），然后在中间加一个空格即可。接下来用 JS 和 Golang 实现。需要注意的是已经符合排版的就不需要加空格了。</p>
+<p>匹配中文是用的 <code>[\u4e00-\u9fa5]</code>，一般而言的中文就都涵盖。</p>
+<h2 id="Go-实现"><a href="#Go-实现" class="headerlink" title="Go 实现"></a>Go 实现</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"regexp"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := <span class="string">"我是渣渣辉，我是zhangjiahui，zhangjiahui 是我"</span></span><br><span class="line">    g1 := regexp.MustCompile(<span class="string">"([\u4e00-\u9fa5])(\\w)"</span>)</span><br><span class="line">    g2 := regexp.MustCompile(<span class="string">"(\\w)([\u4e00-\u9fa5])"</span>)</span><br><span class="line">    s = g2.ReplaceAllString(g1.ReplaceAllString(s, <span class="string">"$1 $2"</span>), <span class="string">"$1 $2"</span>)</span><br><span class="line">    <span class="comment">// 输出："我是渣渣辉，我是 zhangjiahui，zhangjiahui 是我"</span></span><br><span class="line">    fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="JS-实现"><a href="#JS-实现" class="headerlink" title="JS 实现"></a>JS 实现</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">"我是渣渣辉，我是zhangjiahui，zhangjiahui 是我"</span>;</span><br><span class="line"><span class="keyword">const</span> g1 = <span class="regexp">/(\w)([\u4e00-\u9fa5])/g</span>;</span><br><span class="line"><span class="keyword">const</span> g2 = <span class="regexp">/([\u4e00-\u9fa5])(\w)/g</span>;</span><br><span class="line"><span class="comment">// 输出："我是渣渣辉，我是 zhangjiahui，zhangjiahui 是我"</span></span><br><span class="line">s = s.replace(g1,<span class="string">"$1 $2"</span>).replace(g2,<span class="string">"$1 $2"</span>);</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是大部分常用的中文都可以匹配到，因为超出了 <code>\uffff</code> 所以部分生僻的中文还匹配不到，可以按照需要进行扩增。JS 因为使用 UTF-16 编码，再使用的时候需要再加上 <code>u</code> 修饰符，例如如 <code>/\u{20BB7}/u.test(&#39;𠮷&#39;)</code>。</p>
+<p>原文首发在我的 <a href="https://github.com/isLishude/blog/issues/156" target="_blank" rel="noopener">GitHub 博客</a></p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>看到一篇文章，<a href="https://zhuanlan.zhihu.com/p/33335629" target="_blank" rel="noopener">JavaScript 正则表达式匹配汉字</a>，这里需要修改一下正则，最近有一个新的 ES 提案中包含了一个 <a href="https://github.com/tc39/proposal-regexp-unicode-property-escapes" target="_blank" rel="noopener">unicode 转义</a>，语法为 <code>\p{…}</code>。Chrome 64 已经支持，兼容处理可以使用<code>@babel/plugin-proposal-unicode-property-regex</code> 和 <code>regexpu-core</code> 。</p>
+<p>所以正则可以修改为 <code>/(\p{Unified_Ideograph})(\w)/gu</code>。</p>
+<p>以前没接触过这个正则语法，Go 是已经支持了这种语法，所以 Go 的正则也需要改成这个。</p>
+<p>不过我尝试了 <code>Unified_Ideograph</code> 这个就报错了，需要修改为 <code>Han</code> 就可以了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">g1 := regexp.MustCompile(<span class="string">"(\\p&#123;Han&#125;)(\\w)"</span>)</span><br><span class="line">g2 := regexp.MustCompile(<span class="string">"(\\w)(\\p&#123;Han&#125;)"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="更新二"><a href="#更新二" class="headerlink" title="更新二"></a>更新二</h2><p>上述有个问题，<code>\w</code> 匹配任意的字母、数字和<strong>下划线</strong>，相当于<code>[A-Za-z0-9_]</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> g = <span class="regexp">/(\p&#123;Unified_Ideograph&#125;)([A-Za-z0-9])|([A-Za-z0-9])(\p&#123;Unified_Ideograph&#125;)/gu</span></span><br><span class="line"><span class="keyword">let</span> s = <span class="string">"apple iphone 6s是2016年由us设计在cn 的 fushikang制造"</span></span><br><span class="line"></span><br><span class="line">s = s.replace(g, <span class="function"><span class="keyword">function</span> (<span class="params">match, $<span class="number">1</span>, $<span class="number">2</span>, $<span class="number">3</span>, $<span class="number">4</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> res = $<span class="number">3</span> &amp;&amp; $<span class="number">4</span> ? $<span class="number">3</span> + <span class="string">" "</span> + $<span class="number">4</span> : $<span class="number">1</span> + <span class="string">" "</span> + $<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(s)</span><br></pre></td></tr></table></figure>
+<p>这里也改进了正则只需要使用一个，需要注意的是，那么使用替换原则的话，后面的组匹配是在第一二个匹配之后，所以要使用 <code>$3, $4</code>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/" data-id="cjk9j7afq001rwh20curipnuk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/" class="article-date">
@@ -114,7 +172,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/" data-id="cjk9j43o6001dt320co3dg0g4" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/" data-id="cjk9j7afj001fwh20hfxwteog" class="article-share-link">Share</a>
       
       
     </footer>
@@ -185,7 +243,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go语言结构体和JSON序列化/" data-id="cjk9j43ne0007t320i50mup2r" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go语言结构体和JSON序列化/" data-id="cjk9j7aet0006wh20fs05dy4s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -256,7 +314,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？/" data-id="cjk9j43np000mt320tz2ohwnw" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？/" data-id="cjk9j7af5000lwh202umv5ggv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/git/">git</a></li></ul>
@@ -327,70 +385,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go-语言延迟调用和错误处理/" data-id="cjk9j43nb0004t320898g3bqn" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go-语言延迟调用和错误处理/" data-id="cjk9j7aes0004wh20kc8056oe" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nodejs/不常见的-NPM-包管理技巧" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/" class="article-date">
-  <time datetime="2018-05-19T22:23:06.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/">不常见的 NPM 包管理技巧</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>除了使用 npmjs.com 这个集中包托管网站，npm 还可以使用 Git 和本地包来安装。</p>
-<p>和正常的 npm install package-name 语法一样，只不过下面的 package-name 全部换成了 url。</p>
-<h2 id="使用-Git-包"><a href="#使用-Git-包" class="headerlink" title="使用 Git 包"></a>使用 Git 包</h2><p>官方在文档里定义的 url 的格式是 <code>&lt;protocol&gt;://[&lt;user&gt;[:&lt;password&gt;]@]&lt;hostname&gt;[:&lt;port&gt;][:][/]&lt;path&gt;[#&lt;commit-ish&gt; | #semver:&lt;semver&gt;]</code></p>
-<p>其中 <code>&lt;protocol&gt;</code> 可以是 <code>git</code>，<code>git+ssh</code>，<code>git+http</code>，<code>git+https</code>，或者 <code>git+file</code>。而 <code>#&lt;commit-ish&gt;</code> 可以选择 commit 的点，<code>#semver:&lt;semver&gt;</code> 是选择 tag 并且支持语义化版本，如此以来我们不用发布到 npm 也能使用包了！在 Golang 中就是这样这样进行包管理，不过知道 Go 1.10 还没有确定的版本管理方案。这里官方文档并没有说明可以使用 branch，其实是可以的，具体可以参考下述的格式示例。</p>
-<p>如果没有使用 <code>commit-ish</code> 或者 <code>semver</code> 会直接使用 master 分支，最后使用 <code>npm install git-url</code> 安装即可， package.json 新增了一些包名称字段，这些名称就是相应包中 package.json 定义的 name 字段：</p>
-<p>各种格式示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;dependencies&quot;: &#123;</span><br><span class="line">    // semver(by tag)</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+https://github.com/isLishude/random.ts.git#semver:^2.0.0&quot;,</span><br><span class="line">    // branch</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+ssh://git@github.com/isLishude/random.ts.git#dev&quot;,</span><br><span class="line">     // master</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+ssh://git@github.com/isLishude/random.ts.git&quot;,</span><br><span class="line">     // commit-ish</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+ssh://git@github.com/isLishude/random.ts.git#9d22109491&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果是 GitHub 的话更简单了，安装命令直接使用 <code>npm install username/repository</code> 就可以了，也可以使用 branch 以及 semver tag。</p>
-<h2 id="使用本地包"><a href="#使用本地包" class="headerlink" title="使用本地包"></a>使用本地包</h2><p><code>require</code> 引用当前项目的其它文件需要使用相对路径的地址，如果层级关系太多，就会写很多 <code>../</code>，有一种本地包的方式可以很好的解决。</p>
-<p>配置很简单，类似当前项目一样，新建一个用于当前项目的包目录并且包括 <code>package.json</code> 文件，如本项目所示，在本项目 <code>helper</code> 目录下定义 <code>local-helper</code> 包。</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"local-helper"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="attr">"description"</span>: <span class="string">"local heleper functions"</span>,</span><br><span class="line">  <span class="attr">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="attr">"license"</span>: <span class="string">"ISC"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后在项目使用 <code>npm install file:package-path</code> 就可以了，例如此项目就使用 <code>npm install file:./helper</code>。最后就可以看到在 <code>package.json</code> 文件 <code>dependencies</code> 字段新增了 <code>&quot;local-helper&quot;: &quot;file:helper&quot;</code> 。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"dependencies": &#123;</span><br><span class="line">    "local-helper": "file:helper"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
-<li><a href="https://github.com/adesight/npm-import-url" target="_blank" rel="noopener">https://github.com/adesight/npm-import-url</a></li>
-</ul>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://docs.npmjs.com/files/package.json#urls-as-dependencies" target="_blank" rel="noopener">https://docs.npmjs.com/files/package.json#urls-as-dependencies</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/" data-id="cjk9j43o10014t320i1veoyg8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Node-js/">Node.js</a></li></ul>
-
     </footer>
   </div>
   
@@ -455,6 +452,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
           </li>
         
@@ -468,10 +469,6 @@
         
           <li>
             <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
           </li>
         
       </ul>

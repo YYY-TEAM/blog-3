@@ -70,6 +70,58 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-tool/VSCode-代码风格自动校验和格式化清单" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" class="article-date">
+  <time datetime="2018-05-19T22:44:40.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/tool/">tool</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/">VSCode代码风格自动校验和格式化清单</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>vscode 提供了很多优秀的插件，对于代码风格校验和代码格式化，我最常用的是 eslint 和 prettier，eslint 自不必说，第二个是代码格式化插件，不仅可以对 js html css 格式化，还可以对 sass 以及 json 等进行格式化。</p>
+<p>当然格式化的标准编辑器不太同意，比如函数表达式中函数名后面带空格与否，prettier 默认的是不带空格，不过团队中常用的是 JS Standard 是有空格的，更别提字符串用双引号还是单引号，表达式后面跟不跟分号这样的风格差异的问题了。</p>
+<p>不过还好的是 eslint 和 prettier 二者可以结合自动对代码进行格式化。</p>
+<p>首先，在 vscode 市场安装 eslint 和 prettier 两个插件。</p>
+<p>然后我们需要在项目中再安装 eslint 的包。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add eslint --dev</span><br><span class="line">npm i -D eslint</span><br></pre></td></tr></table></figure>
+<p>eslint 提示的是也可以全局安装，<del>但是我全局安装之后并没有作用</del>，必须使用 npm 而不是 yarn 安装才可以。我觉得为了团队其他人的更简单使用，建议还是在 package.json 中安装 eslint。</p>
+<p>打开 vscode 的设置，mac下是 code -&gt; 首选项 -&gt; 设置，windows下是 文件 -&gt; 首选项 -&gt; 设置，在搜索设置中更改下列配置。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">  <span class="attr">"eslint.validate"</span>: [</span><br><span class="line">    <span class="string">"javascript"</span>,</span><br><span class="line">    <span class="string">"javascriptreact"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"editor.formatOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"prettier.eslintIntegration"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"eslint.autoFixOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对 JS 进行检查，我们需要对添加 eslint 设置，首先添加 <code>.eslintrc.js</code> ，这里添加 <code>standard</code> 风格，更多可以在 eslint 网站查看。这里我们使用命令行自动生成，运行<code>eslint --init</code>，然后选择 <code>Use a popular style guide</code> 按照提示操作，如下可做参考。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">? How would you like to configure ESLint? Use a popular style guide</span><br><span class="line">? Which style guide do you want to follow? Standard</span><br><span class="line">? What format do you want your config file to be in? JavaScript</span><br><span class="line">Checking peerDependencies of eslint-config-standard@latest</span><br><span class="line">Installing eslint-config-standard@latest, eslint-plugin-import@&gt;=2.2.0, eslint-plugin-node@&gt;=4.2.2, eslint-plugin-promise@&gt;=3.5.0, eslint-plugin-standard@&gt;=3.0.0</span><br><span class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</span><br><span class="line">npm WARN eslint-config-standard@10.2.1 requires a peer of eslint@&gt;=3.19.0 but none is installed. You must install peer dependencies yourself.</span><br><span class="line">npm WARN eslint-plugin-standard@3.0.1 requires a peer of eslint@&gt;=3.19.0 but none is installed. You must install peer dependencies yourself.</span><br><span class="line">npm WARN eslint-plugin-node@5.2.1 requires a peer of eslint@&gt;=3.1.0 but none is installed. You must install peer dependencies yourself.</span><br><span class="line">npm WARN eslint-plugin-import@2.8.0 requires a peer of eslint@2.x - 4.x but none is installed. You must install peer dependencies yourself.</span><br><span class="line"></span><br><span class="line">+ eslint-config-standard@10.2.1</span><br><span class="line">+ eslint-plugin-standard@3.0.1</span><br><span class="line">+ eslint-plugin-promise@3.6.0</span><br><span class="line">+ eslint-plugin-node@5.2.1</span><br><span class="line">+ eslint-plugin-import@2.8.0</span><br><span class="line">added 53 packages in 9.873s</span><br><span class="line">Successfully created .eslintrc.js file in C:\Users\Lishude\Desktop\project\express</span><br></pre></td></tr></table></figure>
+<p>这样我们在项目中只要 <code>Ctrl+s</code> 就可以自动格式了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9j7afv0021wh20t70jgd17" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/密码强度校验：先行断言正则与通用库" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" class="article-date">
@@ -116,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9j43o7001ft320325zv6n7" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9j7afm001iwh20jwcbbui2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -178,7 +230,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9j43nk000gt3203yrxoemg" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9j7aey000cwh20l1zglpnr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ubuntu/">ubuntu</a></li></ul>
@@ -454,7 +506,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/bash-键盘高级操作技巧/" data-id="cjk9j43ng000at3206vfmdake" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/bash-键盘高级操作技巧/" data-id="cjk9j7af0000fwh20gxdk3kdk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/bash/">bash</a></li></ul>
@@ -522,67 +574,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/" data-id="cjk9j43oe001ut3203impq691" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/" data-id="cjk9j7afs001uwh2096g7vn8j" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nodejs/用-JS-和-Go-来实现中英文简单排版" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/" class="article-date">
-  <time datetime="2018-05-19T22:33:13.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/">用 JS 和 Go 来实现中英文简单排版</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>业界最为标准的中英文排版格式，中文和英文之间加空格，中文和数字之间加空格。现在微信（安卓 6.6.2 测试版）已经支持。</p>
-<p><img width="421" alt="2018-01-27 6 45 38" src="https://user-images.githubusercontent.com/24730006/35471319-d05c82ac-0393-11e8-8c54-7b621d2ce4d8.png"></p>
-<p>原理其实这个很简单，就是匹配相连接的中文和英文（包括数字），然后在中间加一个空格即可。接下来用 JS 和 Golang 实现。需要注意的是已经符合排版的就不需要加空格了。</p>
-<p>匹配中文是用的 <code>[\u4e00-\u9fa5]</code>，一般而言的中文就都涵盖。</p>
-<h2 id="Go-实现"><a href="#Go-实现" class="headerlink" title="Go 实现"></a>Go 实现</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"regexp"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := <span class="string">"我是渣渣辉，我是zhangjiahui，zhangjiahui 是我"</span></span><br><span class="line">    g1 := regexp.MustCompile(<span class="string">"([\u4e00-\u9fa5])(\\w)"</span>)</span><br><span class="line">    g2 := regexp.MustCompile(<span class="string">"(\\w)([\u4e00-\u9fa5])"</span>)</span><br><span class="line">    s = g2.ReplaceAllString(g1.ReplaceAllString(s, <span class="string">"$1 $2"</span>), <span class="string">"$1 $2"</span>)</span><br><span class="line">    <span class="comment">// 输出："我是渣渣辉，我是 zhangjiahui，zhangjiahui 是我"</span></span><br><span class="line">    fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="JS-实现"><a href="#JS-实现" class="headerlink" title="JS 实现"></a>JS 实现</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">"我是渣渣辉，我是zhangjiahui，zhangjiahui 是我"</span>;</span><br><span class="line"><span class="keyword">const</span> g1 = <span class="regexp">/(\w)([\u4e00-\u9fa5])/g</span>;</span><br><span class="line"><span class="keyword">const</span> g2 = <span class="regexp">/([\u4e00-\u9fa5])(\w)/g</span>;</span><br><span class="line"><span class="comment">// 输出："我是渣渣辉，我是 zhangjiahui，zhangjiahui 是我"</span></span><br><span class="line">s = s.replace(g1,<span class="string">"$1 $2"</span>).replace(g2,<span class="string">"$1 $2"</span>);</span><br></pre></td></tr></table></figure>
-<p>这里需要注意的是大部分常用的中文都可以匹配到，因为超出了 <code>\uffff</code> 所以部分生僻的中文还匹配不到，可以按照需要进行扩增。JS 因为使用 UTF-16 编码，再使用的时候需要再加上 <code>u</code> 修饰符，例如如 <code>/\u{20BB7}/u.test(&#39;𠮷&#39;)</code>。</p>
-<p>原文首发在我的 <a href="https://github.com/isLishude/blog/issues/156" target="_blank" rel="noopener">GitHub 博客</a></p>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>看到一篇文章，<a href="https://zhuanlan.zhihu.com/p/33335629" target="_blank" rel="noopener">JavaScript 正则表达式匹配汉字</a>，这里需要修改一下正则，最近有一个新的 ES 提案中包含了一个 <a href="https://github.com/tc39/proposal-regexp-unicode-property-escapes" target="_blank" rel="noopener">unicode 转义</a>，语法为 <code>\p{…}</code>。Chrome 64 已经支持，兼容处理可以使用<code>@babel/plugin-proposal-unicode-property-regex</code> 和 <code>regexpu-core</code> 。</p>
-<p>所以正则可以修改为 <code>/(\p{Unified_Ideograph})(\w)/gu</code>。</p>
-<p>以前没接触过这个正则语法，Go 是已经支持了这种语法，所以 Go 的正则也需要改成这个。</p>
-<p>不过我尝试了 <code>Unified_Ideograph</code> 这个就报错了，需要修改为 <code>Han</code> 就可以了。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">g1 := regexp.MustCompile(<span class="string">"(\\p&#123;Han&#125;)(\\w)"</span>)</span><br><span class="line">g2 := regexp.MustCompile(<span class="string">"(\\w)(\\p&#123;Han&#125;)"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="更新二"><a href="#更新二" class="headerlink" title="更新二"></a>更新二</h2><p>上述有个问题，<code>\w</code> 匹配任意的字母、数字和<strong>下划线</strong>，相当于<code>[A-Za-z0-9_]</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> g = <span class="regexp">/(\p&#123;Unified_Ideograph&#125;)([A-Za-z0-9])|([A-Za-z0-9])(\p&#123;Unified_Ideograph&#125;)/gu</span></span><br><span class="line"><span class="keyword">let</span> s = <span class="string">"apple iphone 6s是2016年由us设计在cn 的 fushikang制造"</span></span><br><span class="line"></span><br><span class="line">s = s.replace(g, <span class="function"><span class="keyword">function</span> (<span class="params">match, $<span class="number">1</span>, $<span class="number">2</span>, $<span class="number">3</span>, $<span class="number">4</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> res = $<span class="number">3</span> &amp;&amp; $<span class="number">4</span> ? $<span class="number">3</span> + <span class="string">" "</span> + $<span class="number">4</span> : $<span class="number">1</span> + <span class="string">" "</span> + $<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(s)</span><br></pre></td></tr></table></figure>
-<p>这里也改进了正则只需要使用一个，需要注意的是，那么使用替换原则的话，后面的组匹配是在第一二个匹配之后，所以要使用 <code>$3, $4</code>。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/" data-id="cjk9j43oa001lt3203t531g45" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nodejs/">nodejs</a></li></ul>
-
     </footer>
   </div>
   
@@ -647,6 +641,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
           </li>
         
@@ -660,10 +658,6 @@
         
           <li>
             <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
           </li>
         
       </ul>

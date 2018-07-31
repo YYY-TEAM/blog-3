@@ -70,6 +70,78 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs/说说-XSRF-防范" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/" class="article-date">
+  <time datetime="2018-05-23T07:47:17.000Z" itemprop="datePublished">2018-05-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://juejin.im/post/59be6be16fb9a00a53275365" target="_blank" rel="noopener"><img src="https://badge.juejin.im/entry/59be6c0ff265da065c5e76df/likes.svg?style=flat-square" alt=""></a></p>
+<p>这是我在知乎的一个回答。原提问是如何在单页应用下进行 XSRF 防护。</p>
+<p>XSRF(CSRF) 攻击的原理是什么？就是攻击者能猜测出所有的需要提交的内容以及类型，所以所有的解决方案共同出发点就是加一个攻击者也不知道随机值发送给后端验证就可以防范。</p>
+<p>有很多解决方案，cookie-session，很不友好的所有表单都得填写验证码，还有一种很少人知道 JSON Web Token。</p>
+<p>验证码（图形或者手机）这种就不说了吧，这个在互联网场景中因为用户体验原因几乎没有应用的。</p>
+<p>首先要知道直接让后端验证 cookie 是否存在正确是不可取的，因为所有请求都会自动附带请求所在域的 cookie，当然只验证 http referrer 也是不靠谱的。</p>
+<p>正确的方式是当用户进行登录请求的时候，这时候后端应该把包含 xsrf 字段的 cookie 保存在 session 中并且返还给前端，前端需要获取到 cookie 中的值并且能放入 ajax 请求体或请求头中，后端把这个值与 session 中的相应值进行判断就可以了，根据跨域不可访问不同域的 cookie ，攻击者也很难猜测出 xsrf 的值，那么这样就防范了 xsrf 攻击。</p>
+<p>所以这里对 xsrf cookie 不能设置 httpOnly（当然就会有 XSS 问题，后面会提），同时提一句所以的 Token 必须得让后端设置 expire 过期时间。</p>
+<p>这个 axios 就提供了这个功能，只要设置约定好 xsrf  cookie字段名就可以了，axios 获取到值后默认是放入 request header 中，这也是业界最流行的方式。</p>
+<p>如果不是单页应用都是后端在表单中加入一个隐藏的表单域。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_token"</span> <span class="attr">value</span>=<span class="string">"lAfHB.."</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当然还有JWT，这个主要应用场景是 app，因为 app 通常没有 Cookie，当然也有应用到 Web 中的，要讲这个就有点多了，和上述也差不多。</p>
+<p>简单说，JWT 就是服务端和客户端约定好一个Token格式，最后用密钥进行签名 base64 编码后放入请求头即可，客户端存放这个签名的内容通常会放在 localstorage 中，也有放在 cookie 中的。JWT应用了哈希签名的密码学技术，相比 cookie-session 的方式就是服务端可以不用（在内存或者缓存）存放 session，能节省存储资源，不过同时服务器需要通过计算来验证也浪费了计算资源。</p>
+<p>以下内容参考：<a href="https://www.jianshu.com/p/af8360b83a9f" target="_blank" rel="noopener">讲真，别再使用JWT了！</a></p>
+<p>JWT通常由三部分组成: 头信息（header）, 消息体（payload）和签名（signature）。</p>
+<p>头信息指定了该JWT使用的签名算法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header = &apos;&#123;&quot;alg&quot;:&quot;HS256&quot;,&quot;typ&quot;:&quot;JWT&quot;&#125;&apos;</span><br></pre></td></tr></table></figure>
+<p>HS256 表示使用了 HMAC-SHA256 来生成签名。</p>
+<p>消息体包含了JWT的意图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload = &apos;&#123;&quot;loggedInAs&quot;:&quot;admin&quot;,&quot;iat&quot;:1422779638&#125;&apos;//iat表示令牌生成的时间</span><br></pre></td></tr></table></figure>
+<p>未签名的令牌由base64url编码的头信息和消息体拼接而成（使用”.”分隔），签名则通过私有的key计算而成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">key = &apos;secretkey&apos;  </span><br><span class="line">unsignedToken = encodeBase64(header) + &apos;.&apos; + encodeBase64(payload)  </span><br><span class="line">signature = HMAC-SHA256(key, unsignedToken)</span><br></pre></td></tr></table></figure>
+<p>最后在未签名的令牌尾部拼接上base64url编码的签名（同样使用”.”分隔）就是JWT了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">token = encodeBase64(header) + &apos;.&apos; + encodeBase64(payload) + &apos;.&apos; + encodeBase64(signature)</span><br></pre></td></tr></table></figure>
+<p>token 看起来像这样:<br><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI</code><br>JWT常常被用作保护服务端的资源（resource），客户端通常将JWT通过HTTP的Authorization header发送给服务端，服务端使用自己保存的key计算、验证签名以判断该JWT是否可信：<code>Authorization: Bearer eyJhbGci*...&lt;snip&gt;...*yu5CSpyHI</code></p>
+<p>现有的产品为了更安全还需要考虑 XSS 攻击，这个就是有些恶意脚本或者插件不存在跨域问题，所以能获取到 cookie 和 localstorage 的值。</p>
+<p>很安全的方式就是把 XSRF Token 加入到 JWT 中，并且把 JWT 存放在设置 httpOnly 的 cookie 中，然后单独把 XSRF Token 设置在 httpOnly=false 的 cookie 中，前端请求时，需要获取 XSRF Token 并放入请求头（RequestHeader）。服务器端可以直接验证 JWT 中 XSRF 的值和 X-XSRF-Header 的值即可。因为用了哈希密钥签名的技术，这样就可以防止篡改内容。</p>
+<p>简单来说 payload 就是这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"isu"</span>: <span class="string">"appName"</span>,</span><br><span class="line">    <span class="attr">"usr"</span>: <span class="string">"userId"</span>,</span><br><span class="line">    <span class="attr">"xsrf"</span>: <span class="string">"randomString"</span>,</span><br><span class="line">    <span class="attr">"exp"</span>: <span class="string">"expireDatetime"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的安全防护就能抵御所有的 XSRF 攻击了。</p>
+<h2 id="更新1"><a href="#更新1" class="headerlink" title="更新1"></a>更新1</h2><p>Cookie 作为 Token 不能防范 XSRF 的原因就是，如果在 other-site 使用表单进行发送信息，这里发送<strong>没有跨域限制</strong>，所以 Cookie 会随着表单发送到服务端。</p>
+<p>最新的浏览器支持 Cookie 的 same-origin 设置，但是兼容不佳，所以最佳的策略还是使用 JWT。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/23/nodejs/说说-XSRF-防范/" data-id="cjk9j7afu001xwh207apiuru3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/理解-JS-中的装饰器" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" class="article-date">
@@ -116,7 +188,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" data-id="cjk9j43o9001jt3205qpn5v8r" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" data-id="cjk9j7afo001lwh20abqdt9hh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -174,7 +246,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/21/linux/使用-Docker-安装-gitlab/" data-id="cjk9j43nr000ot320publry35" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/21/linux/使用-Docker-安装-gitlab/" data-id="cjk9j7af8000owh203tsv3umm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Docker/">Docker</a></li></ul>
@@ -258,7 +330,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" data-id="cjk9j43nv000st320kndqexgo" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" data-id="cjk9j7af9000swh20coovpv49" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Docker/">Docker</a></li></ul>
@@ -326,65 +398,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/函数节流与函数防抖/" data-id="cjk9j43o4001at32022szpnfz" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nodejs/ES5中数组函数对空位的处理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/" class="article-date">
-  <time datetime="2018-05-19T22:56:41.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/">ES5中数组函数对空位的处理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>数组的空位指，数组的某一个位置没有任何值。比如，Array构造函数返回的数组都是空位。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>(<span class="number">3</span>) <span class="comment">// [, , ,]</span></span><br></pre></td></tr></table></figure>
-<p>上面代码中，Array(3)返回一个具有3个空位的数组。</p>
-<p>注意，空位不是undefined，一个位置的值等于undefined，依然是有值的。空位是没有任何值，in运算符可以说明这一点。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="keyword">in</span> [<span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>] <span class="comment">// true</span></span><br><span class="line"><span class="number">0</span> <span class="keyword">in</span> [, , ,] <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-<p>上面代码说明，第一个数组的0号位置是有值的，第二个数组的0号位置没有值。通过<code>apply</code>方法，利用<code>Array</code>构造函数将数组的空元素变成undefined。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.apply(<span class="literal">null</span>, [<span class="string">"a"</span>,,<span class="string">"b"</span>])</span><br><span class="line"><span class="comment">// [ 'a', undefined, 'b' ]</span></span><br></pre></td></tr></table></figure>
-<p>ES5 对空位的处理，已经很不一致了，大多数情况下会忽略空位。</p>
-<ul>
-<li>forEach()，filter()，every() 和some()， reduce() 都会跳过空位。</li>
-<li>map()会跳过空位，但会保留这个值(位置)</li>
-<li>join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串。</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// forEach方法</span></span><br><span class="line">[,<span class="string">'a'</span>].forEach(<span class="function">(<span class="params">x,i</span>) =&gt;</span> <span class="built_in">console</span>.log(i)); <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// filter方法</span></span><br><span class="line">[<span class="string">'a'</span>,,<span class="string">'b'</span>].filter(<span class="function"><span class="params">x</span> =&gt;</span> <span class="literal">true</span>) <span class="comment">// ['a','b']</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// every方法</span></span><br><span class="line">[,<span class="string">'a'</span>].every(<span class="function"><span class="params">x</span> =&gt;</span> x===<span class="string">'a'</span>) <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// some方法</span></span><br><span class="line">[,<span class="string">'a'</span>].some(<span class="function"><span class="params">x</span> =&gt;</span> x !== <span class="string">'a'</span>) <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// map方法</span></span><br><span class="line">[,<span class="string">'a'</span>].map(<span class="function"><span class="params">x</span> =&gt;</span> <span class="number">1</span>) <span class="comment">// [,1]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// join方法</span></span><br><span class="line">[,<span class="string">'a'</span>,<span class="literal">undefined</span>,<span class="literal">null</span>].join(<span class="string">'#'</span>) <span class="comment">// "#a##"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// toString方法</span></span><br><span class="line">[,<span class="string">'a'</span>,<span class="literal">undefined</span>,<span class="literal">null</span>].toString() <span class="comment">// ",a,,"</span></span><br></pre></td></tr></table></figure>
-<p>ES6 则是明确将空位转为undefined。</p>
-<p>现在有个面试题，移除数组的空位，我们就可以利用 <code>filter</code> 或者 <code>forEach</code> 等方法。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeEmpty</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> arr.filter(<span class="function"><span class="params">n</span> =&gt;</span> n)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>ref: <a href="http://es6.ruanyifeng.com/#docs/array#数组的空位" target="_blank" rel="noopener">http://es6.ruanyifeng.com/#docs/array#数组的空位</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/" data-id="cjk9j43ny000yt320gk5zewfl" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/函数节流与函数防抖/" data-id="cjk9j7afi001dwh2078tqveer" class="article-share-link">Share</a>
       
       
     </footer>
@@ -451,6 +465,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
           </li>
         
@@ -464,10 +482,6 @@
         
           <li>
             <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
           </li>
         
       </ul>

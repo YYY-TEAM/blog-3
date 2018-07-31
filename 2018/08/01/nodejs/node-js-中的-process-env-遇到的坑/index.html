@@ -5,27 +5,22 @@
   
 
   
-  <title>JS BigInt 尝鲜 | Lishude&#39;s Web Note</title>
+  <title>node.js 中的 process.env 遇到的坑 | Lishude&#39;s Web Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JavaScript 所有数字内部都是 Double64 类型，所以数值的精度最多只能到 53 个二进制位，大于这个范围的整数是无法精确表示的。  在很多金融场景如果使用 JS 的话就得使用一些 BigNumber 库。其中以太坊 web3.js 使用的是最为流行的是 bignumber.js，并且包含 .d.ts 类型提示，推荐在生产环境使用。 因为这些库表示大数的方式是以 16 进制字符串表示">
-<meta name="keywords" content="BigInt,ES">
+  <meta name="description" content="有这么一段代码，是否会有打印输出 “hello,world” ? 12345process.env.dev = false;if(process.env.dev)&amp;#123;    console.log(&quot;hello,world&quot;);&amp;#125; 答案是会。 因为 process.env 给任何属性赋值都会先转化为字符串，而字符串在强制转化成布尔值是 true，所以回打印输出。  来自官方文档，">
+<meta name="keywords" content="blog">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JS BigInt 尝鲜">
-<meta property="og:url" content="https://islishude.github.io/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/index.html">
+<meta property="og:title" content="node.js 中的 process.env 遇到的坑">
+<meta property="og:url" content="https://islishude.github.io/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/index.html">
 <meta property="og:site_name" content="Lishude&#39;s Web Note">
-<meta property="og:description" content="JavaScript 所有数字内部都是 Double64 类型，所以数值的精度最多只能到 53 个二进制位，大于这个范围的整数是无法精确表示的。  在很多金融场景如果使用 JS 的话就得使用一些 BigNumber 库。其中以太坊 web3.js 使用的是最为流行的是 bignumber.js，并且包含 .d.ts 类型提示，推荐在生产环境使用。 因为这些库表示大数的方式是以 16 进制字符串表示">
+<meta property="og:description" content="有这么一段代码，是否会有打印输出 “hello,world” ? 12345process.env.dev = false;if(process.env.dev)&amp;#123;    console.log(&quot;hello,world&quot;);&amp;#125; 答案是会。 因为 process.env 给任何属性赋值都会先转化为字符串，而字符串在强制转化成布尔值是 true，所以回打印输出。  来自官方文档，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/39458512-d661b1a8-4d27-11e8-805c-01b5fd3a060f.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/39457635-ba564466-4d21-11e8-9d91-f1cab5e5854e.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/39458122-ee49152a-4d24-11e8-9397-34397d74197b.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/39458109-cba3ee14-4d24-11e8-8de2-e17606b12df6.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/39458079-9dae0a3a-4d24-11e8-9959-6286c065cf6b.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/39458223-8cffd2e4-4d25-11e8-9550-9b3d8165b20f.png">
-<meta property="og:updated_time" content="2018-07-31T09:46:52.306Z">
+<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/42135726-d464110e-7d81-11e8-9afb-53f3c8f0c2a1.png">
+<meta property="og:updated_time" content="2018-07-31T09:59:47.293Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JS BigInt 尝鲜">
-<meta name="twitter:description" content="JavaScript 所有数字内部都是 Double64 类型，所以数值的精度最多只能到 53 个二进制位，大于这个范围的整数是无法精确表示的。  在很多金融场景如果使用 JS 的话就得使用一些 BigNumber 库。其中以太坊 web3.js 使用的是最为流行的是 bignumber.js，并且包含 .d.ts 类型提示，推荐在生产环境使用。 因为这些库表示大数的方式是以 16 进制字符串表示">
-<meta name="twitter:image" content="https://user-images.githubusercontent.com/24730006/39458512-d661b1a8-4d27-11e8-805c-01b5fd3a060f.png">
+<meta name="twitter:title" content="node.js 中的 process.env 遇到的坑">
+<meta name="twitter:description" content="有这么一段代码，是否会有打印输出 “hello,world” ? 12345process.env.dev = false;if(process.env.dev)&amp;#123;    console.log(&quot;hello,world&quot;);&amp;#125; 答案是会。 因为 process.env 给任何属性赋值都会先转化为字符串，而字符串在强制转化成布尔值是 true，所以回打印输出。  来自官方文档，">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/24730006/42135726-d464110e-7d81-11e8-9afb-53f3c8f0c2a1.png">
   
     <link rel="alternate" href="/blog/atom.xml" title="Lishude&#39;s Web Note" type="application/atom+xml">
   
@@ -76,10 +71,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-nodejs/JS-BigInt-尝鲜" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-nodejs/node-js-中的-process-env-遇到的坑" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/" class="article-date">
-  <time datetime="2018-05-19T22:20:54.000Z" itemprop="datePublished">2018-05-19</time>
+    <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/" class="article-date">
+  <time datetime="2018-07-31T17:59:28.000Z" itemprop="datePublished">2018-07-31</time>
 </a>
     
   <div class="article-category">
@@ -94,7 +89,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JS BigInt 尝鲜
+      node.js 中的 process.env 遇到的坑
     </h1>
   
 
@@ -102,49 +97,33 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>JavaScript 所有数字内部都是 Double64 类型，所以数值的精度最多只能到 53 个二进制位，大于这个范围的整数是无法精确表示的。</p>
-<p><img width="456" alt="2018-05-01 10 09 59" src="https://user-images.githubusercontent.com/24730006/39458512-d661b1a8-4d27-11e8-805c-01b5fd3a060f.png"></p>
-<p>在很多金融场景如果使用 JS 的话就得使用一些 BigNumber 库。其中以太坊 web3.js 使用的是最为流行的是 <a href="https://github.com/MikeMcl/bignumber.js" target="_blank" rel="noopener">bignumber.js</a>，并且包含 <code>.d.ts</code> 类型提示，推荐在生产环境使用。</p>
-<p>因为这些库表示大数的方式是以 16 进制字符串表示的，通常在实践中还需要使用 <code>Buffer.from()</code> 转换成二进制对象，还是有很多不方便，需要写很多辅助函数。不过以后我们就可以使用官方标准库中的 BigInt 了。</p>
-<p>目前（2018年5月1日）BigInt 提案已经进入 TC39 stage 3，不过还是被 V8 引擎提前实现，本文所有代码示例基于 Chrome Canary  68.0.3415.0，如下图所示。</p>
-<p><img width="518" alt="2018-05-01 9 10 04" src="https://user-images.githubusercontent.com/24730006/39457635-ba564466-4d21-11e8-9d91-f1cab5e5854e.png"></p>
-<p>BigInt 表示没有精度和大小限制的整数，为了兼容性考虑，在数字后面添加后缀<code>n</code> 和普通数字类型区分，使用二进制八进制和十六进制也可以表示。</p>
-<p><img width="380" alt="2018-05-01 9 49 05" src="https://user-images.githubusercontent.com/24730006/39458122-ee49152a-4d24-11e8-9397-34397d74197b.png"></p>
-<p>数字的字符串形式可以类似于 <code>Number()</code> 使用 <code>BigInt()</code> 直接转换为 BigInt，需要注意的是参数检查和 Number() 是一致的，是不能使用 <code>123n</code> 字符串形式的参数，不过提案中还有一个静态函数 <code>BigInt.paseInt()</code> 目前V8 还没支持。</p>
-<p><img width="466" alt="2018-05-01 9 48 07" src="https://user-images.githubusercontent.com/24730006/39458109-cba3ee14-4d24-11e8-8de2-e17606b12df6.png"></p>
-<p>BitInt 除了不能和 number 类型直接运算之外，其它方面和普通的数值运算没有多少区别，除法运算始终返回整数形式。</p>
-<p><img width="523" alt="2018-05-01 9 46 51" src="https://user-images.githubusercontent.com/24730006/39458079-9dae0a3a-4d24-11e8-9959-6286c065cf6b.png"></p>
-<p>BigInt 也存在隐式转换，在相等运算符<code>==</code>、不同类型运算以及强制类型转化函数，都还存在 JS 远古传统。</p>
-<p><img width="510" alt="2018-05-01 9 51 43" src="https://user-images.githubusercontent.com/24730006/39458223-8cffd2e4-4d25-11e8-9550-9b3d8165b20f.png"></p>
-<p>更多内容可以参考 <a href="https://github.com/tc39/proposal-bigint" target="_blank" rel="noopener">BigInt 提案</a></p>
+        <p>有这么一段代码，是否会有打印输出 “hello,world” ?</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">process.env.dev = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(process.env.dev)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"hello,world"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>答案是会。</p>
+<p>因为 process.env 给任何属性赋值都会先转化为字符串，而字符串在强制转化成布尔值是 true，所以回打印输出。</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/42135726-d464110e-7d81-11e8-9afb-53f3c8f0c2a1.png" alt="image"></p>
+<p>来自官方文档，值得注意的是，以后不可以再给process.env的属性赋值为非字符串类型，否则会再将来的版本中报错。</p>
+<blockquote>
+<p>Assigning a property on process.env will implicitly convert the value to a string. This behavior is deprecated. <strong>Future versions of Node.js may throw an error when the value is not a string, number, or boolean.</strong></p>
+</blockquote>
+<p>有空还得多看官方文档啊。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/" data-id="cjk9j7afe0011wh2080lscuib" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/" data-id="cjk9j7afg0017wh20u91v01n7" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/BigInt/">BigInt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ES/">ES</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          不常见的 NPM 包管理技巧
-        
-      </div>
-    </a>
   
-  
-    <a href="/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">TypeScript 导入 JSON Module</div>
+      <div class="article-nav-title">BitcoinCore 安装清单</div>
     </a>
   
 </nav>

@@ -70,6 +70,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs/不常见的-NPM-包管理技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/" class="article-date">
+  <time datetime="2018-05-19T22:23:06.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/">不常见的 NPM 包管理技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>除了使用 npmjs.com 这个集中包托管网站，npm 还可以使用 Git 和本地包来安装。</p>
+<p>和正常的 npm install package-name 语法一样，只不过下面的 package-name 全部换成了 url。</p>
+<h2 id="使用-Git-包"><a href="#使用-Git-包" class="headerlink" title="使用 Git 包"></a>使用 Git 包</h2><p>官方在文档里定义的 url 的格式是 <code>&lt;protocol&gt;://[&lt;user&gt;[:&lt;password&gt;]@]&lt;hostname&gt;[:&lt;port&gt;][:][/]&lt;path&gt;[#&lt;commit-ish&gt; | #semver:&lt;semver&gt;]</code></p>
+<p>其中 <code>&lt;protocol&gt;</code> 可以是 <code>git</code>，<code>git+ssh</code>，<code>git+http</code>，<code>git+https</code>，或者 <code>git+file</code>。而 <code>#&lt;commit-ish&gt;</code> 可以选择 commit 的点，<code>#semver:&lt;semver&gt;</code> 是选择 tag 并且支持语义化版本，如此以来我们不用发布到 npm 也能使用包了！在 Golang 中就是这样这样进行包管理，不过知道 Go 1.10 还没有确定的版本管理方案。这里官方文档并没有说明可以使用 branch，其实是可以的，具体可以参考下述的格式示例。</p>
+<p>如果没有使用 <code>commit-ish</code> 或者 <code>semver</code> 会直接使用 master 分支，最后使用 <code>npm install git-url</code> 安装即可， package.json 新增了一些包名称字段，这些名称就是相应包中 package.json 定义的 name 字段：</p>
+<p>各种格式示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;dependencies&quot;: &#123;</span><br><span class="line">    // semver(by tag)</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+https://github.com/isLishude/random.ts.git#semver:^2.0.0&quot;,</span><br><span class="line">    // branch</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+ssh://git@github.com/isLishude/random.ts.git#dev&quot;,</span><br><span class="line">     // master</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+ssh://git@github.com/isLishude/random.ts.git&quot;,</span><br><span class="line">     // commit-ish</span><br><span class="line">    &quot;random.ts&quot;: &quot;git+ssh://git@github.com/isLishude/random.ts.git#9d22109491&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果是 GitHub 的话更简单了，安装命令直接使用 <code>npm install username/repository</code> 就可以了，也可以使用 branch 以及 semver tag。</p>
+<h2 id="使用本地包"><a href="#使用本地包" class="headerlink" title="使用本地包"></a>使用本地包</h2><p><code>require</code> 引用当前项目的其它文件需要使用相对路径的地址，如果层级关系太多，就会写很多 <code>../</code>，有一种本地包的方式可以很好的解决。</p>
+<p>配置很简单，类似当前项目一样，新建一个用于当前项目的包目录并且包括 <code>package.json</code> 文件，如本项目所示，在本项目 <code>helper</code> 目录下定义 <code>local-helper</code> 包。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"local-helper"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="attr">"description"</span>: <span class="string">"local heleper functions"</span>,</span><br><span class="line">  <span class="attr">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="attr">"license"</span>: <span class="string">"ISC"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在项目使用 <code>npm install file:package-path</code> 就可以了，例如此项目就使用 <code>npm install file:./helper</code>。最后就可以看到在 <code>package.json</code> 文件 <code>dependencies</code> 字段新增了 <code>&quot;local-helper&quot;: &quot;file:helper&quot;</code> 。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"dependencies": &#123;</span><br><span class="line">    "local-helper": "file:helper"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
+<li><a href="https://github.com/adesight/npm-import-url" target="_blank" rel="noopener">https://github.com/adesight/npm-import-url</a></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://docs.npmjs.com/files/package.json#urls-as-dependencies" target="_blank" rel="noopener">https://docs.npmjs.com/files/package.json#urls-as-dependencies</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/" data-id="cjk9j7afh0019wh20p0xg8s76" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Node-js/">Node.js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/JS-BigInt-尝鲜" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/" class="article-date">
@@ -115,7 +176,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/" data-id="cjk9j43nz0011t320bddrmbzf" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/" data-id="cjk9j7afe0011wh2080lscuib" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/BigInt/">BigInt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ES/">ES</a></li></ul>
@@ -169,7 +230,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/" data-id="cjk9j43o20017t3209nkf62lr" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/" data-id="cjk9j7aff0014wh204ob4igov" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/TypeScript/">TypeScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/node-js/">node.js</a></li></ul>
@@ -238,6 +299,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/">node.js 中的 process.env 遇到的坑</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
           </li>
         
@@ -251,10 +316,6 @@
         
           <li>
             <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
           </li>
         
       </ul>
