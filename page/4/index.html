@@ -70,6 +70,85 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux/Debian-APT-Nginx-各个版本的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" class="article-date">
+  <time datetime="2018-05-19T22:53:19.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/">Debian APT Nginx 各个版本的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用用 ubuntu 安装 nginx 很简单，直接就两条命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install nginx</span><br></pre></td></tr></table></figure>
+<p>然后就会显示如下所示的内容：</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/36289809-061fbada-12fd-11e8-8cde-2a3b3a1a326e.png" alt="image"></p>
+<p>可以看到这里除了几个必要库依赖包（lib*)，还需要安装 <code>nginx</code> <code>nginx-common</code> <code>nginx-core</code>，那么这三个文件都有什么区别？</p>
+<p>简单的使用 <code>apt show package-name</code> 就可以了解包的描述。</p>
+<h2 id="nginx-common-包"><a href="#nginx-common-包" class="headerlink" title="nginx-common 包"></a>nginx-common 包</h2><blockquote>
+<p>This package contains base configuration files used by all versions of<br> nginx.</p>
+</blockquote>
+<p>也就是说这个就是所有 nginx 的配置文件。</p>
+<h2 id="nginx-包"><a href="#nginx-包" class="headerlink" title="nginx 包"></a>nginx 包</h2><blockquote>
+<p>This is a dependency package to install either nginx-core (by default),<br> nginx-full, nginx-light, or nginx-extras.</p>
+</blockquote>
+<p>也就是说是 nginx-core 等的依赖包。</p>
+<p>安装后查看安装内容，其实全部都是 Doc 文档。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ dpkg-query -L nginx</span><br><span class="line">/.</span><br><span class="line">/usr</span><br><span class="line">/usr/share</span><br><span class="line">/usr/share/doc</span><br><span class="line">/usr/share/doc/nginx</span><br><span class="line">/usr/share/doc/nginx/copyright</span><br><span class="line">/usr/share/doc/nginx/changelog.Debian.gz</span><br></pre></td></tr></table></figure>
+<p>那 nginx-full nginx-light nginx-extras 这三者是什么？</p>
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx-*"></a>nginx-*</h2><p>nginx 一个重要的特点就是轻量级、模块化。所谓模块化就是主要的功能很少，添加的功能主要靠各个模块。</p>
+<p>那么 <code>nginx-*</code> 就是含有不同模块的包，使用 <code>apt install nginx</code> 默认安装的是 <code>nginx-core</code> 。</p>
+<p><code>nginx-full</code> 包中默认包含了一下模块。</p>
+<ul>
+<li>标准模块包含了：Core, Access, Auth Basic, Auto Index, Browser, Charset, Empty GIF, FastCGI,Geo, Gzip, Headers, Index, Limit Requests, Limit Zone, Log, Map, Memcached,Proxy, Referer, Rewrite, SCGI, Split Clients, SSI, Upstream, User ID, UWSGI。</li>
+<li>可选模块包含了：Addition, Debug, GeoIP, Gzip Precompression, HTTP Sub, Image Filter, IPv6,RealIP, Stub Status, WebDAV, XSLT。</li>
+<li>邮件相关模块包含了：Mail Core, IMAP, POP3, SMTP, SSL。</li>
+<li>第三方模块包含了：Echo, Upstream Fair Queue, DAV Ext。</li>
+</ul>
+<p>具体如下图</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/36290025-5a11f09e-12fe-11e8-8f6a-9f1813d34a89.png" alt="image"></p>
+<p>那么其它包 <code>nginx-light</code> 等可以直接使用 <code>apt show nginx-light</code> 显示具体内容。</p>
+<h2 id="nginx-版本区别"><a href="#nginx-版本区别" class="headerlink" title="nginx 版本区别"></a>nginx 版本区别</h2><p>如果我们用源码包安装会看到下面几个版本。</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/36290157-eaa56906-12fe-11e8-8872-651b67de44e1.png" alt="image"></p>
+<ul>
+<li>Maintainline 开发版</li>
+<li>Stable 稳定版</li>
+<li>legacy 历史版本</li>
+</ul>
+<p>具体就是其中文含义，在生产环境一般我们使用 Stable 版本。而在 APT 上也是此版本。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" data-id="cjk9jfwuc00077t204zkexsgp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-linux/Linux-sed-和-find-命令清单" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" class="article-date">
@@ -165,7 +244,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9jbx1800083n207l3opuyk" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9jfwuf000c7t20yhnka81d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/sed/">sed</a></li></ul>
@@ -237,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/nginx-user-模块详解/" data-id="cjk9jbx1g000j3n20xusfogff" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/nginx-user-模块详解/" data-id="cjk9jfwuj000j7t20ryjpaytp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
@@ -291,7 +370,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9jbx25002a3n20k3fb65u9" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9jfwv5002a7t20wvqjqajy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -347,73 +426,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9jbx1x001r3n20drqqfkw4" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9jfwuz001s7t20fe6zu3dc" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/Ubuntu新建用户并赋予权限清单" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" class="article-date">
-  <time datetime="2018-05-19T22:43:02.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/">Ubuntu新建用户并赋予权限清单</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通常新建用户会遇到很多问题，比如 shell 不支持 tab 提示，下述流程解决了常见新建用户出现的问题。</p>
-<h2 id="新建用户"><a href="#新建用户" class="headerlink" title="新建用户"></a>新建用户</h2><p>首先在建立一个用户家目录，一般建立在 <code>/home</code> 下，目录名一般直接使用用户名。接着使用 <code>useradd</code> 命令继续，命令结构如下。</p>
-<p><code>useradd -d HOME-DIR -s /bin/bash -c COMMET -G GOURP-NAME USER-NAME</code></p>
-<p><code>-d</code> 指示用户家目录，使用刚才新建的目录即可。<code>-c</code> 指定注释。</p>
-<p><code>-s</code> 指定 shell，默认是不指定的，一定要加上，要不然就会出现上述说的问题。</p>
-<p> <code>-G</code> 指定用户组，之后也可以使用 <code>usermod -aG GROUP-NAME USER-NAME</code> 进行添加。</p>
-<p>最后再加上用户名称即可。</p>
-<p>值得注意的是 <code>-p</code> 可以指定登录密码，但是我尝试过没有成功。还有一个方式指定密码，使用 <code>passwd USER-NAME</code> 即可。</p>
-<p>详细的参数在文后有说明。然后给用户家目录赋权</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R user:group /home/user</span><br><span class="line">sudo chmod -R 770 /home/user</span><br></pre></td></tr></table></figure>
-<p>最后复制shell模板到家目录</p>
-<p><code>sudo /etc/skel/.bashrc /home/user</code></p>
-<h2 id="root-权限"><a href="#root-权限" class="headerlink" title="root 权限"></a>root 权限</h2><p>编辑 <code>/etc/sudoers</code> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># User privilege specification</span><br><span class="line">root	ALL=(ALL:ALL) ALL</span><br><span class="line">user  ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>之前提及过 usermod 可以把用户添加到用户组，在 <code>/etc/sudoers</code> 后有说明将用户添加 <code>sudo</code> 组就可以使用 <code>sudo</code> 命令获取管理权限，在 CentOS上通常是 wheel 组而不是 sudo 组。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Allow members of group sudo to execute any command</span><br><span class="line">%sudo	ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>第一个“ALL”表示该规则适用于所有主机，第二个表示root用户可以像所有用户一样运行命令，第三个表示root用户可以像所有组一样运行命令，最后一个“ALL”表示这些规则适用于所有命令。详情可参考<a href="https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos" target="_blank" rel="noopener">这里</a>。</p>
-<p>如果已经在命令中设置将新用户加入 root sudo 用户组的，以上的规则设定也可以不用。</p>
-<p>最后退出当前用户，重新使用新用户登录试一试吧！</p>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>更简单的命令，直接会创建用户家目录以及将 .bashrc 等文件移动到用户家目录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd --create-home username</span><br></pre></td></tr></table></figure>
-<h2 id="useradd-命令清单"><a href="#useradd-命令清单" class="headerlink" title="useradd 命令清单"></a>useradd 命令清单</h2><p><img width="649" alt="2018-03-17 5 10 34" src="https://user-images.githubusercontent.com/24730006/37553587-2ea56f52-2a06-11e8-82d7-d638abbfe5c9.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9jbx1c000d3n20xrdeal4d" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ubuntu/">ubuntu</a></li></ul>
-
     </footer>
   </div>
   
@@ -425,7 +440,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/blog/page/3/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/blog/page/5/">5</a><a class="page-number" href="/blog/page/6/">6</a><a class="extend next" rel="next" href="/blog/page/5/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/blog/page/3/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/blog/page/5/">5</a><a class="page-number" href="/blog/page/6/">6</a><a class="page-number" href="/blog/page/7/">7</a><a class="extend next" rel="next" href="/blog/page/5/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -478,6 +493,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/linux/redis-安装清单/">redis 安装清单 </a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/">Unexpected end of JSON input while parsing near错误解决办法</a>
           </li>
         
@@ -491,10 +510,6 @@
         
           <li>
             <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/08/01/linux/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
       </ul>

@@ -5,19 +5,20 @@
   
 
   
-  <title>Tag: node.js | Lishude&#39;s Web Note</title>
+  <title>redis 安装清单  | Lishude&#39;s Web Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
+  <meta name="description" content="redis 推荐使用在 linux 下安装。 下载编译打开 https://redis.io/download 选择稳定版本下载，按照下列方式进行编译安装。 12345678mkdir downcd downwget http://download.redis.io/releases/redis-4.0.8.tar.gztar -zxvf redis-4.0.8cd redis-4.0.8make">
 <meta name="keywords" content="blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lishude&#39;s Web Note">
-<meta property="og:url" content="https://islishude.github.io/blog/tags/node-js/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis 安装清单 ">
+<meta property="og:url" content="https://islishude.github.io/blog/2018/08/01/linux/redis-安装清单/index.html">
 <meta property="og:site_name" content="Lishude&#39;s Web Note">
-<meta property="og:description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
+<meta property="og:description" content="redis 推荐使用在 linux 下安装。 下载编译打开 https://redis.io/download 选择稳定版本下载，按照下列方式进行编译安装。 12345678mkdir downcd downwget http://download.redis.io/releases/redis-4.0.8.tar.gztar -zxvf redis-4.0.8cd redis-4.0.8make">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2018-07-31T10:06:38.534Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lishude&#39;s Web Note">
-<meta name="twitter:description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
+<meta name="twitter:title" content="redis 安装清单 ">
+<meta name="twitter:description" content="redis 推荐使用在 linux 下安装。 下载编译打开 https://redis.io/download 选择稳定版本下载，按照下列方式进行编译安装。 12345678mkdir downcd downwget http://download.redis.io/releases/redis-4.0.8.tar.gztar -zxvf redis-4.0.8cd redis-4.0.8make">
   
     <link rel="alternate" href="/blog/atom.xml" title="Lishude&#39;s Web Note" type="application/atom+xml">
   
@@ -68,40 +69,66 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/blog/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/" class="archive-article-date">
-  <time datetime="2018-05-19T21:15:26.000Z" itemprop="datePublished">5月 19</time>
+        <section id="main"><article id="post-linux/redis-安装清单" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/08/01/linux/redis-安装清单/" class="article-date">
+  <time datetime="2018-07-31T18:06:24.000Z" itemprop="datePublished">2018-07-31</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/">TypeScript 导入 JSON Module</a>
+    <h1 class="article-title" itemprop="name">
+      redis 安装清单 
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>redis 推荐使用在 linux 下安装。</p>
+<h2 id="下载编译"><a href="#下载编译" class="headerlink" title="下载编译"></a>下载编译</h2><p>打开 <a href="https://redis.io/download" target="_blank" rel="noopener">https://redis.io/download</a> 选择稳定版本下载，按照下列方式进行编译安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir down</span><br><span class="line">cd down</span><br><span class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</span><br><span class="line">tar -zxvf redis-4.0.8</span><br><span class="line">cd redis-4.0.8</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">which redis-cli</span><br></pre></td></tr></table></figure>
+<p>最后使用 which 命令就可以看到 redis-cli 被安装到 /usr/local/bin/redis-cli</p>
+<h2 id="使用配置文件启动"><a href="#使用配置文件启动" class="headerlink" title="使用配置文件启动"></a>使用配置文件启动</h2><p>创建一个 redis/6379-redis.conf </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bind 127.0.0.1</span><br><span class="line">port 6379</span><br><span class="line"># 后台启动</span><br><span class="line">daemonize yes</span><br><span class="line">supervised no</span><br><span class="line">logfile .</span><br><span class="line"># 工作目录</span><br><span class="line"># 即持久化目录</span><br><span class="line">dir .</span><br></pre></td></tr></table></figure>
+<p>然后就可以使用配置文件启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-server 6379-redis.conf</span><br><span class="line">redis-cli</span><br><span class="line">ping</span><br></pre></td></tr></table></figure>
+<p>配置文件模板在下载 redis tar 包中有，即 redis.conf 可以复制下来</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat redis.conf | grep -v "#" | grep -v "^$" | tee 6379-redis.conf</span><br></pre></td></tr></table></figure>
+<p>上述命令可以将配置文件模板中中的注释和空行去掉并重定向配置到一个新文件。</p>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/08/01/linux/redis-安装清单/" data-id="cjk9jfwuk000m7t2079ucb7un" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Unexpected end of JSON input while parsing near错误解决办法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         
@@ -212,5 +239,4 @@
 
   </div>
 </body>
-</html>>
 </html>

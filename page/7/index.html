@@ -5,13 +5,13 @@
   
 
   
-  <title>Tag: node.js | Lishude&#39;s Web Note</title>
+  <title>Lishude&#39;s Web Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
 <meta name="keywords" content="blog">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Lishude&#39;s Web Note">
-<meta property="og:url" content="https://islishude.github.io/blog/tags/node-js/index.html">
+<meta property="og:url" content="https://islishude.github.io/blog/page/7/index.html">
 <meta property="og:site_name" content="Lishude&#39;s Web Note">
 <meta property="og:description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
 <meta property="og:locale" content="zh_CN">
@@ -70,38 +70,66 @@
       <div class="outer">
         <section id="main">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/blog/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/" class="archive-article-date">
-  <time datetime="2018-05-19T21:15:26.000Z" itemprop="datePublished">5月 19</time>
+    <article id="post-nodejs/TypeScript-导入-JSON-Module" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/" class="article-date">
+  <time datetime="2018-05-19T21:15:26.000Z" itemprop="datePublished">2018-05-19</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/">TypeScript 导入 JSON Module</a>
+      <a class="article-title" href="/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/">TypeScript 导入 JSON Module</a>
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这是我在知乎问题 <a href="https://www.zhihu.com/question/276172039/answer/393798011" target="_blank" rel="noopener">Typescript有什么冷门但是很好用的特性?</a> 的回答。</p>
+<p>Node.js 模块是允许直接导入 JSON 文件的，但是 ES Module 现在还不支持，TS 在 2.9 （18年5月17日还未发布）之前也不支持。日常中使用 JSON 最多的场景就是 配置文件了，如果要使用的话需要使用下面一些 trick 来支持。</p>
+<p>这里有个 JSON 文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"//"</span>: <span class="string">"student.json"</span>,</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"test"</span>,</span><br><span class="line">  <span class="attr">"age"</span>: <span class="number">23</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果需要导入的话，需要先定义类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// student.d.ts</span></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">module</span> "*student.json" &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">interface</span> IStudent &#123;</span><br><span class="line">    name: <span class="built_in">string</span>;</span><br><span class="line">    age: <span class="built_in">number</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">const</span> student: IStudent</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里使用 <code>*student.json</code> 是因为导入的时候有路径符号，这里要用 <code>*</code> 匹配。</p>
+<p>最后在 tsconfig.json 文件中包含这些类型定义文件。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"//"</span>: <span class="string">"tsconfig.json"</span>,</span><br><span class="line">  <span class="attr">"include"</span>: [<span class="string">"src/**/*"</span>, <span class="string">"./myTypes/*.d.ts"</span>],</span><br><span class="line">  <span class="attr">"exclude"</span>: [<span class="string">"node_modules"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们就可以直接在文件中引入了，TS 会智能的提示类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; log &#125; <span class="keyword">from</span> <span class="string">"console"</span>;</span><br><span class="line"><span class="comment">// 路径为 `./student.json` </span></span><br><span class="line"><span class="comment">// 所以上面声明模块时用了通配符 `declare module "*student.json"`</span></span><br><span class="line"><span class="keyword">import</span> &#123; student &#125; <span class="keyword">from</span> <span class="string">"./student.json"</span>;</span><br><span class="line"></span><br><span class="line">log(student.age);</span><br><span class="line">log(student.name);</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/Microsoft/TypeScript/wiki/Roadmap#29-may-2018" target="_blank" rel="noopener">TypeScript 2.9</a> 即将发布，到时候就可以直接使用 JsonModule 了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/TypeScript-导入-JSON-Module/" data-id="cjk9jfwus00187t2015lbp3nj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/TypeScript/">TypeScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/node-js/">node.js</a></li></ul>
+
+    </footer>
   </div>
+  
 </article>
-  
-  
-    </div></section>
+
+
   
 
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/blog/page/6/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/5/">5</a><a class="page-number" href="/blog/page/6/">6</a><span class="page-number current">7</span>
+  </nav>
 
 </section>
         
@@ -212,5 +240,4 @@
 
   </div>
 </body>
-</html>>
 </html>

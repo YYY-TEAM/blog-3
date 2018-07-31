@@ -70,6 +70,57 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux/redis-安装清单" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/08/01/linux/redis-安装清单/" class="article-date">
+  <time datetime="2018-07-31T18:06:24.000Z" itemprop="datePublished">2018-07-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/08/01/linux/redis-安装清单/">redis 安装清单 </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>redis 推荐使用在 linux 下安装。</p>
+<h2 id="下载编译"><a href="#下载编译" class="headerlink" title="下载编译"></a>下载编译</h2><p>打开 <a href="https://redis.io/download" target="_blank" rel="noopener">https://redis.io/download</a> 选择稳定版本下载，按照下列方式进行编译安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir down</span><br><span class="line">cd down</span><br><span class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</span><br><span class="line">tar -zxvf redis-4.0.8</span><br><span class="line">cd redis-4.0.8</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">which redis-cli</span><br></pre></td></tr></table></figure>
+<p>最后使用 which 命令就可以看到 redis-cli 被安装到 /usr/local/bin/redis-cli</p>
+<h2 id="使用配置文件启动"><a href="#使用配置文件启动" class="headerlink" title="使用配置文件启动"></a>使用配置文件启动</h2><p>创建一个 redis/6379-redis.conf </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bind 127.0.0.1</span><br><span class="line">port 6379</span><br><span class="line"># 后台启动</span><br><span class="line">daemonize yes</span><br><span class="line">supervised no</span><br><span class="line">logfile .</span><br><span class="line"># 工作目录</span><br><span class="line"># 即持久化目录</span><br><span class="line">dir .</span><br></pre></td></tr></table></figure>
+<p>然后就可以使用配置文件启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-server 6379-redis.conf</span><br><span class="line">redis-cli</span><br><span class="line">ping</span><br></pre></td></tr></table></figure>
+<p>配置文件模板在下载 redis tar 包中有，即 redis.conf 可以复制下来</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat redis.conf | grep -v "#" | grep -v "^$" | tee 6379-redis.conf</span><br></pre></td></tr></table></figure>
+<p>上述命令可以将配置文件模板中中的注释和空行去掉并重定向配置到一个新文件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/08/01/linux/redis-安装清单/" data-id="cjk9jfwuk000m7t2079ucb7un" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/" class="article-date">
@@ -102,7 +153,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/" data-id="cjk9jbx1r00193n20jhmhlcy9" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/" data-id="cjk9jfwut001d7t206dfun0gk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -118,6 +169,10 @@
   <time datetime="2018-07-31T18:01:45.000Z" itemprop="datePublished">2018-07-31</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/blockchain/">blockchain</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -142,7 +197,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/比特币中交易延展性问题/" data-id="cjk9jbx1100013n201uo6vc1w" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/比特币中交易延展性问题/" data-id="cjk9jfwu500017t20ms014d5z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -192,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/" data-id="cjk9jbx1s001e3n20nqr402jf" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/nodejs/node-js-中的-process-env-遇到的坑/" data-id="cjk9jfwuu001f7t20bnle53yn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -233,52 +288,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" data-id="cjk9jbx0x00003n201jr9dsce" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/ITerm2-技巧" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/08/01/linux/ITerm2-技巧/" class="article-date">
-  <time datetime="2018-07-31T17:49:06.000Z" itemprop="datePublished">2018-07-31</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/08/01/linux/ITerm2-技巧/">ITerm2 技巧</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="ITerm2-设置-option-键为-Alt-键"><a href="#ITerm2-设置-option-键为-Alt-键" class="headerlink" title="ITerm2 设置 option 键为 Alt 键"></a>ITerm2 设置 option 键为 Alt 键</h2><p><img src="https://user-images.githubusercontent.com/24730006/42486337-35fc69ea-842e-11e8-8039-ffb614fd6678.png" alt="image"></p>
-<h2 id="保持-SSH-连接不自动断开"><a href="#保持-SSH-连接不自动断开" class="headerlink" title="保持 SSH 连接不自动断开"></a>保持 SSH 连接不自动断开</h2><p>使用 ITerm2 经常遇到 SSH 服务自动休眠断开，提示下面的信息。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packet_write_wait: Connection to x.x.x.x port 22: Broken pipe</span><br></pre></td></tr></table></figure>
-<p>修改自动断开可以修改pei’zh配置即可。</p>
-<p><img src="https://user-images.githubusercontent.com/24730006/42429023-75787494-8369-11e8-914a-65ac0a2a2c2c.png" alt="image"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/linux/ITerm2-技巧/" data-id="cjk9jbx1b000c3n20xhmvm4md" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" data-id="cjk9jfwtx00007t204misjn2y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -292,7 +302,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/6/">6</a><a class="extend next" rel="next" href="/blog/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/7/">7</a><a class="extend next" rel="next" href="/blog/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -345,6 +355,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/linux/redis-安装清单/">redis 安装清单 </a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/">Unexpected end of JSON input while parsing near错误解决办法</a>
           </li>
         
@@ -358,10 +372,6 @@
         
           <li>
             <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/08/01/linux/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
       </ul>
