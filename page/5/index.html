@@ -70,6 +70,60 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/" class="article-date">
+  <time datetime="2018-05-19T22:30:26.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/">十行代码将 Nodejs fs 模块转换无回调（promisify）形式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>promisify 是指将 Node.js 回调风格的函数转化为 Promise 形式，这样就可以使用 <code>then().catch()</code> 的方式避免回调地狱。</p>
+<p>那么什么 Node.js 回调风格呢？简单讲就是回调函数参数中的第一个参数必须是 error，其余是必要的参数。</p>
+<p>举个例子。</p>
+<p><code>fs.open(path, flags[, mode], callback)</code> 中的 callback 第一个参数是 <code>err &lt;Error&gt;</code> ，最后才是必要参数<code>fd &lt;integer&gt;</code>，Node.js 内置包都是这种风格的。</p>
+<p>那怎么简单的 promisify 呢？</p>
+<p>在 util 包里面有一个函数就是专门 promisify 的，使用方式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> util = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stat = util.promisify(fs.stat);</span><br><span class="line">stat(<span class="string">'.'</span>).then(<span class="function">(<span class="params">stats</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// Do something with `stats`</span></span><br><span class="line">&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// Handle the error.</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>那么我们只要遍历 fs 包找到其函数然后转化为 promise 函数即可。</p>
+<p>具体代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; promisify &#125; = <span class="built_in">require</span>(<span class="string">"util"</span>)</span><br><span class="line"><span class="keyword">const</span> isFunc = <span class="function">(<span class="params">fn</span>) =&gt;</span> (&#123;&#125;).toString.apply(fn).match(<span class="regexp">/\s(\w+)/</span>)[<span class="number">1</span>] === <span class="string">"Function"</span></span><br><span class="line"><span class="keyword">const</span> fsp = <span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> fn <span class="keyword">in</span> fs) &#123;</span><br><span class="line">    isFunc(fs[fn]) &amp;&amp; (fsp[fn] = promisify(fs[fn]))</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = fsp</span><br></pre></td></tr></table></figure>
+<p>嗯，算起来只有8行。</p>
+<p>上面的代码只是将函数进行转换，而没有加上常量，下面代码进行了多处优化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; promisify &#125; = <span class="built_in">require</span>(<span class="string">"util"</span>)</span><br><span class="line"><span class="keyword">const</span> fsp = <span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> fn <span class="keyword">in</span> fs) &#123;</span><br><span class="line">    fsp[fn] = <span class="keyword">typeof</span> fs[fn] === <span class="string">"function"</span> ? promisify(fs[fn]) : fs[fn]</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = fsp</span><br></pre></td></tr></table></figure>
+<p>在 Nodejs 10 中我们可以使用还在实验状态的 fs/promise 包。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fsp = <span class="built_in">require</span>(<span class="string">"fs/promise"</span>);</span><br><span class="line">fsp.writeFile(<span class="string">"test.md"</span>, <span class="string">"test"</span>);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/" data-id="cjk9j43o6001dt320co3dg0g4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-golang/Go语言结构体和JSON序列化" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/golang/Go语言结构体和JSON序列化/" class="article-date">
@@ -131,7 +185,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go语言结构体和JSON序列化/" data-id="cjk9iuzei0006ma20qit40ckc" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go语言结构体和JSON序列化/" data-id="cjk9j43ne0007t320i50mup2r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -202,7 +256,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？/" data-id="cjk9iuzeq000jma20rghvxxvw" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？/" data-id="cjk9j43np000mt320tz2ohwnw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/git/">git</a></li></ul>
@@ -273,7 +327,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go-语言延迟调用和错误处理/" data-id="cjk9iuzef0003ma2050xywl4d" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go-语言延迟调用和错误处理/" data-id="cjk9j43nb0004t320898g3bqn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -332,67 +386,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/" data-id="cjk9iuzf10015ma20p4h82zdi" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/不常见的-NPM-包管理技巧/" data-id="cjk9j43o10014t320i1veoyg8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Node-js/">Node.js</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nodejs/JS-BigInt-尝鲜" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/" class="article-date">
-  <time datetime="2018-05-19T22:20:54.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/">JS BigInt 尝鲜</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>JavaScript 所有数字内部都是 Double64 类型，所以数值的精度最多只能到 53 个二进制位，大于这个范围的整数是无法精确表示的。</p>
-<p><img width="456" alt="2018-05-01 10 09 59" src="https://user-images.githubusercontent.com/24730006/39458512-d661b1a8-4d27-11e8-805c-01b5fd3a060f.png"></p>
-<p>在很多金融场景如果使用 JS 的话就得使用一些 BigNumber 库。其中以太坊 web3.js 使用的是最为流行的是 <a href="https://github.com/MikeMcl/bignumber.js" target="_blank" rel="noopener">bignumber.js</a>，并且包含 <code>.d.ts</code> 类型提示，推荐在生产环境使用。</p>
-<p>因为这些库表示大数的方式是以 16 进制字符串表示的，通常在实践中还需要使用 <code>Buffer.from()</code> 转换成二进制对象，还是有很多不方便，需要写很多辅助函数。不过以后我们就可以使用官方标准库中的 BigInt 了。</p>
-<p>目前（2018年5月1日）BigInt 提案已经进入 TC39 stage 3，不过还是被 V8 引擎提前实现，本文所有代码示例基于 Chrome Canary  68.0.3415.0，如下图所示。</p>
-<p><img width="518" alt="2018-05-01 9 10 04" src="https://user-images.githubusercontent.com/24730006/39457635-ba564466-4d21-11e8-9d91-f1cab5e5854e.png"></p>
-<p>BigInt 表示没有精度和大小限制的整数，为了兼容性考虑，在数字后面添加后缀<code>n</code> 和普通数字类型区分，使用二进制八进制和十六进制也可以表示。</p>
-<p><img width="380" alt="2018-05-01 9 49 05" src="https://user-images.githubusercontent.com/24730006/39458122-ee49152a-4d24-11e8-9397-34397d74197b.png"></p>
-<p>数字的字符串形式可以类似于 <code>Number()</code> 使用 <code>BigInt()</code> 直接转换为 BigInt，需要注意的是参数检查和 Number() 是一致的，是不能使用 <code>123n</code> 字符串形式的参数，不过提案中还有一个静态函数 <code>BigInt.paseInt()</code> 目前V8 还没支持。</p>
-<p><img width="466" alt="2018-05-01 9 48 07" src="https://user-images.githubusercontent.com/24730006/39458109-cba3ee14-4d24-11e8-8de2-e17606b12df6.png"></p>
-<p>BitInt 除了不能和 number 类型直接运算之外，其它方面和普通的数值运算没有多少区别，除法运算始终返回整数形式。</p>
-<p><img width="523" alt="2018-05-01 9 46 51" src="https://user-images.githubusercontent.com/24730006/39458079-9dae0a3a-4d24-11e8-9959-6286c065cf6b.png"></p>
-<p>BigInt 也存在隐式转换，在相等运算符<code>==</code>、不同类型运算以及强制类型转化函数，都还存在 JS 远古传统。</p>
-<p><img width="510" alt="2018-05-01 9 51 43" src="https://user-images.githubusercontent.com/24730006/39458223-8cffd2e4-4d25-11e8-9550-9b3d8165b20f.png"></p>
-<p>更多内容可以参考 <a href="https://github.com/tc39/proposal-bigint" target="_blank" rel="noopener">BigInt 提案</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/JS-BigInt-尝鲜/" data-id="cjk9iuzez000zma20u7xc17r9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/BigInt/">BigInt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ES/">ES</a></li></ul>
 
     </footer>
   </div>
@@ -416,7 +413,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Golang/">Golang</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/tool/">tool</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Golang/">Golang</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/blockchain/">blockchain</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/tool/">tool</a></li></ul>
     </div>
   </div>
 
@@ -458,6 +455,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
@@ -471,10 +472,6 @@
         
           <li>
             <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/22/nodejs/理解-JS-中的装饰器/">理解 JS 中的装饰器</a>
           </li>
         
       </ul>

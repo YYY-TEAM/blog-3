@@ -70,6 +70,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="blockchain-blockchain/BitcoinCore-安装清单" class="article article-type-blockchain" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" class="article-date">
+  <time datetime="2018-07-31T17:53:57.000Z" itemprop="datePublished">2018-07-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/blockchain/">blockchain</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install software-properties-common</span><br><span class="line">sudo add-apt-repository ppa:bitcoin/bitcoin</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install -y bitcoind</span><br><span class="line"># 运行</span><br><span class="line">bitcoind -daemon</span><br><span class="line"># 查看信息</span><br><span class="line">bitcoin-cli getblockchaininfo</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" data-id="cjk9j43na0003t3201hek3dqz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ITerm2-技巧" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/08/01/ITerm2-技巧/" class="article-date">
@@ -105,7 +146,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/08/01/ITerm2-技巧/" data-id="cjk9iuzdk0000ma20avdecdp1" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/ITerm2-技巧/" data-id="cjk9j43m60000t320hw2fityr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -150,7 +191,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/" data-id="cjk9iuzfa001pma20ic4onnaz" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/" data-id="cjk9j43oc001ot3209xjfv9ou" class="article-share-link">Share</a>
       
       
     </footer>
@@ -299,7 +340,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" data-id="cjk9iuzeh0004ma20awbti6ry" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" data-id="cjk9j43nc0006t320xe7f2zw6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -371,63 +412,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/23/nodejs/说说-XSRF-防范/" data-id="cjk9iuzf9001mma20yqc0k615" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nodejs/理解-JS-中的装饰器" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" class="article-date">
-  <time datetime="2018-05-22T07:28:51.000Z" itemprop="datePublished">2018-05-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/22/nodejs/理解-JS-中的装饰器/">理解 JS 中的装饰器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>本文为 JS 装饰器旧版，待更新</strong></p>
-<hr>
-<p>什么是装饰器？曾经看过一个说明比较好的比喻，秋天的时候穿秋裤可以保暖，一旦变冷了我们再穿上毛裤，穿毛裤不影响我们穿秋裤，这里的毛裤就是装饰器。</p>
-<p>在JS中，装饰器可以为对象属性添加添加新的配置，而不会影响原有对象的基本功能，这个其实是语法糖。</p>
-<p>举个简单的例子就是</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readonly</span>(<span class="params">target, key, descriptor</span>) </span>&#123;</span><br><span class="line">  descriptor.writable = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">return</span> descriptor</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">  @readonly</span><br><span class="line">  eat (food) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'eating '</span> + food</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的装饰器函数接受三个参数，分别是目标对象、属性名以及属性描述对象。</p>
-<p>你可能会发现，其实用ES5 的  <code>Object.defineProperty</code> 也可以实现这个功能。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(Animal.prototype, <span class="string">'eat'</span>, &#123;</span><br><span class="line">  value: <span class="function"><span class="keyword">function</span> (<span class="params">food</span>) </span>&#123; <span class="keyword">return</span> <span class="keyword">return</span> <span class="string">'eating '</span> + food &#125;,</span><br><span class="line">  enumerable: <span class="literal">false</span>,</span><br><span class="line">  configurable: <span class="literal">true</span>,</span><br><span class="line">  writable: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>就这么简单，就只是语法糖而已。</p>
-<p>当然也可以装饰器也可以作用在类上，简单理解就是为类对象添加静态属性。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">notMan</span>(<span class="params">target</span>) </span>&#123;</span><br><span class="line">  target.isMan = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line">@notMan</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(Animal.isMan); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
-<p>就这么简单。更进一步，我们知道在 Angular2+ 中的用到了装饰器，还传递了参数。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Component(&#123;</span><br><span class="line">  selector: <span class="string">'app-root'</span>,</span><br><span class="line">  templateUrl: <span class="string">'./app.component.html'</span>,</span><br><span class="line">  styleUrls: [<span class="string">'./app.component.css'</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppComponent</span> </span>&#123;</span><br><span class="line">  title = <span class="string">'app'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个其实也简单，就是工厂函数而已，用上面的例子</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Man</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">target</span>) </span>&#123;</span><br><span class="line">    target.isMan = arg;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Man(<span class="literal">false</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(Animal.isMan); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" data-id="cjk9iuzf6001gma20vngi5qrh" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/23/nodejs/说说-XSRF-防范/" data-id="cjk9j43od001rt320qwih6zqd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -452,7 +437,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Golang/">Golang</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/tool/">tool</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Golang/">Golang</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/blockchain/">blockchain</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/tool/">tool</a></li></ul>
     </div>
   </div>
 
@@ -494,6 +479,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/">BitcoinCore 安装清单</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
@@ -507,10 +496,6 @@
         
           <li>
             <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/22/nodejs/理解-JS-中的装饰器/">理解 JS 中的装饰器</a>
           </li>
         
       </ul>
