@@ -5,22 +5,23 @@
   
 
   
-  <title>Ubuntu新建用户并赋予权限清单 | Lishude&#39;s Web Note</title>
+  <title>ITerm2 技巧 | Lishude&#39;s Web Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="通常新建用户会遇到很多问题，比如 shell 不支持 tab 提示，下述流程解决了常见新建用户出现的问题。 新建用户首先在建立一个用户家目录，一般建立在 /home 下，目录名一般直接使用用户名。接着使用 useradd 命令继续，命令结构如下。 useradd -d HOME-DIR -s /bin/bash -c COMMET -G GOURP-NAME USER-NAME -d 指示用户家目">
-<meta name="keywords" content="ubuntu">
+  <meta name="description" content="ITerm2 设置 option 键为 Alt 键 保持 SSH 连接不自动断开使用 ITerm2 经常遇到 SSH 服务自动休眠断开，提示下面的信息。 1packet_write_wait: Connection to x.x.x.x port 22: Broken pipe 修改自动断开可以修改pei’zh配置即可。">
+<meta name="keywords" content="blog">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu新建用户并赋予权限清单">
-<meta property="og:url" content="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/index.html">
+<meta property="og:title" content="ITerm2 技巧">
+<meta property="og:url" content="https://islishude.github.io/blog/2018/08/01/linux/ITerm2-技巧/index.html">
 <meta property="og:site_name" content="Lishude&#39;s Web Note">
-<meta property="og:description" content="通常新建用户会遇到很多问题，比如 shell 不支持 tab 提示，下述流程解决了常见新建用户出现的问题。 新建用户首先在建立一个用户家目录，一般建立在 /home 下，目录名一般直接使用用户名。接着使用 useradd 命令继续，命令结构如下。 useradd -d HOME-DIR -s /bin/bash -c COMMET -G GOURP-NAME USER-NAME -d 指示用户家目">
+<meta property="og:description" content="ITerm2 设置 option 键为 Alt 键 保持 SSH 连接不自动断开使用 ITerm2 经常遇到 SSH 服务自动休眠断开，提示下面的信息。 1packet_write_wait: Connection to x.x.x.x port 22: Broken pipe 修改自动断开可以修改pei’zh配置即可。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/37553587-2ea56f52-2a06-11e8-82d7-d638abbfe5c9.png">
-<meta property="og:updated_time" content="2018-07-31T09:46:52.304Z">
+<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/42486337-35fc69ea-842e-11e8-8039-ffb614fd6678.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/24730006/42429023-75787494-8369-11e8-914a-65ac0a2a2c2c.png">
+<meta property="og:updated_time" content="2018-07-31T10:03:27.122Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu新建用户并赋予权限清单">
-<meta name="twitter:description" content="通常新建用户会遇到很多问题，比如 shell 不支持 tab 提示，下述流程解决了常见新建用户出现的问题。 新建用户首先在建立一个用户家目录，一般建立在 /home 下，目录名一般直接使用用户名。接着使用 useradd 命令继续，命令结构如下。 useradd -d HOME-DIR -s /bin/bash -c COMMET -G GOURP-NAME USER-NAME -d 指示用户家目">
-<meta name="twitter:image" content="https://user-images.githubusercontent.com/24730006/37553587-2ea56f52-2a06-11e8-82d7-d638abbfe5c9.png">
+<meta name="twitter:title" content="ITerm2 技巧">
+<meta name="twitter:description" content="ITerm2 设置 option 键为 Alt 键 保持 SSH 连接不自动断开使用 ITerm2 经常遇到 SSH 服务自动休眠断开，提示下面的信息。 1packet_write_wait: Connection to x.x.x.x port 22: Broken pipe 修改自动断开可以修改pei’zh配置即可。">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/24730006/42486337-35fc69ea-842e-11e8-8039-ffb614fd6678.png">
   
     <link rel="alternate" href="/blog/atom.xml" title="Lishude&#39;s Web Note" type="application/atom+xml">
   
@@ -71,10 +72,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-linux/Ubuntu新建用户并赋予权限清单" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-linux/ITerm2-技巧" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" class="article-date">
-  <time datetime="2018-05-19T22:43:02.000Z" itemprop="datePublished">2018-05-19</time>
+    <a href="/blog/2018/08/01/linux/ITerm2-技巧/" class="article-date">
+  <time datetime="2018-07-31T17:49:06.000Z" itemprop="datePublished">2018-07-31</time>
 </a>
     
   <div class="article-category">
@@ -89,7 +90,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Ubuntu新建用户并赋予权限清单
+      ITerm2 技巧
     </h1>
   
 
@@ -97,56 +98,37 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>通常新建用户会遇到很多问题，比如 shell 不支持 tab 提示，下述流程解决了常见新建用户出现的问题。</p>
-<h2 id="新建用户"><a href="#新建用户" class="headerlink" title="新建用户"></a>新建用户</h2><p>首先在建立一个用户家目录，一般建立在 <code>/home</code> 下，目录名一般直接使用用户名。接着使用 <code>useradd</code> 命令继续，命令结构如下。</p>
-<p><code>useradd -d HOME-DIR -s /bin/bash -c COMMET -G GOURP-NAME USER-NAME</code></p>
-<p><code>-d</code> 指示用户家目录，使用刚才新建的目录即可。<code>-c</code> 指定注释。</p>
-<p><code>-s</code> 指定 shell，默认是不指定的，一定要加上，要不然就会出现上述说的问题。</p>
-<p> <code>-G</code> 指定用户组，之后也可以使用 <code>usermod -aG GROUP-NAME USER-NAME</code> 进行添加。</p>
-<p>最后再加上用户名称即可。</p>
-<p>值得注意的是 <code>-p</code> 可以指定登录密码，但是我尝试过没有成功。还有一个方式指定密码，使用 <code>passwd USER-NAME</code> 即可。</p>
-<p>详细的参数在文后有说明。然后给用户家目录赋权</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R user:group /home/user</span><br><span class="line">sudo chmod -R 770 /home/user</span><br></pre></td></tr></table></figure>
-<p>最后复制shell模板到家目录</p>
-<p><code>sudo /etc/skel/.bashrc /home/user</code></p>
-<h2 id="root-权限"><a href="#root-权限" class="headerlink" title="root 权限"></a>root 权限</h2><p>编辑 <code>/etc/sudoers</code> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># User privilege specification</span><br><span class="line">root	ALL=(ALL:ALL) ALL</span><br><span class="line">user  ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>之前提及过 usermod 可以把用户添加到用户组，在 <code>/etc/sudoers</code> 后有说明将用户添加 <code>sudo</code> 组就可以使用 <code>sudo</code> 命令获取管理权限，在 CentOS上通常是 wheel 组而不是 sudo 组。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Allow members of group sudo to execute any command</span><br><span class="line">%sudo	ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>第一个“ALL”表示该规则适用于所有主机，第二个表示root用户可以像所有用户一样运行命令，第三个表示root用户可以像所有组一样运行命令，最后一个“ALL”表示这些规则适用于所有命令。详情可参考<a href="https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos" target="_blank" rel="noopener">这里</a>。</p>
-<p>如果已经在命令中设置将新用户加入 root sudo 用户组的，以上的规则设定也可以不用。</p>
-<p>最后退出当前用户，重新使用新用户登录试一试吧！</p>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>更简单的命令，直接会创建用户家目录以及将 .bashrc 等文件移动到用户家目录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd --create-home username</span><br></pre></td></tr></table></figure>
-<h2 id="useradd-命令清单"><a href="#useradd-命令清单" class="headerlink" title="useradd 命令清单"></a>useradd 命令清单</h2><p><img width="649" alt="2018-03-17 5 10 34" src="https://user-images.githubusercontent.com/24730006/37553587-2ea56f52-2a06-11e8-82d7-d638abbfe5c9.png"></p>
+        <h2 id="ITerm2-设置-option-键为-Alt-键"><a href="#ITerm2-设置-option-键为-Alt-键" class="headerlink" title="ITerm2 设置 option 键为 Alt 键"></a>ITerm2 设置 option 键为 Alt 键</h2><p><img src="https://user-images.githubusercontent.com/24730006/42486337-35fc69ea-842e-11e8-8039-ffb614fd6678.png" alt="image"></p>
+<h2 id="保持-SSH-连接不自动断开"><a href="#保持-SSH-连接不自动断开" class="headerlink" title="保持 SSH 连接不自动断开"></a>保持 SSH 连接不自动断开</h2><p>使用 ITerm2 经常遇到 SSH 服务自动休眠断开，提示下面的信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packet_write_wait: Connection to x.x.x.x port 22: Broken pipe</span><br></pre></td></tr></table></figure>
+<p>修改自动断开可以修改pei’zh配置即可。</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/42429023-75787494-8369-11e8-914a-65ac0a2a2c2c.png" alt="image"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9jbx1c000d3n20xrdeal4d" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/08/01/linux/ITerm2-技巧/" data-id="cjk9jbx1b000c3n20xhmvm4md" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ubuntu/">ubuntu</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/blog/2018/08/01/blockchain/BitcoinCore-安装清单/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          密码强度校验：先行断言正则与通用库
+          BitcoinCore 安装清单
         
       </div>
     </a>
   
   
-    <a href="/blog/2018/05/20/linux/bash-键盘高级操作技巧/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">bash 键盘高级操作技巧</div>
+      <div class="article-nav-title">理解ES6中的字符串和数值解构赋值</div>
     </a>
   
 </nav>

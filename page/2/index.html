@@ -70,6 +70,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs/理解ES6中的字符串和数值解构赋值" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/" class="article-date">
+  <time datetime="2018-06-04T07:39:17.000Z" itemprop="datePublished">2018-06-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ES6 允许从数组和对象中提取值，然后对变量进行赋值，这种“模式匹配”被称为解构。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [a, b, c] = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//也就是</span></span><br><span class="line"><span class="keyword">let</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">let</span> c = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; foo, bar &#125; = &#123; <span class="attr">foo</span>: <span class="string">"aaa"</span>, <span class="attr">bar</span>: <span class="string">"bbb"</span> &#125;;</span><br><span class="line"><span class="comment">//let &#123; foo: foo, bar: bar &#125; = &#123; foo: "aaa", bar: "bbb" &#125;;</span></span><br></pre></td></tr></table></figure>
+<p>当等号右边不是数组或者对象，类如字符串、数值、布尔值会被转换成了一个类似数组的对象，这些对象都有一个<code>length</code>属性，因此还可以对这个属性解构赋值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123;<span class="attr">length</span> : len&#125; = <span class="string">'he'</span>;</span><br><span class="line">len <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>上面的字符串<code>hello</code>会先转化为<code>new String(&#39;he&#39;)</code>包装对象，所以会有<code>length</code>、<code>toString</code>等属性或方法，所以如果要理解这个的话可以把上述转化为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hello = <span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">'he'</span>);</span><br><span class="line"><span class="keyword">let</span> &#123;<span class="attr">length</span>: len&#125; =  &#123;<span class="number">0</span>: <span class="string">"h"</span>, <span class="number">1</span>: <span class="string">"e"</span>, <span class="attr">length</span>: <span class="number">2</span>,<span class="attr">__proto__</span>: <span class="built_in">String</span>&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/" data-id="cjk9jbx20001y3n2001h2p04v" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-linux/AngularJS-Git-提交信息规范" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" class="article-date">
@@ -209,7 +254,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" data-id="cjk9j9xfo00070420wnjwylks" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/" data-id="cjk9jbx1600053n201k2b4dy3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -281,7 +326,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/23/nodejs/说说-XSRF-防范/" data-id="cjk9j9xgq001w0420v7u1ph6x" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/23/nodejs/说说-XSRF-防范/" data-id="cjk9jbx2200253n20eso9e6cy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -337,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" data-id="cjk9j9xgl001n04202rsomnsj" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/22/nodejs/理解-JS-中的装饰器/" data-id="cjk9jbx1y001u3n20v160jtud" class="article-share-link">Share</a>
       
       
     </footer>
@@ -395,91 +440,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/21/linux/使用-Docker-安装-gitlab/" data-id="cjk9j9xg5000q0420u6td2jlg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Docker/">Docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/在-Ubuntu-上安装-Docker" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" class="article-date">
-  <time datetime="2018-05-20T07:27:01.000Z" itemprop="datePublished">2018-05-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/">在 Ubuntu 上安装 Docker</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>Docker是世界领先的软件容器平台。 开发者可以通过 Docker 解决协作时环境不一致的问题。 运维人员可以使用 Docker 在容器中运行和管理应用程序，以获得更好的计算密度。 企业可以使用 Docker 构建敏捷软件持续交付流程，更快，更安全，更可靠地为 Linux 和 Windows Server 上的应用程序提供新功能。</p>
-</blockquote>
-<h1 id="在-Ubuntu-上安装-Docker"><a href="#在-Ubuntu-上安装-Docker" class="headerlink" title="在 Ubuntu 上安装 Docker"></a>在 Ubuntu 上安装 Docker</h1><p>建议把Docker安装在linux系统上学习使用，如果使用Windows或者Mac可以使用虚拟机安装Ubuntu进行学习。</p>
-<blockquote>
-<p>补充一点，如果在windows上安装，官方推荐使用 windows 10 专业版，因为这个版本才包含Hyper-V的虚拟化服务，能让docker具有像linux一样的底层兼容性，如果没有使用这个版本，官方建议下载docker tool进行安装。当然还是建议Windows用户装linux虚拟机进行学习。</p>
-</blockquote>
-<h1 id="Docker-版本说明"><a href="#Docker-版本说明" class="headerlink" title="Docker 版本说明"></a>Docker 版本说明</h1><p>Docker在apt源仓库里面注册了很多名称，比如docker.io，比如docker-engine，这些都不是我们需要的旧版本，新版的Docker就只有两个，一个是社区版本的docker-ce，一个是收费的企业版docker-ee。  </p>
-<p>不过，目前（2017年4月7日 17:01:37），ubuntu官方源还没有新版的docker，所以我们可以按照<a href="https://store.docker.com/editions/community/docker-ce-server-ubuntu" target="_blank" rel="noopener">官方的说明</a>，一步一步来安装docker。</p>
-<h1 id="使用国内源安装"><a href="#使用国内源安装" class="headerlink" title="使用国内源安装"></a>使用国内源安装</h1><p>不过这太慢了，还有可能失败，因为 Docker 的安装资源文件存放在Amazon S3，会间歇性连接失败。所以安装Docker的时候，会比较慢。 这里我推荐使用daocloude的加速服务，高速安装Docker。</p>
-<p><code>sudo curl -sSL https://get.daocloud.io/docker | sh</code></p>
-<p>等待大概两分钟就自动安装好了，然后运行<code>docker -v</code>，如果出现docker的版本就代表安装好了。</p>
-<h3 id="使用官方脚本-中国镜像安装"><a href="#使用官方脚本-中国镜像安装" class="headerlink" title="使用官方脚本+中国镜像安装"></a>使用官方脚本+中国镜像安装</h3><p>下方命令适用于 Ubuntu 并且软件包源是阿里云的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sudo sh get-docker.sh --mirror Aliyun</span><br></pre></td></tr></table></figure>
-<p>安装完之后还需要配置镜像加速。</p>
-<h1 id="配置国内镜像加速"><a href="#配置国内镜像加速" class="headerlink" title="配置国内镜像加速"></a>配置国内镜像加速</h1><p>同样的道理，使用docker官方的镜像下载服务超级慢。也是daocloud.io的加速服务，一行命令行搞定。这个是我的加速服务地址，当然你也可以用，我建议你在<a href="https://www.daocloud.io/mirror" target="_blank" rel="noopener">Daocloud</a>注册一个新账号然后使用你个人的加速地址。</p>
-<p><code>sudo curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://67daa203.m.daocloud.io</code>  </p>
-<p>成功之后，运行<code>docker pull ubuntu</code>可以试一试速度。</p>
-<h3 id="手动设置"><a href="#手动设置" class="headerlink" title="手动设置"></a>手动设置</h3><p>对于使用<code>systemd</code> 的系统，请在 <code>/etc/docker/daemon.json</code> 中写入如下内容（如果文件不存在请新建该文件）</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"registry-mirrors"</span>: [</span><br><span class="line">    <span class="string">"https://registry.docker-cn.com"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里使用的 docker 中国镜像源，服务器是其和阿里云合作的。之后重新启动服务。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<h1 id="设置当前用户到docker组"><a href="#设置当前用户到docker组" class="headerlink" title="设置当前用户到docker组"></a>设置当前用户到docker组</h1><p>如果当前用户不是root组，那么是无法直接运行docker命令的，所以在安装完成之后，建议设置当前用户到docker组中。</p>
-<p><code>sudo gpasswd -a your-user-name docker</code></p>
-<p>这样做之后，直接可以运行<code>docker images</code>等命令再也不需要root权限了。</p>
-<h1 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## install</span><br><span class="line">sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">## update</span><br><span class="line">docker-compose migrate-to-labels</span><br><span class="line">## uninstall</span><br><span class="line">sudo rm /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-<h1 id="Docker-tips"><a href="#Docker-tips" class="headerlink" title="Docker tips"></a>Docker tips</h1><h2 id="权限不足错误"><a href="#权限不足错误" class="headerlink" title="权限不足错误"></a>权限不足错误</h2><h3 id="zsh-错误"><a href="#zsh-错误" class="headerlink" title="zsh 错误"></a>zsh 错误</h3><p>修复方式： </p>
-<p><code>sudo chown -R [username]:staff &quot;$ZSH_CACHE_DIR&quot;</code></p>
-<p>详细：<a href="https://github.com/robbyrussell/oh-my-zsh/issues/3700" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh/issues/3700</a></p>
-<h2 id="unix-socket-错误"><a href="#unix-socket-错误" class="headerlink" title="unix socket 错误"></a>unix socket 错误</h2><p>默认情况下，docker 命令会使用 Unix socket 与 Docker 引擎通讯。而只有 root 用户和 docker 组的用户才可以访问 Docker 引擎的 Unix socket。出于安全考虑，一般 Linux 系统上不会直接使用 root 用户。因此，更好地做法是将需要使用 docker 的用户加入 docker 用户组。</p>
-<p>建立 docker 组：</p>
-<p><code>$ sudo groupadd docker</code></p>
-<p>将当前用户加入 docker 组：</p>
-<p><code>$ sudo usermod -aG docker $USER</code></p>
-<p>退出当前终端并重新登录，进行如下测试。</p>
-<h2 id="国内使用-apt-速度很慢"><a href="#国内使用-apt-速度很慢" class="headerlink" title="国内使用 apt 速度很慢"></a>国内使用 apt 速度很慢</h2><p>通常在 Dockerfile 内会使用 apt 进行安装软件，但是 <code>apt update</code> 会因为网络原因很慢很慢，这个时候可以加上镜像源。 </p>
-<p>解决方式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN sed -i &apos;s/http:\/\/archive\.ubuntu\.com\/ubuntu\//http:\/\/mirrors\.163\.com\/ubuntu\//g&apos; /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
-<h2 id="使用前台命令运行容器"><a href="#使用前台命令运行容器" class="headerlink" title="使用前台命令运行容器"></a>使用前台命令运行容器</h2><p>例如在 nginx 的官方版本中有设置 </p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>, ]</span></span><br></pre></td></tr></table></figure>
-<p>所以不要在 Dockerfile 中使用 <code>service xx start</code> 或者 <code>systemctl start xx.service</code>.</p>
-<p>对于JS而言，npm run 就是使用的后台命令。比如说在 <code>npm start</code> 的命令是 <code>node index.js</code> 的话，而 <code>index.js</code> 是一个服务器应用，那么在 Docker 中不会成功运行，而且运行之后会自动退出容器。</p>
-<h2 id="快速下载安装"><a href="#快速下载安装" class="headerlink" title="快速下载安装"></a>快速下载安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sfSL https://get.docker.com | sudo sh -s --mirror Aliyun</span><br><span class="line">curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sudo sh -s http://67daa203.m.daocloud.io</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" data-id="cjk9j9xg7000x0420ihk00rq0" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/21/linux/使用-Docker-安装-gitlab/" data-id="cjk9jbx1j000p3n20r1wwjqcp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Docker/">Docker</a></li></ul>
@@ -548,6 +509,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/">Unexpected end of JSON input while parsing near错误解决办法</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
           </li>
         
@@ -560,11 +525,7 @@
           </li>
         
           <li>
-            <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
+            <a href="/blog/2018/08/01/linux/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
       </ul>

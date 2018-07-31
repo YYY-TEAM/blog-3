@@ -70,6 +70,282 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux/bash-键盘高级操作技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/bash-键盘高级操作技巧/" class="article-date">
+  <time datetime="2018-05-19T22:40:43.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/bash-键盘高级操作技巧/">bash 键盘高级操作技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl-a</td>
+<td>移动光标到行首。</td>
+</tr>
+<tr>
+<td>Ctrl-e</td>
+<td>移动光标到行尾。</td>
+</tr>
+<tr>
+<td>Ctrl-f</td>
+<td>光标前移一个字符；和右箭头作用一样。</td>
+</tr>
+<tr>
+<td>Ctrl-b</td>
+<td>光标后移一个字符；和左箭头作用一样。</td>
+</tr>
+<tr>
+<td>Alt-f</td>
+<td>光标前移一个字（word\单词）。</td>
+</tr>
+<tr>
+<td>Alt-b</td>
+<td>光标后移一个字（word\单词）。</td>
+</tr>
+<tr>
+<td>Ctrl-l</td>
+<td>清空屏幕，移动光标到左上角。clear 命令完成同样的工作。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文本编辑命令"><a href="#文本编辑命令" class="headerlink" title="文本编辑命令"></a>文本编辑命令</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl-d</td>
+<td>删除光标位置的字符。</td>
+</tr>
+<tr>
+<td>Ctrl-t</td>
+<td>光标位置的字符和光标前面的字符互换位置。</td>
+</tr>
+<tr>
+<td>Alt-t</td>
+<td>光标位置的字和其前面的字互换位置。</td>
+</tr>
+<tr>
+<td>Alt-l</td>
+<td>把从光标位置到字尾的字符转换成小写字母。</td>
+</tr>
+<tr>
+<td>Alt-u</td>
+<td>把从光标位置到字尾的字符转换成大写字母。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="剪切和粘贴命令"><a href="#剪切和粘贴命令" class="headerlink" title="剪切和粘贴命令"></a>剪切和粘贴命令</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl-k</td>
+<td>剪切从光标位置到行尾的文本。</td>
+</tr>
+<tr>
+<td>Ctrl-u</td>
+<td>剪切从光标位置到行首的文本。</td>
+</tr>
+<tr>
+<td>Alt-d</td>
+<td>剪切从光标位置到词尾的文本。</td>
+</tr>
+<tr>
+<td>Alt-Backspace</td>
+<td>剪切从光标位置到词头的文本。如果光标在一个单词的开头，剪切前一个单词。</td>
+</tr>
+<tr>
+<td>Ctrl-y</td>
+<td>把剪切环中的文本粘贴到光标位置。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="重新执行命令"><a href="#重新执行命令" class="headerlink" title="重新执行命令"></a>重新执行命令</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl-p</td>
+<td>移动到上一个历史条目。类似于上箭头按键。</td>
+</tr>
+<tr>
+<td>Ctrl-n</td>
+<td>移动到下一个历史条目。类似于下箭头按键。</td>
+</tr>
+<tr>
+<td>Alt-&lt;</td>
+<td>移动到历史列表开头。</td>
+</tr>
+<tr>
+<td>Alt-&gt;</td>
+<td>移动到历史列表结尾，即当前命令行。</td>
+</tr>
+<tr>
+<td>Ctrl-r</td>
+<td>反向递增搜索。从当前命令行开始，向上递增搜索。</td>
+</tr>
+<tr>
+<td>Alt-p</td>
+<td>反向搜索，不是递增顺序。输入要查找的字符串，然后按下 Enter，执行搜索。</td>
+</tr>
+<tr>
+<td>Alt-n</td>
+<td>向前搜索，非递增顺序。</td>
+</tr>
+<tr>
+<td>Ctrl-o</td>
+<td>执行历史列表中的当前项，并移到下一个。如果你想要执行历史列表中一系列的命令，这很方便。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="控制命令"><a href="#控制命令" class="headerlink" title="控制命令"></a>控制命令</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl + l</td>
+<td>清屏</td>
+</tr>
+<tr>
+<td>Ctrl + o</td>
+<td>执行当前命令，并选择上一条命令</td>
+</tr>
+<tr>
+<td>Ctrl + s</td>
+<td>阻止屏幕输出</td>
+</tr>
+<tr>
+<td>Ctrl + q</td>
+<td>允许屏幕输出</td>
+</tr>
+<tr>
+<td>Ctrl + c</td>
+<td>终止命令</td>
+</tr>
+<tr>
+<td>Ctrl + z</td>
+<td>挂起命令</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Bang-命令"><a href="#Bang-命令" class="headerlink" title="Bang (!) 命令"></a>Bang (!) 命令</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>!blah:p</td>
+<td>仅打印输出，而不执行</td>
+</tr>
+<tr>
+<td>!$</td>
+<td>上一条命令的最后一个参数，与 Alt + . 相同</td>
+</tr>
+<tr>
+<td>!$:p</td>
+<td>打印输出 !$ 的内容</td>
+</tr>
+<tr>
+<td>!*</td>
+<td>上一条命令的所有参数</td>
+</tr>
+<tr>
+<td>!*:p</td>
+<td>打印输出 !* 的内容</td>
+</tr>
+<tr>
+<td>^blah</td>
+<td>删除上一条命令中的 blah</td>
+</tr>
+<tr>
+<td>^blah^foo</td>
+<td>将上一条命令中的 blah 替换为 foo</td>
+</tr>
+<tr>
+<td>^blah^foo^</td>
+<td>将上一条命令中所有的 blah 都替换为 foo</td>
+</tr>
+<tr>
+<td>!!</td>
+<td>重复最后一次执行的命令。可能按下上箭头按键和 enter 键更容易些。</td>
+</tr>
+<tr>
+<td>!number</td>
+<td>重复历史列表中第 number 行的命令。</td>
+</tr>
+<tr>
+<td>!string</td>
+<td>重复最近历史列表中，以这个字符串开头的命令。</td>
+</tr>
+<tr>
+<td>!?string</td>
+<td>重复最近历史列表中，包含这个字符串的命令。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Mac-元键"><a href="#Mac-元键" class="headerlink" title="Mac 元键"></a>Mac 元键</h2><p>在 Windows 中 <kbd>Alt</kbd> 成为元键，上述的快捷键都有。同样的在 Mac 中是 <kbd>Option</kbd> ，不过默认情况下在终端中并没有作用，需要如下图所示的设置即可。</p>
+<p><img width="668" alt="2017-12-14 1 58 34" src="https://user-images.githubusercontent.com/24730006/33977746-53c2d3c4-e0d7-11e7-9547-680da820852f.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/bash-键盘高级操作技巧/" data-id="cjk9jbx1e000g3n20tggw87q3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/bash/">bash</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-tool/VSCode-一些技巧和快捷键" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/" class="article-date">
@@ -126,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/" data-id="cjk9j9xgs001z0420dk5ldihn" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-一些技巧和快捷键/" data-id="cjk9jbx2300273n20vvisny3a" class="article-share-link">Share</a>
       
       
     </footer>
@@ -182,7 +458,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/" data-id="cjk9j9xgo001t0420txxzh0lu" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/用-JS-和-Go-来实现中英文简单排版/" data-id="cjk9jbx2100213n20zf0wmixs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nodejs/">nodejs</a></li></ul>
@@ -238,7 +514,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/" data-id="cjk9j9xgi001h0420x36bmw1j" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/十行代码将-Nodejs-fs-模块转换无回调（promisify）形式/" data-id="cjk9jbx1v001n3n20s8peavjx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -309,82 +585,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go语言结构体和JSON序列化/" data-id="cjk9j9xfp00080420gpr171is" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/golang/Go语言结构体和JSON序列化/" data-id="cjk9jbx1500043n207zee46fk" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？/" class="article-date">
-  <time datetime="2018-05-19T22:27:15.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？/">为什么 git pull 会修改文件权限和所属用户以及用户组？</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题过程"><a href="#问题过程" class="headerlink" title="问题过程"></a>问题过程</h2><p>首先 git clone 之后进行改变用户组</p>
-<p><img src="https://user-images.githubusercontent.com/24730006/33516807-dae0910c-d7b3-11e7-8282-d314db8eddc6.png" alt="image"></p>
-<p>然后使用 git pull 更新本地仓库，这里明显发现已经发生了变化。</p>
-<p>注意：git pull = git fetch + git merge 下面会更多用 git merge 说明。</p>
-<p><img src="https://user-images.githubusercontent.com/24730006/33516827-2fa1bd56-d7b4-11e7-98cc-d18faf0e39ca.png" alt="image"></p>
-<p>当然如果修改了权限，git pull 之后也会变成默认权限（根据 umask 值确定）</p>
-<p>注意：当 <code>git config core.filemode true</code> 的时候，git 只记录文件是否可执行权限。比如说下方的 3.js 用户和用户组可读可写，但都没有执行权限，一旦设置执行权限就会触发 git 修改追踪，不设置则不需要追踪修改记录。一般我会把 <code>core.filemode</code> 设置为 false，这样就不会存在设置权限后还要 commit 的问题。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r-- 1 x x 0 Dec 12 21:15 3.js</span><br></pre></td></tr></table></figure>
-<p>当然也不建议这么做，可以看看后面的最佳实践。</p>
-<h2 id="为什么会更改"><a href="#为什么会更改" class="headerlink" title="为什么会更改"></a>为什么会更改</h2><p>新建一个文件那么用户和用户组就是当前的用户以及所在的用户组。但是如果另一个用户修改文件内容是不会修改文件用户所属的。</p>
-<p>那么这里我就猜测 git merge 的时候可能就是新建而不是修改。</p>
-<p>这里只要修改内容后再更改用户组，再使用 git merge 的时候如果文件新建的时间变成了最新的时间就是说明是新建而不是修改。</p>
-<p>ubuntu 有一个 <code>sudo debugfs -R filename mountdev</code> 的命令可以查看文件新建时间，但是我用了不可以。。不过我用 mac 的时候发现 mac 内的文件是可以查看文件新建时间的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">➜  test git init</span><br><span class="line">Initialized empty Git repository in /Users/lishude/Downloads/test/.git/</span><br><span class="line">➜  test git:(master) touch test.txt</span><br><span class="line">➜  test git:(master) ✗ git add .</span><br><span class="line">➜  test git:(master) ✗ git commit -m&quot;1&quot;</span><br><span class="line">[master (root-commit) c5fa95c] 1</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line"> create mode 100644 test.txt</span><br><span class="line">➜  test git:(master) stat test.txt</span><br><span class="line">16777220 1894632 -rw-r--r-- 1 lishude staff 0 2 &quot;Dec 17 18:07:10 2017&quot; &quot;Dec 17 18:06:55 2017&quot; &quot;Dec 17 18:06:55 2017&quot; &quot;Dec 17 18:06:44 2017&quot; 4194304 8 0 test.txt</span><br></pre></td></tr></table></figure>
-<p>这里我新建一个git仓库并且commit了一条。</p>
-<p>注意，mac 的 <code>stat file</code> 和 ubuntu 下的还不同，这里是有创建时间的，就是最后一个时间，不过格式就比 ubuntu 差了许多。</p>
-<p>然后我们再次 commit 然后修改用户组，最后 reset 查看文件信息。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">➜  test git:(master) git commit -am&quot;2&quot;</span><br><span class="line">[master 773907e] 2</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line">➜  test git:(master) stat test.txt</span><br><span class="line">16777220 1894632 -rw-r--r-- 1 lishude staff 0 4 &quot;Dec 17 18:07:48 2017&quot; &quot;Dec 17 18:07:38 2017&quot; &quot;Dec 17 18:07:38 2017&quot; &quot;Dec 17 18:06:44 2017&quot; 4194304 8 0 test.txt</span><br><span class="line">➜  test git:(master) sudo chown root test.txt</span><br><span class="line">➜  test git:(master) ll</span><br><span class="line">total 8</span><br><span class="line">-rw-r--r--  1 root  staff     4B 12 17 18:07 test.txt</span><br><span class="line">➜  test git:(master) git reset --hard HEAD~1</span><br><span class="line">HEAD is now at c5fa95c 1</span><br><span class="line">➜  test git:(master) stat test.txt</span><br><span class="line">16777220 1894740 -rw-r--r-- 1 lishude staff 0 2 &quot;Dec 17 18:09:18 2017&quot; &quot;Dec 17 18:09:15 2017&quot; &quot;Dec 17 18:09:15 2017&quot; &quot;Dec 17 18:09:15 2017&quot; 4194304 8 0 test.txt</span><br></pre></td></tr></table></figure>
-<p>通过实验确实是这样的，文件新建时间已经变成最新的了。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="使用特定用户执行"><a href="#使用特定用户执行" class="headerlink" title="使用特定用户执行"></a>使用特定用户执行</h3><p>比如说使用文件需要保留 www-data 权限就需要用这个</p>
-<p><code>sudo -u www-data git pull origin master</code></p>
-<p>但是需要注意的这个会修改所有需要更改的所有与当前版本库不同内容的文件的用户和用户组，并且同时也会会更改 <code>.git</code> 文件夹。</p>
-<h3 id="git-hook"><a href="#git-hook" class="headerlink" title="git hook"></a>git hook</h3><p>下面在 post 或者 merge 之后会触发钩子命令，也就是自动执行一些操作，这里我们就可以直接为文件更改权限或者修改用户和用户组。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># .git/hooks/post-merge</span></span><br><span class="line"></span><br><span class="line">sudo chmod -R 775 target</span><br><span class="line">sudo chown -R user:group target</span><br></pre></td></tr></table></figure>
-<p>这里说阻止其实没有办法阻止，总结一句话就是，git 不记录用户关系和除了执行权限的权限，所有的操作取决于执行git操作的用户。</p>
-<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><p>一般在生产环境最好不要更改文件的用户组或者权限。</p>
-<p>比如说 nginx 还有 php-fpm 等就直接使用当前用户（当然一般都是所属 root 和 sudos 用户组的），修改这些设置就不需要再更改用户。在 #1 有 nginx 和 php-fpm 的实践。</p>
-<p>那么设置文件权限呢？也是一样，不要直接在生产环境设置，而是再本地设置好（当 <code>git config core.filemode true</code> 时候 git 会跟踪文件权限）再上传到生产环境。</p>
-<h2 id="补充-git-指令"><a href="#补充-git-指令" class="headerlink" title="补充 git 指令"></a>补充 git 指令</h2><p>git 位于 <code>usr/bin/git</code> ，文件所属 root 以及 root 组，权限为755，所以所有的用户都可以执行。</p>
-<p>使用 git 进行 git pull 或者 git merge 的时候会以当前用户更改 <code>.git</code> 文件夹的用户和用户组，谨慎使用不同用户，最好按照最佳实践来做。</p>
-<p>在 #5 有用户与用户组的详细说明。 </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/为什么-git-pull-会修改文件权限和所属用户以及用户组？/" data-id="cjk9j9xg3000n0420yb6889bt" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/git/">git</a></li></ul>
-
     </footer>
   </div>
   
@@ -449,6 +652,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/">Unexpected end of JSON input while parsing near错误解决办法</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
           </li>
         
@@ -461,11 +668,7 @@
           </li>
         
           <li>
-            <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
+            <a href="/blog/2018/08/01/linux/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
       </ul>

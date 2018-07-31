@@ -70,6 +70,113 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux/Linux-sed-和-find-命令清单" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" class="article-date">
+  <time datetime="2018-05-19T22:52:41.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/">Linux sed 和 find 命令清单</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p>之前在使用 sed 就只在 ubuntu 上替换 apt 源用过。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i 's/us/cn/g' /etc/apt/sources.lit</span><br></pre></td></tr></table></figure>
+<p>一直还没记住，容易输错，结果经常就把 sources.list 文件破坏掉了 😓。</p>
+<p>sed 是流编辑器，读取一个文件，按照命令每次只处理一行。具体命令如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed [options] &apos;command&apos; file(s)</span><br></pre></td></tr></table></figure>
+<p>option 就是上述命令的 -i 部分，这个是修改源文件。处理行为默认是只输出到屏幕，加 -i 的参数了，这会修改源文件的。有个安全的方式就是使用 <code>-i.bak</code> 的形式先备份然后再修改。</p>
+<p><strong>其它的 option 选项</strong></p>
+<ul>
+<li>-e<script>或–expression=<script>：以选项中的指定的script来处理输入的文本文件；</li>
+<li>-f&lt;script文件&gt;或–file=&lt;script文件&gt;：以选项中指定的script文件来处理输入的文本文件；</li>
+<li>-n或–quiet或——silent：仅显示script处理后的结果；</li>
+<li>-V或–version：显示版本信息。</li>
+</ul>
+<p>command 参数包括两个部分，处理位置和处理方式。</p>
+<p>sed 读取一行处理一行，默认是每行都处理，另外提供了处理位置（Address），可以是行号，也可以是正则只要匹配才处理，不匹配就跳过进入下一行。</p>
+<p>选定行的范围使用 <code>,（逗号）</code>进行。</p>
+<ul>
+<li>所有在模板test和check所确定的范围内的行都被打印：<code>sed -n &#39;/test/,/check/p&#39; file</code></li>
+<li>打印从第5行开始到第一个包含以test开始的行之间的所有行：<code>sed -n &#39;5,/^test/p&#39; file</code></li>
+<li>对于模板test和west之间的行，每行的末尾用字符串aaa bbb替换：<code>sed &#39;/test/,/west/s/$/aaa bbb/&#39; file</code></li>
+</ul>
+<p>在处理位置之后再使用处理方式。</p>
+<p>几个常用的处理方式有新增（a），插入（i），删除（d），打印（p），替换（s）。</p>
+<p><strong>输出打印操作：p命令</strong></p>
+<ul>
+<li>打印第二行：<code>sed -n &#39;2p&#39; file</code></li>
+</ul>
+<p>需要注意的是如果不加 -n 的话，会打印两行。</p>
+<p><strong>删除操作：d命令</strong></p>
+<ul>
+<li>删除空白行：<code>sed &#39;/^$/d&#39; file</code></li>
+<li>删除文件的第2行：<code>sed &#39;2d&#39; file</code></li>
+<li>删除文件的第2行到末尾所有行：<code>sed &#39;2,$d&#39; file</code></li>
+</ul>
+<p><strong>追加（行下）：a\命令</strong></p>
+<ul>
+<li>将 this is a test line 追加到 以test 开头的行后面：<code>sed &#39;/^test/a\this is a test line&#39; file</code></li>
+<li>在 test.conf 文件第2行之后插入：<code>sed -i &#39;2a\this is a test line&#39; test.conf</code></li>
+<li>也可以直接使用在命令<code>a</code>后加空格的形式： <code>sed -i &#39;2a insert new lint&#39;</code></li>
+</ul>
+<p><strong>插入（行上）：i\命令</strong></p>
+<ul>
+<li>将 this is a test line 追加到以test开头的行前面：<code>sed &#39;/^test/i\this is a test line&#39; file</code></li>
+<li>在test.conf文件第5行之前插入：<code>sed -i &#39;5i\this is a test line&#39; test.conf</code></li>
+</ul>
+<p>当然还有最初说的 s 命令是指替换操作，可以直接搭配正规表示法。<code>sed -i &#39;s/us/cn/g&#39; /etc/apt/sources.lit</code> 这条命令就是把 <code>/etc/apt/sources.list</code> 文件中每行的 us 换成 cn，这个就是初始化 ubuntu server 的最常用的命令了。</p>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>Linux find命令用来在指定目录下查找文件。</p>
+<p>任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时，不设置任何参数，则find命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。</p>
+<p>语法格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find   path   -option   [   -print ]   [ -exec   -ok   command ]   &#123;&#125; ;</span><br></pre></td></tr></table></figure>
+<p>find 根据下列规则判断 path 和 expression，在命令列上第一个 <code>- ( ) , !</code>之前的部份为 path，之后的是 expression。如果 path 是空字串则使用目前路径，如果 expression 是空字串则使用 -print 为预设 expression。</p>
+<ul>
+<li>-atime n : 在过去 n 天过读取过的文件</li>
+<li>-ctime n : 在过去 n 天过修改过的文件</li>
+<li>-empty : 空的文件-gid n or -group name : gid 是 n 或是 group 名称是 name</li>
+<li>-name name, -iname name : 文件名称符合 name 的文件。iname 会忽略大小写</li>
+<li>-size n : 文件大小 是 n 单位，b 代表 512 位元组的区块，c 表示字元数，k 表示 kilo bytes，w 是二个位元组。</li>
+<li>-type c : 文件类型是 c 的文件。d: 目录；c: 字型装置文件；b: 区块装置文件；p: 具名贮列；f: 一般文件；l: 符号连结；s: socket</li>
+<li>-pid n : process id 是 n 的文件</li>
+</ul>
+<p>更多可参考：<a href="https://blog.csdn.net/xktxoo/article/details/77823520">https://blog.csdn.net/xktxoo/article/details/77823520</a></p>
+<h2 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h2><ul>
+<li><a href="http://man.linuxde.net/sed">http://man.linuxde.net/sed</a></li>
+<li><a href="http://www.runoob.com/linux/linux-comm-find.html">http://www.runoob.com/linux/linux-comm-find.html</a></li>
+</ul>
+</script></li></ul>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9jbx1800083n207l3opuyk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/sed/">sed</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-linux/nginx-user-模块详解" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/linux/nginx-user-模块详解/" class="article-date">
@@ -130,7 +237,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/nginx-user-模块详解/" data-id="cjk9j9xg0000j0420olm9cfw8" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/nginx-user-模块详解/" data-id="cjk9jbx1g000j3n20xusfogff" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
@@ -184,7 +291,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9j9xgx00220420mpsz575g" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9jbx25002a3n20k3fb65u9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -240,7 +347,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9j9xgk001k0420aappjdid" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9jbx1x001r3n20drqqfkw4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -302,286 +409,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9j9xfw000f0420x2uczxc8" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Ubuntu新建用户并赋予权限清单/" data-id="cjk9jbx1c000d3n20xrdeal4d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ubuntu/">ubuntu</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/bash-键盘高级操作技巧" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/linux/bash-键盘高级操作技巧/" class="article-date">
-  <time datetime="2018-05-19T22:40:43.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/linux/bash-键盘高级操作技巧/">bash 键盘高级操作技巧</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ctrl-a</td>
-<td>移动光标到行首。</td>
-</tr>
-<tr>
-<td>Ctrl-e</td>
-<td>移动光标到行尾。</td>
-</tr>
-<tr>
-<td>Ctrl-f</td>
-<td>光标前移一个字符；和右箭头作用一样。</td>
-</tr>
-<tr>
-<td>Ctrl-b</td>
-<td>光标后移一个字符；和左箭头作用一样。</td>
-</tr>
-<tr>
-<td>Alt-f</td>
-<td>光标前移一个字（word\单词）。</td>
-</tr>
-<tr>
-<td>Alt-b</td>
-<td>光标后移一个字（word\单词）。</td>
-</tr>
-<tr>
-<td>Ctrl-l</td>
-<td>清空屏幕，移动光标到左上角。clear 命令完成同样的工作。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="文本编辑命令"><a href="#文本编辑命令" class="headerlink" title="文本编辑命令"></a>文本编辑命令</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ctrl-d</td>
-<td>删除光标位置的字符。</td>
-</tr>
-<tr>
-<td>Ctrl-t</td>
-<td>光标位置的字符和光标前面的字符互换位置。</td>
-</tr>
-<tr>
-<td>Alt-t</td>
-<td>光标位置的字和其前面的字互换位置。</td>
-</tr>
-<tr>
-<td>Alt-l</td>
-<td>把从光标位置到字尾的字符转换成小写字母。</td>
-</tr>
-<tr>
-<td>Alt-u</td>
-<td>把从光标位置到字尾的字符转换成大写字母。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="剪切和粘贴命令"><a href="#剪切和粘贴命令" class="headerlink" title="剪切和粘贴命令"></a>剪切和粘贴命令</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ctrl-k</td>
-<td>剪切从光标位置到行尾的文本。</td>
-</tr>
-<tr>
-<td>Ctrl-u</td>
-<td>剪切从光标位置到行首的文本。</td>
-</tr>
-<tr>
-<td>Alt-d</td>
-<td>剪切从光标位置到词尾的文本。</td>
-</tr>
-<tr>
-<td>Alt-Backspace</td>
-<td>剪切从光标位置到词头的文本。如果光标在一个单词的开头，剪切前一个单词。</td>
-</tr>
-<tr>
-<td>Ctrl-y</td>
-<td>把剪切环中的文本粘贴到光标位置。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="重新执行命令"><a href="#重新执行命令" class="headerlink" title="重新执行命令"></a>重新执行命令</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ctrl-p</td>
-<td>移动到上一个历史条目。类似于上箭头按键。</td>
-</tr>
-<tr>
-<td>Ctrl-n</td>
-<td>移动到下一个历史条目。类似于下箭头按键。</td>
-</tr>
-<tr>
-<td>Alt-&lt;</td>
-<td>移动到历史列表开头。</td>
-</tr>
-<tr>
-<td>Alt-&gt;</td>
-<td>移动到历史列表结尾，即当前命令行。</td>
-</tr>
-<tr>
-<td>Ctrl-r</td>
-<td>反向递增搜索。从当前命令行开始，向上递增搜索。</td>
-</tr>
-<tr>
-<td>Alt-p</td>
-<td>反向搜索，不是递增顺序。输入要查找的字符串，然后按下 Enter，执行搜索。</td>
-</tr>
-<tr>
-<td>Alt-n</td>
-<td>向前搜索，非递增顺序。</td>
-</tr>
-<tr>
-<td>Ctrl-o</td>
-<td>执行历史列表中的当前项，并移到下一个。如果你想要执行历史列表中一系列的命令，这很方便。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="控制命令"><a href="#控制命令" class="headerlink" title="控制命令"></a>控制命令</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ctrl + l</td>
-<td>清屏</td>
-</tr>
-<tr>
-<td>Ctrl + o</td>
-<td>执行当前命令，并选择上一条命令</td>
-</tr>
-<tr>
-<td>Ctrl + s</td>
-<td>阻止屏幕输出</td>
-</tr>
-<tr>
-<td>Ctrl + q</td>
-<td>允许屏幕输出</td>
-</tr>
-<tr>
-<td>Ctrl + c</td>
-<td>终止命令</td>
-</tr>
-<tr>
-<td>Ctrl + z</td>
-<td>挂起命令</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Bang-命令"><a href="#Bang-命令" class="headerlink" title="Bang (!) 命令"></a>Bang (!) 命令</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>!blah:p</td>
-<td>仅打印输出，而不执行</td>
-</tr>
-<tr>
-<td>!$</td>
-<td>上一条命令的最后一个参数，与 Alt + . 相同</td>
-</tr>
-<tr>
-<td>!$:p</td>
-<td>打印输出 !$ 的内容</td>
-</tr>
-<tr>
-<td>!*</td>
-<td>上一条命令的所有参数</td>
-</tr>
-<tr>
-<td>!*:p</td>
-<td>打印输出 !* 的内容</td>
-</tr>
-<tr>
-<td>^blah</td>
-<td>删除上一条命令中的 blah</td>
-</tr>
-<tr>
-<td>^blah^foo</td>
-<td>将上一条命令中的 blah 替换为 foo</td>
-</tr>
-<tr>
-<td>^blah^foo^</td>
-<td>将上一条命令中所有的 blah 都替换为 foo</td>
-</tr>
-<tr>
-<td>!!</td>
-<td>重复最后一次执行的命令。可能按下上箭头按键和 enter 键更容易些。</td>
-</tr>
-<tr>
-<td>!number</td>
-<td>重复历史列表中第 number 行的命令。</td>
-</tr>
-<tr>
-<td>!string</td>
-<td>重复最近历史列表中，以这个字符串开头的命令。</td>
-</tr>
-<tr>
-<td>!?string</td>
-<td>重复最近历史列表中，包含这个字符串的命令。</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Mac-元键"><a href="#Mac-元键" class="headerlink" title="Mac 元键"></a>Mac 元键</h2><p>在 Windows 中 <kbd>Alt</kbd> 成为元键，上述的快捷键都有。同样的在 Mac 中是 <kbd>Option</kbd> ，不过默认情况下在终端中并没有作用，需要如下图所示的设置即可。</p>
-<p><img width="668" alt="2017-12-14 1 58 34" src="https://user-images.githubusercontent.com/24730006/33977746-53c2d3c4-e0d7-11e7-9547-680da820852f.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/bash-键盘高级操作技巧/" data-id="cjk9j9xfy000h0420imd2its1" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/bash/">bash</a></li></ul>
 
     </footer>
   </div>
@@ -647,6 +478,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/">Unexpected end of JSON input while parsing near错误解决办法</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
           </li>
         
@@ -659,11 +494,7 @@
           </li>
         
           <li>
-            <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
+            <a href="/blog/2018/08/01/linux/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
       </ul>

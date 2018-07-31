@@ -70,6 +70,90 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux/在-Ubuntu-上安装-Docker" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" class="article-date">
+  <time datetime="2018-05-20T07:27:01.000Z" itemprop="datePublished">2018-05-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/">在 Ubuntu 上安装 Docker</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Docker是世界领先的软件容器平台。 开发者可以通过 Docker 解决协作时环境不一致的问题。 运维人员可以使用 Docker 在容器中运行和管理应用程序，以获得更好的计算密度。 企业可以使用 Docker 构建敏捷软件持续交付流程，更快，更安全，更可靠地为 Linux 和 Windows Server 上的应用程序提供新功能。</p>
+</blockquote>
+<h1 id="在-Ubuntu-上安装-Docker"><a href="#在-Ubuntu-上安装-Docker" class="headerlink" title="在 Ubuntu 上安装 Docker"></a>在 Ubuntu 上安装 Docker</h1><p>建议把Docker安装在linux系统上学习使用，如果使用Windows或者Mac可以使用虚拟机安装Ubuntu进行学习。</p>
+<blockquote>
+<p>补充一点，如果在windows上安装，官方推荐使用 windows 10 专业版，因为这个版本才包含Hyper-V的虚拟化服务，能让docker具有像linux一样的底层兼容性，如果没有使用这个版本，官方建议下载docker tool进行安装。当然还是建议Windows用户装linux虚拟机进行学习。</p>
+</blockquote>
+<h1 id="Docker-版本说明"><a href="#Docker-版本说明" class="headerlink" title="Docker 版本说明"></a>Docker 版本说明</h1><p>Docker在apt源仓库里面注册了很多名称，比如docker.io，比如docker-engine，这些都不是我们需要的旧版本，新版的Docker就只有两个，一个是社区版本的docker-ce，一个是收费的企业版docker-ee。  </p>
+<p>不过，目前（2017年4月7日 17:01:37），ubuntu官方源还没有新版的docker，所以我们可以按照<a href="https://store.docker.com/editions/community/docker-ce-server-ubuntu" target="_blank" rel="noopener">官方的说明</a>，一步一步来安装docker。</p>
+<h1 id="使用国内源安装"><a href="#使用国内源安装" class="headerlink" title="使用国内源安装"></a>使用国内源安装</h1><p>不过这太慢了，还有可能失败，因为 Docker 的安装资源文件存放在Amazon S3，会间歇性连接失败。所以安装Docker的时候，会比较慢。 这里我推荐使用daocloude的加速服务，高速安装Docker。</p>
+<p><code>sudo curl -sSL https://get.daocloud.io/docker | sh</code></p>
+<p>等待大概两分钟就自动安装好了，然后运行<code>docker -v</code>，如果出现docker的版本就代表安装好了。</p>
+<h3 id="使用官方脚本-中国镜像安装"><a href="#使用官方脚本-中国镜像安装" class="headerlink" title="使用官方脚本+中国镜像安装"></a>使用官方脚本+中国镜像安装</h3><p>下方命令适用于 Ubuntu 并且软件包源是阿里云的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sudo sh get-docker.sh --mirror Aliyun</span><br></pre></td></tr></table></figure>
+<p>安装完之后还需要配置镜像加速。</p>
+<h1 id="配置国内镜像加速"><a href="#配置国内镜像加速" class="headerlink" title="配置国内镜像加速"></a>配置国内镜像加速</h1><p>同样的道理，使用docker官方的镜像下载服务超级慢。也是daocloud.io的加速服务，一行命令行搞定。这个是我的加速服务地址，当然你也可以用，我建议你在<a href="https://www.daocloud.io/mirror" target="_blank" rel="noopener">Daocloud</a>注册一个新账号然后使用你个人的加速地址。</p>
+<p><code>sudo curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://67daa203.m.daocloud.io</code>  </p>
+<p>成功之后，运行<code>docker pull ubuntu</code>可以试一试速度。</p>
+<h3 id="手动设置"><a href="#手动设置" class="headerlink" title="手动设置"></a>手动设置</h3><p>对于使用<code>systemd</code> 的系统，请在 <code>/etc/docker/daemon.json</code> 中写入如下内容（如果文件不存在请新建该文件）</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"registry-mirrors"</span>: [</span><br><span class="line">    <span class="string">"https://registry.docker-cn.com"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里使用的 docker 中国镜像源，服务器是其和阿里云合作的。之后重新启动服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h1 id="设置当前用户到docker组"><a href="#设置当前用户到docker组" class="headerlink" title="设置当前用户到docker组"></a>设置当前用户到docker组</h1><p>如果当前用户不是root组，那么是无法直接运行docker命令的，所以在安装完成之后，建议设置当前用户到docker组中。</p>
+<p><code>sudo gpasswd -a your-user-name docker</code></p>
+<p>这样做之后，直接可以运行<code>docker images</code>等命令再也不需要root权限了。</p>
+<h1 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## install</span><br><span class="line">sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">## update</span><br><span class="line">docker-compose migrate-to-labels</span><br><span class="line">## uninstall</span><br><span class="line">sudo rm /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+<h1 id="Docker-tips"><a href="#Docker-tips" class="headerlink" title="Docker tips"></a>Docker tips</h1><h2 id="权限不足错误"><a href="#权限不足错误" class="headerlink" title="权限不足错误"></a>权限不足错误</h2><h3 id="zsh-错误"><a href="#zsh-错误" class="headerlink" title="zsh 错误"></a>zsh 错误</h3><p>修复方式： </p>
+<p><code>sudo chown -R [username]:staff &quot;$ZSH_CACHE_DIR&quot;</code></p>
+<p>详细：<a href="https://github.com/robbyrussell/oh-my-zsh/issues/3700" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh/issues/3700</a></p>
+<h2 id="unix-socket-错误"><a href="#unix-socket-错误" class="headerlink" title="unix socket 错误"></a>unix socket 错误</h2><p>默认情况下，docker 命令会使用 Unix socket 与 Docker 引擎通讯。而只有 root 用户和 docker 组的用户才可以访问 Docker 引擎的 Unix socket。出于安全考虑，一般 Linux 系统上不会直接使用 root 用户。因此，更好地做法是将需要使用 docker 的用户加入 docker 用户组。</p>
+<p>建立 docker 组：</p>
+<p><code>$ sudo groupadd docker</code></p>
+<p>将当前用户加入 docker 组：</p>
+<p><code>$ sudo usermod -aG docker $USER</code></p>
+<p>退出当前终端并重新登录，进行如下测试。</p>
+<h2 id="国内使用-apt-速度很慢"><a href="#国内使用-apt-速度很慢" class="headerlink" title="国内使用 apt 速度很慢"></a>国内使用 apt 速度很慢</h2><p>通常在 Dockerfile 内会使用 apt 进行安装软件，但是 <code>apt update</code> 会因为网络原因很慢很慢，这个时候可以加上镜像源。 </p>
+<p>解决方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN sed -i &apos;s/http:\/\/archive\.ubuntu\.com\/ubuntu\//http:\/\/mirrors\.163\.com\/ubuntu\//g&apos; /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<h2 id="使用前台命令运行容器"><a href="#使用前台命令运行容器" class="headerlink" title="使用前台命令运行容器"></a>使用前台命令运行容器</h2><p>例如在 nginx 的官方版本中有设置 </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>, ]</span></span><br></pre></td></tr></table></figure>
+<p>所以不要在 Dockerfile 中使用 <code>service xx start</code> 或者 <code>systemctl start xx.service</code>.</p>
+<p>对于JS而言，npm run 就是使用的后台命令。比如说在 <code>npm start</code> 的命令是 <code>node index.js</code> 的话，而 <code>index.js</code> 是一个服务器应用，那么在 Docker 中不会成功运行，而且运行之后会自动退出容器。</p>
+<h2 id="快速下载安装"><a href="#快速下载安装" class="headerlink" title="快速下载安装"></a>快速下载安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sfSL https://get.docker.com | sudo sh -s --mirror Aliyun</span><br><span class="line">curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sudo sh -s http://67daa203.m.daocloud.io</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在-Ubuntu-上安装-Docker/" data-id="cjk9jbx1k000t3n20sd7stigx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Docker/">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs/函数节流与函数防抖" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/20/nodejs/函数节流与函数防抖/" class="article-date">
@@ -126,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/函数节流与函数防抖/" data-id="cjk9j9xgh001f0420vodrafij" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/函数节流与函数防抖/" data-id="cjk9jbx1u001k3n20vbsgej8j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -184,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/" data-id="cjk9j9xga00100420qm6ys96u" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/ES5中数组函数对空位的处理/" data-id="cjk9jbx1m00103n20cw8a0egz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -231,7 +315,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在git中新建一个空白分支/" data-id="cjk9j9xg6000u0420wa3f8abb" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/在git中新建一个空白分支/" data-id="cjk9jbx1l000w3n20sa30paco" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/git/">git</a></li></ul>
@@ -310,117 +394,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" data-id="cjk9j9xfq000a0420ipcjkeiw" class="article-share-link">Share</a>
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" data-id="cjk9jbx1700073n20j86ctt4r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux/Linux-sed-和-find-命令清单" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" class="article-date">
-  <time datetime="2018-05-19T22:52:41.000Z" itemprop="datePublished">2018-05-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/">Linux sed 和 find 命令清单</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p>之前在使用 sed 就只在 ubuntu 上替换 apt 源用过。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i 's/us/cn/g' /etc/apt/sources.lit</span><br></pre></td></tr></table></figure>
-<p>一直还没记住，容易输错，结果经常就把 sources.list 文件破坏掉了 😓。</p>
-<p>sed 是流编辑器，读取一个文件，按照命令每次只处理一行。具体命令如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed [options] &apos;command&apos; file(s)</span><br></pre></td></tr></table></figure>
-<p>option 就是上述命令的 -i 部分，这个是修改源文件。处理行为默认是只输出到屏幕，加 -i 的参数了，这会修改源文件的。有个安全的方式就是使用 <code>-i.bak</code> 的形式先备份然后再修改。</p>
-<p><strong>其它的 option 选项</strong></p>
-<ul>
-<li>-e<script>或–expression=<script>：以选项中的指定的script来处理输入的文本文件；</li>
-<li>-f&lt;script文件&gt;或–file=&lt;script文件&gt;：以选项中指定的script文件来处理输入的文本文件；</li>
-<li>-n或–quiet或——silent：仅显示script处理后的结果；</li>
-<li>-V或–version：显示版本信息。</li>
-</ul>
-<p>command 参数包括两个部分，处理位置和处理方式。</p>
-<p>sed 读取一行处理一行，默认是每行都处理，另外提供了处理位置（Address），可以是行号，也可以是正则只要匹配才处理，不匹配就跳过进入下一行。</p>
-<p>选定行的范围使用 <code>,（逗号）</code>进行。</p>
-<ul>
-<li>所有在模板test和check所确定的范围内的行都被打印：<code>sed -n &#39;/test/,/check/p&#39; file</code></li>
-<li>打印从第5行开始到第一个包含以test开始的行之间的所有行：<code>sed -n &#39;5,/^test/p&#39; file</code></li>
-<li>对于模板test和west之间的行，每行的末尾用字符串aaa bbb替换：<code>sed &#39;/test/,/west/s/$/aaa bbb/&#39; file</code></li>
-</ul>
-<p>在处理位置之后再使用处理方式。</p>
-<p>几个常用的处理方式有新增（a），插入（i），删除（d），打印（p），替换（s）。</p>
-<p><strong>输出打印操作：p命令</strong></p>
-<ul>
-<li>打印第二行：<code>sed -n &#39;2p&#39; file</code></li>
-</ul>
-<p>需要注意的是如果不加 -n 的话，会打印两行。</p>
-<p><strong>删除操作：d命令</strong></p>
-<ul>
-<li>删除空白行：<code>sed &#39;/^$/d&#39; file</code></li>
-<li>删除文件的第2行：<code>sed &#39;2d&#39; file</code></li>
-<li>删除文件的第2行到末尾所有行：<code>sed &#39;2,$d&#39; file</code></li>
-</ul>
-<p><strong>追加（行下）：a\命令</strong></p>
-<ul>
-<li>将 this is a test line 追加到 以test 开头的行后面：<code>sed &#39;/^test/a\this is a test line&#39; file</code></li>
-<li>在 test.conf 文件第2行之后插入：<code>sed -i &#39;2a\this is a test line&#39; test.conf</code></li>
-<li>也可以直接使用在命令<code>a</code>后加空格的形式： <code>sed -i &#39;2a insert new lint&#39;</code></li>
-</ul>
-<p><strong>插入（行上）：i\命令</strong></p>
-<ul>
-<li>将 this is a test line 追加到以test开头的行前面：<code>sed &#39;/^test/i\this is a test line&#39; file</code></li>
-<li>在test.conf文件第5行之前插入：<code>sed -i &#39;5i\this is a test line&#39; test.conf</code></li>
-</ul>
-<p>当然还有最初说的 s 命令是指替换操作，可以直接搭配正规表示法。<code>sed -i &#39;s/us/cn/g&#39; /etc/apt/sources.lit</code> 这条命令就是把 <code>/etc/apt/sources.list</code> 文件中每行的 us 换成 cn，这个就是初始化 ubuntu server 的最常用的命令了。</p>
-<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>Linux find命令用来在指定目录下查找文件。</p>
-<p>任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时，不设置任何参数，则find命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。</p>
-<p>语法格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find   path   -option   [   -print ]   [ -exec   -ok   command ]   &#123;&#125; ;</span><br></pre></td></tr></table></figure>
-<p>find 根据下列规则判断 path 和 expression，在命令列上第一个 <code>- ( ) , !</code>之前的部份为 path，之后的是 expression。如果 path 是空字串则使用目前路径，如果 expression 是空字串则使用 -print 为预设 expression。</p>
-<ul>
-<li>-atime n : 在过去 n 天过读取过的文件</li>
-<li>-ctime n : 在过去 n 天过修改过的文件</li>
-<li>-empty : 空的文件-gid n or -group name : gid 是 n 或是 group 名称是 name</li>
-<li>-name name, -iname name : 文件名称符合 name 的文件。iname 会忽略大小写</li>
-<li>-size n : 文件大小 是 n 单位，b 代表 512 位元组的区块，c 表示字元数，k 表示 kilo bytes，w 是二个位元组。</li>
-<li>-type c : 文件类型是 c 的文件。d: 目录；c: 字型装置文件；b: 区块装置文件；p: 具名贮列；f: 一般文件；l: 符号连结；s: socket</li>
-<li>-pid n : process id 是 n 的文件</li>
-</ul>
-<p>更多可参考：<a href="https://blog.csdn.net/xktxoo/article/details/77823520">https://blog.csdn.net/xktxoo/article/details/77823520</a></p>
-<h2 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h2><ul>
-<li><a href="http://man.linuxde.net/sed">http://man.linuxde.net/sed</a></li>
-<li><a href="http://www.runoob.com/linux/linux-comm-find.html">http://www.runoob.com/linux/linux-comm-find.html</a></li>
-</ul>
-</script></li></ul>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9j9xfs000b0420yulmod5f" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/sed/">sed</a></li></ul>
 
     </footer>
   </div>
@@ -486,6 +463,10 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/08/01/nodejs/Unexpected-end-of-JSON-input-while-parsing-near错误解决办法/">Unexpected end of JSON input while parsing near错误解决办法</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/08/01/blockchain/比特币中交易延展性问题/">比特币中交易延展性问题</a>
           </li>
         
@@ -498,11 +479,7 @@
           </li>
         
           <li>
-            <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
+            <a href="/blog/2018/08/01/linux/ITerm2-技巧/">ITerm2 技巧</a>
           </li>
         
       </ul>
