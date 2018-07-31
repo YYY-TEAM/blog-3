@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Lishude&#39;s Web Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
+<meta name="keywords" content="blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lishude&#39;s Web Note">
+<meta property="og:url" content="https://islishude.github.io/blog/page/3/index.html">
+<meta property="og:site_name" content="Lishude&#39;s Web Note">
+<meta property="og:description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lishude&#39;s Web Note">
+<meta name="twitter:description" content="李书德的网络日志，本博客使用用“保持署名—非商用”创意共享4.0许可证，转载只要保持原作者署名和非商用。">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Lishude&#39;s Web Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Lishude&#39;s Web Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/blog/" id="subtitle">Node.js/Blockchain/Go</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://islishude.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-linux/Debian-APT-Nginx-各个版本的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" class="article-date">
+  <time datetime="2018-05-19T22:53:19.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/">Debian APT Nginx 各个版本的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用用 ubuntu 安装 nginx 很简单，直接就两条命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install nginx</span><br></pre></td></tr></table></figure>
+<p>然后就会显示如下所示的内容：</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/36289809-061fbada-12fd-11e8-8cde-2a3b3a1a326e.png" alt="image"></p>
+<p>可以看到这里除了几个必要库依赖包（lib*)，还需要安装 <code>nginx</code> <code>nginx-common</code> <code>nginx-core</code>，那么这三个文件都有什么区别？</p>
+<p>简单的使用 <code>apt show package-name</code> 就可以了解包的描述。</p>
+<h2 id="nginx-common-包"><a href="#nginx-common-包" class="headerlink" title="nginx-common 包"></a>nginx-common 包</h2><blockquote>
+<p>This package contains base configuration files used by all versions of<br> nginx.</p>
+</blockquote>
+<p>也就是说这个就是所有 nginx 的配置文件。</p>
+<h2 id="nginx-包"><a href="#nginx-包" class="headerlink" title="nginx 包"></a>nginx 包</h2><blockquote>
+<p>This is a dependency package to install either nginx-core (by default),<br> nginx-full, nginx-light, or nginx-extras.</p>
+</blockquote>
+<p>也就是说是 nginx-core 等的依赖包。</p>
+<p>安装后查看安装内容，其实全部都是 Doc 文档。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ dpkg-query -L nginx</span><br><span class="line">/.</span><br><span class="line">/usr</span><br><span class="line">/usr/share</span><br><span class="line">/usr/share/doc</span><br><span class="line">/usr/share/doc/nginx</span><br><span class="line">/usr/share/doc/nginx/copyright</span><br><span class="line">/usr/share/doc/nginx/changelog.Debian.gz</span><br></pre></td></tr></table></figure>
+<p>那 nginx-full nginx-light nginx-extras 这三者是什么？</p>
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx-*"></a>nginx-*</h2><p>nginx 一个重要的特点就是轻量级、模块化。所谓模块化就是主要的功能很少，添加的功能主要靠各个模块。</p>
+<p>那么 <code>nginx-*</code> 就是含有不同模块的包，使用 <code>apt install nginx</code> 默认安装的是 <code>nginx-core</code> 。</p>
+<p><code>nginx-full</code> 包中默认包含了一下模块。</p>
+<ul>
+<li>标准模块包含了：Core, Access, Auth Basic, Auto Index, Browser, Charset, Empty GIF, FastCGI,Geo, Gzip, Headers, Index, Limit Requests, Limit Zone, Log, Map, Memcached,Proxy, Referer, Rewrite, SCGI, Split Clients, SSI, Upstream, User ID, UWSGI。</li>
+<li>可选模块包含了：Addition, Debug, GeoIP, Gzip Precompression, HTTP Sub, Image Filter, IPv6,RealIP, Stub Status, WebDAV, XSLT。</li>
+<li>邮件相关模块包含了：Mail Core, IMAP, POP3, SMTP, SSL。</li>
+<li>第三方模块包含了：Echo, Upstream Fair Queue, DAV Ext。</li>
+</ul>
+<p>具体如下图</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/36290025-5a11f09e-12fe-11e8-8f6a-9f1813d34a89.png" alt="image"></p>
+<p>那么其它包 <code>nginx-light</code> 等可以直接使用 <code>apt show nginx-light</code> 显示具体内容。</p>
+<h2 id="nginx-版本区别"><a href="#nginx-版本区别" class="headerlink" title="nginx 版本区别"></a>nginx 版本区别</h2><p>如果我们用源码包安装会看到下面几个版本。</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/36290157-eaa56906-12fe-11e8-8872-651b67de44e1.png" alt="image"></p>
+<ul>
+<li>Maintainline 开发版</li>
+<li>Stable 稳定版</li>
+<li>legacy 历史版本</li>
+</ul>
+<p>具体就是其中文含义，在生产环境一般我们使用 Stable 版本。而在 APT 上也是此版本。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" data-id="cjk9iuzej0007ma20c9fmg9np" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux/Linux-sed-和-find-命令清单" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" class="article-date">
+  <time datetime="2018-05-19T22:52:41.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/">Linux sed 和 find 命令清单</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p>之前在使用 sed 就只在 ubuntu 上替换 apt 源用过。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i 's/us/cn/g' /etc/apt/sources.lit</span><br></pre></td></tr></table></figure>
+<p>一直还没记住，容易输错，结果经常就把 sources.list 文件破坏掉了 😓。</p>
+<p>sed 是流编辑器，读取一个文件，按照命令每次只处理一行。具体命令如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed [options] &apos;command&apos; file(s)</span><br></pre></td></tr></table></figure>
+<p>option 就是上述命令的 -i 部分，这个是修改源文件。处理行为默认是只输出到屏幕，加 -i 的参数了，这会修改源文件的。有个安全的方式就是使用 <code>-i.bak</code> 的形式先备份然后再修改。</p>
+<p><strong>其它的 option 选项</strong></p>
+<ul>
+<li>-e<script>或–expression=<script>：以选项中的指定的script来处理输入的文本文件；</li>
+<li>-f&lt;script文件&gt;或–file=&lt;script文件&gt;：以选项中指定的script文件来处理输入的文本文件；</li>
+<li>-n或–quiet或——silent：仅显示script处理后的结果；</li>
+<li>-V或–version：显示版本信息。</li>
+</ul>
+<p>command 参数包括两个部分，处理位置和处理方式。</p>
+<p>sed 读取一行处理一行，默认是每行都处理，另外提供了处理位置（Address），可以是行号，也可以是正则只要匹配才处理，不匹配就跳过进入下一行。</p>
+<p>选定行的范围使用 <code>,（逗号）</code>进行。</p>
+<ul>
+<li>所有在模板test和check所确定的范围内的行都被打印：<code>sed -n &#39;/test/,/check/p&#39; file</code></li>
+<li>打印从第5行开始到第一个包含以test开始的行之间的所有行：<code>sed -n &#39;5,/^test/p&#39; file</code></li>
+<li>对于模板test和west之间的行，每行的末尾用字符串aaa bbb替换：<code>sed &#39;/test/,/west/s/$/aaa bbb/&#39; file</code></li>
+</ul>
+<p>在处理位置之后再使用处理方式。</p>
+<p>几个常用的处理方式有新增（a），插入（i），删除（d），打印（p），替换（s）。</p>
+<p><strong>输出打印操作：p命令</strong></p>
+<ul>
+<li>打印第二行：<code>sed -n &#39;2p&#39; file</code></li>
+</ul>
+<p>需要注意的是如果不加 -n 的话，会打印两行。</p>
+<p><strong>删除操作：d命令</strong></p>
+<ul>
+<li>删除空白行：<code>sed &#39;/^$/d&#39; file</code></li>
+<li>删除文件的第2行：<code>sed &#39;2d&#39; file</code></li>
+<li>删除文件的第2行到末尾所有行：<code>sed &#39;2,$d&#39; file</code></li>
+</ul>
+<p><strong>追加（行下）：a\命令</strong></p>
+<ul>
+<li>将 this is a test line 追加到 以test 开头的行后面：<code>sed &#39;/^test/a\this is a test line&#39; file</code></li>
+<li>在 test.conf 文件第2行之后插入：<code>sed -i &#39;2a\this is a test line&#39; test.conf</code></li>
+<li>也可以直接使用在命令<code>a</code>后加空格的形式： <code>sed -i &#39;2a insert new lint&#39;</code></li>
+</ul>
+<p><strong>插入（行上）：i\命令</strong></p>
+<ul>
+<li>将 this is a test line 追加到以test开头的行前面：<code>sed &#39;/^test/i\this is a test line&#39; file</code></li>
+<li>在test.conf文件第5行之前插入：<code>sed -i &#39;5i\this is a test line&#39; test.conf</code></li>
+</ul>
+<p>当然还有最初说的 s 命令是指替换操作，可以直接搭配正规表示法。<code>sed -i &#39;s/us/cn/g&#39; /etc/apt/sources.lit</code> 这条命令就是把 <code>/etc/apt/sources.list</code> 文件中每行的 us 换成 cn，这个就是初始化 ubuntu server 的最常用的命令了。</p>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>Linux find命令用来在指定目录下查找文件。</p>
+<p>任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时，不设置任何参数，则find命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。</p>
+<p>语法格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find   path   -option   [   -print ]   [ -exec   -ok   command ]   &#123;&#125; ;</span><br></pre></td></tr></table></figure>
+<p>find 根据下列规则判断 path 和 expression，在命令列上第一个 <code>- ( ) , !</code>之前的部份为 path，之后的是 expression。如果 path 是空字串则使用目前路径，如果 expression 是空字串则使用 -print 为预设 expression。</p>
+<ul>
+<li>-atime n : 在过去 n 天过读取过的文件</li>
+<li>-ctime n : 在过去 n 天过修改过的文件</li>
+<li>-empty : 空的文件-gid n or -group name : gid 是 n 或是 group 名称是 name</li>
+<li>-name name, -iname name : 文件名称符合 name 的文件。iname 会忽略大小写</li>
+<li>-size n : 文件大小 是 n 单位，b 代表 512 位元组的区块，c 表示字元数，k 表示 kilo bytes，w 是二个位元组。</li>
+<li>-type c : 文件类型是 c 的文件。d: 目录；c: 字型装置文件；b: 区块装置文件；p: 具名贮列；f: 一般文件；l: 符号连结；s: socket</li>
+<li>-pid n : process id 是 n 的文件</li>
+</ul>
+<p>更多可参考：<a href="https://blog.csdn.net/xktxoo/article/details/77823520">https://blog.csdn.net/xktxoo/article/details/77823520</a></p>
+<h2 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h2><ul>
+<li><a href="http://man.linuxde.net/sed">http://man.linuxde.net/sed</a></li>
+<li><a href="http://www.runoob.com/linux/linux-comm-find.html">http://www.runoob.com/linux/linux-comm-find.html</a></li>
+</ul>
+</script></li></ul>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9iuzek0008ma20sej2h1l6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/sed/">sed</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux/nginx-user-模块详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/nginx-user-模块详解/" class="article-date">
+  <time datetime="2018-05-19T22:51:54.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/linux/nginx-user-模块详解/">nginx user 模块详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>nginx 运行后可以指定用户，比如说一个静态网页服务器的文件目录的不同的用户有不同的访问权限，使用 nginx 指定用户就可以有权限对此目录读写。</p>
+<p>我其实很好奇怎么直接指定用户的，而且运行nginx的时候也没有需要输入密码之类旳。</p>
+<p>在网上查找资料后有以下发现：</p>
+<p>Nginx 主进程（master process）会以 root 权限运行，之后主进程会读取 <code>/etc/nginx/nginx.conf</code> 文件中的 user 模块的配置，nginx 会使用这个指定的用户启动工作进程（ worker process）。</p>
+<p>那为什么主进程需要使用 root？因为只有 root 可以监听小于1024的端口号，通常 webserver 使用 80/443 端口，这也就是为什么需要 root 来运行了。如果要更改非root用户来运行，需要更改下面的文件用户和用户组，当然你也就不能使用 &lt;1024 的端口了。 </p>
+<ul>
+<li>error_log</li>
+<li>access_log</li>
+<li>pid</li>
+<li>client_body_temp_path</li>
+<li>fastcgi_temp_path</li>
+<li>proxy_temp_path</li>
+<li>scgi_temp_path</li>
+<li>uwsgi_temp_path</li>
+</ul>
+<p>好了，具体进程运行如下图所示。</p>
+<p><img src="https://user-images.githubusercontent.com/24730006/33918362-d26099e0-dfed-11e7-9c84-9d9567b2f658.png" alt="image"></p>
+<p>这里可以看到 nginx 只有一个主进程和多个工作进程，主进程主要读取和评估配置文件正确性，以及管理工作进程。工作进程是真正的网络请求处理的进程。</p>
+<p>如果主进程使用root运行，那么nginx 将会调用 setuid()/setgid() 去设置 user/group。如果 group 没有特别指定，那么 nginx 会使用 user 相同的名称设置 group。默认为 <code>nobody nogroup</code> 或者安装nginx的时候在  <code>./configure</code> 指定的  <code>--user=USER</code> 和 <code>--group=GROUP</code></p>
+<p><img src="https://user-images.githubusercontent.com/24730006/34400643-7f56ac3e-ebce-11e7-8f7a-d5aea792bfbf.png" alt="image"></p>
+<p><a href="http://nginx.org/en/docs/ngx_core_module.html#user" target="_blank" rel="noopener">配置语法</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax: user user [group];</span><br><span class="line">defualt: user nobody nobody;</span><br><span class="line">Context: main</span><br></pre></td></tr></table></figure>
+<p>如果使用了 php 的话，那么同时还需要编辑 <a href="http://php.net/manual/en/install.fpm.configuration.php" target="_blank" rel="noopener">php-fpm.conf</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">; Set permissions for unix socket, if one is used. In Linux, read/write</span><br><span class="line">; permissions must be set in order to allow connections from a web server. Many</span><br><span class="line">; BSD-derived systems allow connections regardless of permissions.</span><br><span class="line">; Default Values: user and group are set as the running user</span><br><span class="line">;                 mode is set to 0660</span><br><span class="line">listen.owner = xxx</span><br><span class="line">listen.group = xxx</span><br><span class="line">;liseten.mode = 0660</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<ol>
+<li><a href="https://stackoverflow.com/questions/42329261/running-nginx-as-non-root-user" target="_blank" rel="noopener">Running Nginx as non root user
+</a></li>
+<li><a href="https://serverfault.com/questions/433265/how-do-i-change-the-nginx-user" target="_blank" rel="noopener">How do I change the NGINX user?</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/nginx-user-模块详解/" data-id="cjk9iuzep000fma20v90acykp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/nginx/">nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tool/VSCode-代码风格自动校验和格式化清单" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" class="article-date">
+  <time datetime="2018-05-19T22:44:40.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/tool/">tool</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/">VSCode代码风格自动校验和格式化清单</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>vscode 提供了很多优秀的插件，对于代码风格校验和代码格式化，我最常用的是 eslint 和 prettier，eslint 自不必说，第二个是代码格式化插件，不仅可以对 js html css 格式化，还可以对 sass 以及 json 等进行格式化。</p>
+<p>当然格式化的标准编辑器不太同意，比如函数表达式中函数名后面带空格与否，prettier 默认的是不带空格，不过团队中常用的是 JS Standard 是有空格的，更别提字符串用双引号还是单引号，表达式后面跟不跟分号这样的风格差异的问题了。</p>
+<p>不过还好的是 eslint 和 prettier 二者可以结合自动对代码进行格式化。</p>
+<p>首先，在 vscode 市场安装 eslint 和 prettier 两个插件。</p>
+<p>然后我们需要在项目中再安装 eslint 的包。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add eslint --dev</span><br><span class="line">npm i -D eslint</span><br></pre></td></tr></table></figure>
+<p>eslint 提示的是也可以全局安装，<del>但是我全局安装之后并没有作用</del>，必须使用 npm 而不是 yarn 安装才可以。我觉得为了团队其他人的更简单使用，建议还是在 package.json 中安装 eslint。</p>
+<p>打开 vscode 的设置，mac下是 code -&gt; 首选项 -&gt; 设置，windows下是 文件 -&gt; 首选项 -&gt; 设置，在搜索设置中更改下列配置。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">  <span class="attr">"eslint.validate"</span>: [</span><br><span class="line">    <span class="string">"javascript"</span>,</span><br><span class="line">    <span class="string">"javascriptreact"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"editor.formatOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"prettier.eslintIntegration"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"eslint.autoFixOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对 JS 进行检查，我们需要对添加 eslint 设置，首先添加 <code>.eslintrc.js</code> ，这里添加 <code>standard</code> 风格，更多可以在 eslint 网站查看。这里我们使用命令行自动生成，运行<code>eslint --init</code>，然后选择 <code>Use a popular style guide</code> 按照提示操作，如下可做参考。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">? How would you like to configure ESLint? Use a popular style guide</span><br><span class="line">? Which style guide do you want to follow? Standard</span><br><span class="line">? What format do you want your config file to be in? JavaScript</span><br><span class="line">Checking peerDependencies of eslint-config-standard@latest</span><br><span class="line">Installing eslint-config-standard@latest, eslint-plugin-import@&gt;=2.2.0, eslint-plugin-node@&gt;=4.2.2, eslint-plugin-promise@&gt;=3.5.0, eslint-plugin-standard@&gt;=3.0.0</span><br><span class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</span><br><span class="line">npm WARN eslint-config-standard@10.2.1 requires a peer of eslint@&gt;=3.19.0 but none is installed. You must install peer dependencies yourself.</span><br><span class="line">npm WARN eslint-plugin-standard@3.0.1 requires a peer of eslint@&gt;=3.19.0 but none is installed. You must install peer dependencies yourself.</span><br><span class="line">npm WARN eslint-plugin-node@5.2.1 requires a peer of eslint@&gt;=3.1.0 but none is installed. You must install peer dependencies yourself.</span><br><span class="line">npm WARN eslint-plugin-import@2.8.0 requires a peer of eslint@2.x - 4.x but none is installed. You must install peer dependencies yourself.</span><br><span class="line"></span><br><span class="line">+ eslint-config-standard@10.2.1</span><br><span class="line">+ eslint-plugin-standard@3.0.1</span><br><span class="line">+ eslint-plugin-promise@3.6.0</span><br><span class="line">+ eslint-plugin-node@5.2.1</span><br><span class="line">+ eslint-plugin-import@2.8.0</span><br><span class="line">added 53 packages in 9.873s</span><br><span class="line">Successfully created .eslintrc.js file in C:\Users\Lishude\Desktop\project\express</span><br></pre></td></tr></table></figure>
+<p>这样我们在项目中只要 <code>Ctrl+s</code> 就可以自动格式了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/tool/VSCode-代码风格自动校验和格式化清单/" data-id="cjk9iuzfd001vma20iax912i7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nodejs/密码强度校验：先行断言正则与通用库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" class="article-date">
+  <time datetime="2018-05-19T22:43:49.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/">密码强度校验：先行断言正则与通用库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在用户注册业务场景中，一般而言的用户密码强度：密码至少8个字符，包括1个大写字母，1个小写字母和1个数字或特殊字符。本文原本转载来自<a href="http://www.css88.com/archives/8100" target="_blank" rel="noopener">css88</a>的一篇整理，但是其内容只是简单说明了几种验证密码强度正则的写法，比如说 <code>/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/</code> ，这里用了「先行断言」，之前自己对此理解不太准确，本文就是附带讲解这个概念来一步一步说明密码强度正则的写法。</p>
+<h2 id="先行断言"><a href="#先行断言" class="headerlink" title="先行断言"></a>先行断言</h2><p>先行断言（Positive look-ahead）的语法形式为 <code>x(?=y)</code>，意思就是 x 只有在 y 前面才匹配，并且 y 不会被计入返回结果。</p>
+<p>如果要匹配一个 70% 中的数字，就可以写成 <code>/\d+(?=%)/</code>。</p>
+<p>先行断言很容易让人误解，比如说上面举例的密码强度表达式（<code>/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/</code>）中的先行断言前面并没有任何字符，它其实<strong>只是匹配某些位置不占用字符</strong>，所以匹配返回的内容是不包括先行断言内的内容的。</p>
+<p>下面使用 JavaScript 具体说明：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> res = <span class="regexp">/(?=\d)[a-z]/</span>.test(<span class="string">"1h"</span>)</span><br></pre></td></tr></table></figure>
+<p>那么<code>res</code> 的返回结果是？肯定有人说是 <code>true</code> 但是正确结果为 <code>false</code>。</p>
+<p>接下来来分析一下，想象一个指针在字符串 <code>1h</code> 上移动，那么根据上面例子的正则，指针会在 <code>1h</code> 之前，用下划线指代指针的话，指针的位置就是 <code>_1h</code> 的，但是 <code>(?=\d)[a-z]</code> 要求后面的字符是不是数字而是小写字母，所以就匹配不了。</p>
+<p>那么，我们稍微修改一下，现在就匹配了。也就是说<strong>断言不消耗字符</strong>，如果找不到断言就不匹配。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/(?=\d)\d[a-z]/.test(<span class="string">"1h"</span>)</span><br></pre></td></tr></table></figure>
+<p>那么再说明密码强度的正则就简单了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&amp;])[A-Za-z\d$@$!%*#?&amp;]&#123;6,&#125;$/</span><br></pre></td></tr></table></figure>
+<p>在断言中加入 <code>.</code> 代表任意字符，那么就是匹配整个密码字符串。</p>
+<h2 id="密码强度库"><a href="#密码强度库" class="headerlink" title="密码强度库"></a>密码强度库</h2><p>除了正则之外，还有一个业界通用的密码强度库 Dropbox 的 <a href="https://github.com/dropbox/zxcvbn" target="_blank" rel="noopener">zxcvbn</a>。</p>
+<p>库名字很好记就是键盘字符第三排的字母，另外根据统计取这样密码的用户很多。</p>
+<p>zxcvbn 覆盖了所有主流的语言，包括 JS PHP Python 等，前端也可以直接引入，不过我并不推荐，因为包太大了，足有 800K。如果前端使用的话，最好还是使用正则。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/nodejs/密码强度校验：先行断言正则与通用库/" data-id="cjk9iuzf5001dma20vt0s9r0n" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/blog/page/2/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/blog/page/4/">4</a><a class="page-number" href="/blog/page/5/">5</a><a class="page-number" href="/blog/page/6/">6</a><a class="extend next" rel="next" href="/blog/page/4/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Golang/">Golang</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/tool/">tool</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/BigInt/">BigInt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ES/">ES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/bash/">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/node-js/">node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/sed/">sed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ubuntu/">ubuntu</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/BigInt/" style="font-size: 10px;">BigInt</a> <a href="/blog/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/blog/tags/ES/" style="font-size: 10px;">ES</a> <a href="/blog/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/blog/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/blog/tags/bash/" style="font-size: 10px;">bash</a> <a href="/blog/tags/git/" style="font-size: 20px;">git</a> <a href="/blog/tags/golang/" style="font-size: 10px;">golang</a> <a href="/blog/tags/nginx/" style="font-size: 20px;">nginx</a> <a href="/blog/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/blog/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/blog/tags/sed/" style="font-size: 10px;">sed</a> <a href="/blog/tags/ubuntu/" style="font-size: 10px;">ubuntu</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">五月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/22/nodejs/理解-JS-中的装饰器/">理解 JS 中的装饰器</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Lishude<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

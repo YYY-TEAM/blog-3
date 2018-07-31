@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Linux sed 和 find 命令清单 | Lishude&#39;s Web Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="sed之前在使用 sed 就只在 ubuntu 上替换 apt 源用过。 1sed -i &apos;s/us/cn/g&apos; /etc/apt/sources.lit 一直还没记住，容易输错，结果经常就把 sources.list 文件破坏掉了 😓。 sed 是流编辑器，读取一个文件，按照命令每次只处理一行。具体命令如下所示： 1sed [options] &amp;apos;command&amp;apos; file(">
+<meta name="keywords" content="sed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux sed 和 find 命令清单">
+<meta property="og:url" content="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/index.html">
+<meta property="og:site_name" content="Lishude&#39;s Web Note">
+<meta property="og:description" content="sed之前在使用 sed 就只在 ubuntu 上替换 apt 源用过。 1sed -i &apos;s/us/cn/g&apos; /etc/apt/sources.lit 一直还没记住，容易输错，结果经常就把 sources.list 文件破坏掉了 😓。 sed 是流编辑器，读取一个文件，按照命令每次只处理一行。具体命令如下所示： 1sed [options] &amp;apos;command&amp;apos; file(">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2018-07-31T09:46:52.304Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux sed 和 find 命令清单">
+<meta name="twitter:description" content="sed之前在使用 sed 就只在 ubuntu 上替换 apt 源用过。 1sed -i &apos;s/us/cn/g&apos; /etc/apt/sources.lit 一直还没记住，容易输错，结果经常就把 sources.list 文件破坏掉了 😓。 sed 是流编辑器，读取一个文件，按照命令每次只处理一行。具体命令如下所示： 1sed [options] &amp;apos;command&amp;apos; file(">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Lishude&#39;s Web Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Lishude&#39;s Web Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/blog/" id="subtitle">Node.js/Blockchain/Go</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://islishude.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-linux/Linux-sed-和-find-命令清单" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" class="article-date">
+  <time datetime="2018-05-19T22:52:41.000Z" itemprop="datePublished">2018-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux sed 和 find 命令清单
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p>之前在使用 sed 就只在 ubuntu 上替换 apt 源用过。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i 's/us/cn/g' /etc/apt/sources.lit</span><br></pre></td></tr></table></figure>
+<p>一直还没记住，容易输错，结果经常就把 sources.list 文件破坏掉了 😓。</p>
+<p>sed 是流编辑器，读取一个文件，按照命令每次只处理一行。具体命令如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed [options] &apos;command&apos; file(s)</span><br></pre></td></tr></table></figure>
+<p>option 就是上述命令的 -i 部分，这个是修改源文件。处理行为默认是只输出到屏幕，加 -i 的参数了，这会修改源文件的。有个安全的方式就是使用 <code>-i.bak</code> 的形式先备份然后再修改。</p>
+<p><strong>其它的 option 选项</strong></p>
+<ul>
+<li>-e<script>或–expression=<script>：以选项中的指定的script来处理输入的文本文件；</li>
+<li>-f&lt;script文件&gt;或–file=&lt;script文件&gt;：以选项中指定的script文件来处理输入的文本文件；</li>
+<li>-n或–quiet或——silent：仅显示script处理后的结果；</li>
+<li>-V或–version：显示版本信息。</li>
+</ul>
+<p>command 参数包括两个部分，处理位置和处理方式。</p>
+<p>sed 读取一行处理一行，默认是每行都处理，另外提供了处理位置（Address），可以是行号，也可以是正则只要匹配才处理，不匹配就跳过进入下一行。</p>
+<p>选定行的范围使用 <code>,（逗号）</code>进行。</p>
+<ul>
+<li>所有在模板test和check所确定的范围内的行都被打印：<code>sed -n &#39;/test/,/check/p&#39; file</code></li>
+<li>打印从第5行开始到第一个包含以test开始的行之间的所有行：<code>sed -n &#39;5,/^test/p&#39; file</code></li>
+<li>对于模板test和west之间的行，每行的末尾用字符串aaa bbb替换：<code>sed &#39;/test/,/west/s/$/aaa bbb/&#39; file</code></li>
+</ul>
+<p>在处理位置之后再使用处理方式。</p>
+<p>几个常用的处理方式有新增（a），插入（i），删除（d），打印（p），替换（s）。</p>
+<p><strong>输出打印操作：p命令</strong></p>
+<ul>
+<li>打印第二行：<code>sed -n &#39;2p&#39; file</code></li>
+</ul>
+<p>需要注意的是如果不加 -n 的话，会打印两行。</p>
+<p><strong>删除操作：d命令</strong></p>
+<ul>
+<li>删除空白行：<code>sed &#39;/^$/d&#39; file</code></li>
+<li>删除文件的第2行：<code>sed &#39;2d&#39; file</code></li>
+<li>删除文件的第2行到末尾所有行：<code>sed &#39;2,$d&#39; file</code></li>
+</ul>
+<p><strong>追加（行下）：a\命令</strong></p>
+<ul>
+<li>将 this is a test line 追加到 以test 开头的行后面：<code>sed &#39;/^test/a\this is a test line&#39; file</code></li>
+<li>在 test.conf 文件第2行之后插入：<code>sed -i &#39;2a\this is a test line&#39; test.conf</code></li>
+<li>也可以直接使用在命令<code>a</code>后加空格的形式： <code>sed -i &#39;2a insert new lint&#39;</code></li>
+</ul>
+<p><strong>插入（行上）：i\命令</strong></p>
+<ul>
+<li>将 this is a test line 追加到以test开头的行前面：<code>sed &#39;/^test/i\this is a test line&#39; file</code></li>
+<li>在test.conf文件第5行之前插入：<code>sed -i &#39;5i\this is a test line&#39; test.conf</code></li>
+</ul>
+<p>当然还有最初说的 s 命令是指替换操作，可以直接搭配正规表示法。<code>sed -i &#39;s/us/cn/g&#39; /etc/apt/sources.lit</code> 这条命令就是把 <code>/etc/apt/sources.list</code> 文件中每行的 us 换成 cn，这个就是初始化 ubuntu server 的最常用的命令了。</p>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>Linux find命令用来在指定目录下查找文件。</p>
+<p>任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时，不设置任何参数，则find命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。</p>
+<p>语法格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find   path   -option   [   -print ]   [ -exec   -ok   command ]   &#123;&#125; ;</span><br></pre></td></tr></table></figure>
+<p>find 根据下列规则判断 path 和 expression，在命令列上第一个 <code>- ( ) , !</code>之前的部份为 path，之后的是 expression。如果 path 是空字串则使用目前路径，如果 expression 是空字串则使用 -print 为预设 expression。</p>
+<ul>
+<li>-atime n : 在过去 n 天过读取过的文件</li>
+<li>-ctime n : 在过去 n 天过修改过的文件</li>
+<li>-empty : 空的文件-gid n or -group name : gid 是 n 或是 group 名称是 name</li>
+<li>-name name, -iname name : 文件名称符合 name 的文件。iname 会忽略大小写</li>
+<li>-size n : 文件大小 是 n 单位，b 代表 512 位元组的区块，c 表示字元数，k 表示 kilo bytes，w 是二个位元组。</li>
+<li>-type c : 文件类型是 c 的文件。d: 目录；c: 字型装置文件；b: 区块装置文件；p: 具名贮列；f: 一般文件；l: 符号连结；s: socket</li>
+<li>-pid n : process id 是 n 的文件</li>
+</ul>
+<p>更多可参考：<a href="https://blog.csdn.net/xktxoo/article/details/77823520">https://blog.csdn.net/xktxoo/article/details/77823520</a></p>
+<h2 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h2><ul>
+<li><a href="http://man.linuxde.net/sed">http://man.linuxde.net/sed</a></li>
+<li><a href="http://www.runoob.com/linux/linux-comm-find.html">http://www.runoob.com/linux/linux-comm-find.html</a></li>
+</ul>
+</script></li></ul>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://islishude.github.io/blog/2018/05/20/linux/Linux-sed-和-find-命令清单/" data-id="cjk9iuzek0008ma20sej2h1l6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/sed/">sed</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/20/linux/Debian-APT-Nginx-各个版本的区别/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Debian APT Nginx 各个版本的区别
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/20/linux/nginx-user-模块详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">nginx user 模块详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Golang/">Golang</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/tool/">tool</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/BigInt/">BigInt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ES/">ES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/bash/">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/node-js/">node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/sed/">sed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ubuntu/">ubuntu</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/BigInt/" style="font-size: 10px;">BigInt</a> <a href="/blog/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/blog/tags/ES/" style="font-size: 10px;">ES</a> <a href="/blog/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/blog/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/blog/tags/bash/" style="font-size: 10px;">bash</a> <a href="/blog/tags/git/" style="font-size: 20px;">git</a> <a href="/blog/tags/golang/" style="font-size: 10px;">golang</a> <a href="/blog/tags/nginx/" style="font-size: 20px;">nginx</a> <a href="/blog/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/blog/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/blog/tags/sed/" style="font-size: 10px;">sed</a> <a href="/blog/tags/ubuntu/" style="font-size: 10px;">ubuntu</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">五月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/08/01/ITerm2-技巧/">ITerm2 技巧</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/06/04/nodejs/理解ES6中的字符串和数值解构赋值/">理解ES6中的字符串和数值解构赋值</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/06/01/linux/AngularJS-Git-提交信息规范/">AngularJS Git 提交信息规范</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/23/nodejs/说说-XSRF-防范/">说说 XSRF 防范</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/22/nodejs/理解-JS-中的装饰器/">理解 JS 中的装饰器</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Lishude<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
